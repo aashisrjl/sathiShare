@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SathiShare</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <style>
+        /* Include your CSS here or in /css/home.css */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="/img/logo.PNG" alt="Project Logo">
+        </div>
+        <header>
+            <div class="title">Welcome to SathiShare</div>
+            <div class="description">Share photos, videos, and files, or start chatting with friends. No login required; just enter your name and start connecting!</div>
+        </header>
+        <div class="logo-container">
+            <div class="buttons-wrapper">
+                <div class="button" onclick="window.location.href='/share'">Share Photos & Videos</div>
+                <div class="button" onclick="document.getElementById('fileInput').click()">Share Files</div>
+                <div class="button" onclick="window.location.href='/chat'">Start Chatting</div>
+            </div>
+        </div>
+        <!-- Hidden form for file upload -->
+        <form id="fileForm" action="/file" method="post" enctype="multipart/form-data">
+            <input type="file" id="fileInput" name="file" class="hidden-input" onchange="submitForm()">
+        </form>
+    </div>
+
+    <script>
+        function submitForm() {
+            // Trigger form submission when a file is selected
+            document.getElementById('fileForm').submit();
+        }
+    </script>
+</body>
+</html>

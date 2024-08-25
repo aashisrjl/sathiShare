@@ -1,0 +1,87 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; /* White background */
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+}
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+header {
+    margin-bottom: 60px; /* Space between header and logo */
+}
+.title {
+    font-size: 2.5em;
+    color: #000; /* Black text */
+    margin-bottom: 10px;
+}
+.description {
+    font-size: 1.2em;
+    color: #666; /* Gray text */
+    margin-bottom: 20px;
+}
+.logo-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px; /* Adjust to fit your design */
+}
+.logo img {
+    max-width: 150px;
+    height: auto;
+    border-radius: 20%; /* Rounded logo */
+}
+.buttons-wrapper {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    flex-wrap: wrap;
+}
+.button {
+    background: #000; /* Black background */
+    color: #fff; /* White text */
+    border-radius: 50%; /* Fully rounded button */
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin: 10px; /* Space between buttons */
+    padding: 10px;
+    animation: round linear infinite 5s;
+}
+@keyframes round {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+    
+}
+.button:hover {
+    background: #333; /* Darker background on hover */
+    transform: scale(1.1); /* Slight scaling effect */
+}
+.hidden-input{
+    display: none;
+}

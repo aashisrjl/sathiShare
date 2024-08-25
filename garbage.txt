@@ -1,0 +1,55 @@
+const { QueryTypes } = require("sequelize");
+const { questions, users, answers, sequelize } = require("../model")
+const {cloudinary} = require('../cloudinary/index')
+const fs = require('fs')
+
+//get question asking form
+exports.renderAskQuestionPage = (req,res)=>{
+    const [error] = req.flash("error");
+    const [success] = req.flash("success");
+    res.render('question/askQuestion.ejs',{error,success})
+}
+
+// post question
+exports.askQuestion=async (req,res)=>{
+    const {title,description} = req.body
+    console.log(req.body)
+    let fileName;
+    let result;
+    let file;
+    if(req.file){
+     fileName = req.file.filename
+     result = await cloudinary.v2.uploader.upload(req.file.path)
+     file = result.url
+    }else{
+        fileName = ""
+        file = ""
+    }
+   
+    console.log(result)
+    const userId = req.userId
+
+    if(!title || !description){
+        req.flash("error","Enter all fields")
+        res.redirect("/askquestion/");
+    }
+    await questions.create({
+        title,
+        image:file,
+        description,
+        userId
+    })
+    req.flash("success","Add Question Successfully")
+    res.redirect("/")
+
+}
+
+//route
+const fs = require('fs');
+const {multer,storage}= require('../middleware/multerConfig');
+const upload = multer({storage:storage})
+router.route('/askquestion').get(isAuthenticated,renderAskQuestionPage).post(upload.single('image'),isAuthenticated,askQuestion)
+
+const socket = io();
+
+        <script src="/socket.io/socket.io.js"></script>
