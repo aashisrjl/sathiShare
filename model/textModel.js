@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const shareSchema = new Schema({
+const textSchema = new Schema({
+    userId:{
+        type: String
+    },
     title: {
         type: String,
         required: true,      // Ensures that a title is always provided
@@ -16,11 +19,14 @@ const shareSchema = new Schema({
         required: true,      // Ensures that the IP address is always recorded
         trim: true           // Trims any leading or trailing whitespace
     },
+    vsCode:{
+        type: String
+    },
     timestamp: {
         type: Date,
         default: Date.now    // Automatically records the time of the share
     }
 });
 
-const Share = mongoose.model('Share', shareSchema);
-module.exports = Share;
+const Text = mongoose.model('Text', textSchema);
+module.exports = Text;

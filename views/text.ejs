@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/text.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <form action="/text" method="post">
+            <div class="header">
+                <input type="text" name="title" id="title" placeholder="Enter a title" required>
+                <a href="/" style="text-decoration: none;"><span> Cancel <i class="fas fa-times"></i></span></a>
+            </div>
+            <div class="textarea">
+                <textarea name="text" cols="5" rows="25" placeholder="Enter or paste your text/code here .... " required></textarea>
+            </div>
+            <footer>
+                <button type="submit">Share</button>
+                <button type="submit" style="background-color: green;" formaction="/text">New</button>
+            </footer>
+        </form>
+    </div>
+</body>
+</html>

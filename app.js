@@ -9,20 +9,22 @@ connectToDatabase();
 
 // to perform with file search delete 
 const fs = require('fs');
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // require database table to access in this project 
 const Chat = require('./model/chatModel.js');
-const Share = require('./model/shareModel.js');
+const Text = require('./model/textModel.js');
 const File = require('./route/fileRoute.js');
 
 
 const chatRoute = require('./route/chatRoute.js')
 const fileRoute = require('./route/fileRoute.js')
-const shareRoute = require('./route/shareRoute.js')
+const textRoute = require('./route/textRoute.js')
 
 app.use("",chatRoute);
 app.use("",fileRoute);
-app.use("",shareRoute);
+app.use("",textRoute);
 
 const jwt = require("jsonwebtoken")
 //give access the css folder to the node js 
@@ -48,12 +50,8 @@ const bcrypt = require('bcrypt');
 const cookies = require('cookie-parser');
 const { promisify } = require("util");
 app.use(cookies())
-// print data in console to use req.body 
-// Middleware to parse URL-encoded data (for form submissions)
-app.use(express.urlencoded({ extended: true }));
 
-// Middleware to parse JSON data (for API requests)
-app.use(express.json());
+
 
 // set view engine to the ejs where all the ejs file under views folder have access to the ejs 
 app.set("view engine", "ejs");
