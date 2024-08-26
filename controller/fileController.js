@@ -1,49 +1,52 @@
-const { cloudinary } = require("../cloudinary/index");
 const File = require("../model/fileModel");
 const fs = require('fs');
 
-exports.postFile = async (req, res) => {
+// Function to generate a random userId
+function generateUserId() {
+    const digits = Math.floor(1000 + Math.random() * 9000); // Generates a random 4-digit number
+    return 'A' + digits.toString(); // Prefix 'A' to the 4-digit number
+}
+
+exports.postFiles = async (req, res) => {
     try {
-        // Retrieve IP address
         const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip;
 
-        if (!req.file) {
+        // Check if files are uploaded
+        if (!req.files || req.files.length === 0) {
             return res.status(400).json({
-                message: "Please upload a file"
+                message: "Please upload at least one file"
             });
         }
 
-        const allowedMimeType = ['application/pdf','image/png','image/jpg','image/jpeg','video/mp4']; //application/pdf
-        const mimeType = req.file.mimetype;
+        // Try to find an existing userId based on the IP address
+        let existingFile = await File.findOne({ ipAddress });
+        let userId;
 
-        if (!allowedMimeType.includes(mimeType)) {
-            return res.status(400).json({
-                message: "Only files are accepted"
-            });
+        if (!existingFile) {
+            // Generate a unique userId if no previous record is found for the IP
+            userId = generateUserId();
+        } else {
+            // Use the existing userId
+            userId = existingFile.userId;
         }
 
-        // Upload PDF to Cloudinary
-        const result = await cloudinary.v2.uploader.upload(req.file.path, {
-            resource_type: 'raw',
-            folder: 'sathiShare'
-        });
+        const files = req.files;
+        const savedFiles = [];
 
-        const fileUrl = result.url;
+        for (let i = 0; i < files.length; i++) {
+            const fileUrl = files[i].filename;
 
-        // Save file details in the database
-        await File.create({
-            ipAddress: ipAddress,
-            file: fileUrl
-        });
+            const savedFile = await File.create({
+                userId: userId,
+                ipAddress: ipAddress,
+                file: fileUrl
+            });
 
-        // Remove the temporary file from server
-        fs.unlinkSync(req.file.path);
+            savedFiles.push(savedFile);
+        }
 
-        res.status(200).json({
-            message: "File uploaded successfully",
-            fileUrl: fileUrl
-        });
-        res.render("files")
+        // Redirect to the page showing all files for the userId
+        res.redirect(`/file/${userId}`);
 
     } catch (error) {
         console.error(error);
@@ -53,16 +56,29 @@ exports.postFile = async (req, res) => {
     }
 };
 
-exports.getAllFile = async(req,res)=>{
+exports.getFilesByUserId = async (req, res) => {
     try {
-        const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip;
-        console.log("ip",ipAddress)
-        const data = await File.find({ipAddress})
-        res.render("files",{files:data});
-        
+        const { userId } = req.params; // Extract userId from URL parameters
+        console.log("Extracted userId:", userId);
+
+        // Retrieve all files associated with the userId
+        const files = await File.find({ userId });
+        console.log("Files found:", files);
+
+        const url = "http://localhost:3000/";
+
+        if (files.length === 0) {
+            return res.status(404).json({
+                message: "No files found for this user"
+            });
+        }
+
+        res.render("files", { files: files, url });
+
     } catch (error) {
+        console.error("Error retrieving files:", error);
         res.status(500).json({
-            message: "Internal error"
-        })
+            message: "Internal server error"
+        });
     }
-}
+};

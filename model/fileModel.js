@@ -6,6 +6,9 @@ const fileSchema = new Schema({
         type: String,
         trim: true
     },
+    userId:{
+        type : String
+    },
     ipAddress: {
         type: String,
         required: true,

@@ -36,17 +36,21 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             min-height: 70vh; /* Ensures there's enough space to center content */
         }
-        .file-list,ul {
+        .file-list {
             list-style: none;
             padding: 0;
-        
         }
-        .file-list li ,li{
+        .file-list li, li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin: 30px 0;
             font-size: 1.1em;
-            
         }
-        .file-list a , a {
+        .file-list span {
+            margin-right: 20px;
+        }
+        .file-list a ,a{
             text-decoration: none;
             color: #007bff;
             background-color: #e9ecef;
@@ -54,15 +58,25 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s, color 0.3s;
-            width: 60%;
+            width: 48%;
         }
-        .file-list a:hover, a:hover {
+        .file-list a:hover,a:hover {
             background-color: #007bff;
             color: #fff;
+        }
+        .copy-link {
+            text-align: left;
+        }
+        .visit-link {
+            text-align: right;
         }
         @media (max-width: 768px) {
             .container {
                 width: 95%;
+            }
+            .file-list a {
+                width: 100%;
+                margin-top: 10px;
             }
         }
     </style>
@@ -76,16 +90,30 @@
             <ul class="file-list">
                 <% files.forEach(file => { %>
                     <li>
-                        <span style="margin-right: 30px;"><%= file.file %></span><a href="<%= file.file %>" target="_blank"> Visit Link</a>
+                        <span><%= url + file.file %></span>
+                        <div>
+                            <a href="#" class="copy-link" onclick="copyToClipboard('<%= url + file.file %>')">Copy Link</a>
+                            <a href="<%= url + file.file %>" target="_blank" class="visit-link">Visit Link</a>
+                        </div>
                     </li>
                 <% }); %>
             </ul>
         <% } else { %>
-            <p>No files found for your IP address.</p>
+            <p>No files found for this user ID.</p>
         <% } %>
-        <ul style="border-radius: 20px;">
-        <li class="new" ><a href="/">Go Back</a></li>
-    </ul>
+        <ul style="border-radius: 20px; list-style: none; text-align: center; margin-left: 30%; margin-right: 20%;">
+            <li class="new"><a href="/"> Share Another</a></li>
+        </ul>
     </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy link:', err);
+            });
+        }
+    </script>
 </body>
 </html>
