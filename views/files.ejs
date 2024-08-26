@@ -18,8 +18,9 @@
                     <li>
                         <span><%= file.file.slice(14) %></span>
                         <div>
-                            <a href="<%= file.file %>" class="copy-link"  download>Download</a>
-                            <a href="<%=file.file %>" target="_blank" class="visit-link">Visit Link</a>
+                            <a href="<%= '/' + file.file %>" class="copy-link" download>Download</a>
+                            <a href="<%= '/' + file.file %>" target="_blank" class="visit-link">Visit Link</a>
+                            
                         </div>
                     </li>
                 <% }); %>
