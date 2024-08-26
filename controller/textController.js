@@ -11,7 +11,7 @@ exports.renderTextPage = (req,res)=>{
 
 exports.createText = async(req,res)=>{
     const {title,text} = req.body;
-    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip;
+    const ipAddress = req.ip;//req.headers['x-forwarded-for'] || req.connection.remoteAddress || 
     if(!title || !text){
         return res.status(400).json({
             message:"Please fill in all fields"

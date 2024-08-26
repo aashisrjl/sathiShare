@@ -42,7 +42,7 @@ const scheduleDeletion = (userId) => {
 
 exports.postFiles = async (req, res) => {
     try {
-        const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip;
+        const ipAddress =  req.ip;//req.headers['x-forwarded-for'] || req.connection.remoteAddress ||
 
         // Check if files are uploaded
         if (!req.files || req.files.length === 0) {
