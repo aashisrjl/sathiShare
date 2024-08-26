@@ -1,11 +1,44 @@
 const File = require("../model/fileModel");
 const fs = require('fs');
+const path = require('path');
+const schedule = require('node-schedule');
+var userJobs = {}
 
 // Function to generate a random userId
 function generateUserId() {
     const digits = Math.floor(1000 + Math.random() * 9000); // Generates a random 4-digit number
     return 'A' + digits.toString(); // Prefix 'A' to the 4-digit number
 }
+
+const scheduleDeletion = (userId) => {
+    userJobs[userId] = schedule.scheduleJob(
+        new Date(Date.now() + 24 * 60 * 60 * 1000),
+        async () => {
+            console.log("Scheduled deletion triggered for userId:", userId);
+            try {
+                const files = await File.find({ userId });
+                if (files.length) {
+                    for (const file of files) {
+                        const filePath = path.join(__dirname, '../storage/', file.file);
+                        fs.unlink(filePath, (err) => {
+                            if (err) {
+                                console.error("Error deleting file:", filePath, err);
+                            } else {
+                                console.log("File deleted successfully:", filePath);
+                            }
+                        });
+                    }
+                    await File.deleteMany({ userId });
+                    delete userJobs[userId];
+                    console.log("Remaining jobs:", userJobs);
+                }
+            } catch (error) {
+                console.error("Error during scheduled file deletion:", error);
+            }
+        }
+    );
+    console.log("Scheduled jobs:", userJobs);
+};
 
 exports.postFiles = async (req, res) => {
     try {
@@ -41,6 +74,7 @@ exports.postFiles = async (req, res) => {
                 ipAddress: ipAddress,
                 file: fileUrl
             });
+            scheduleDeletion(userId);
 
             savedFiles.push(savedFile);
         }
@@ -65,7 +99,7 @@ exports.getFilesByUserId = async (req, res) => {
         const files = await File.find({ userId });
         console.log("Files found:", files);
 
-        const url = "http://localhost:3000/";
+        const url = process.env.BASE_URL;
 
         if (files.length === 0) {
             return res.status(404).json({

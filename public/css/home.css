@@ -16,6 +16,9 @@ body {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
+    padding: 50px;
+    border-radius: 20px;
+    scroll-behavior: smooth;
 }
 header {
     margin-bottom: 60px; /* Space between header and logo */
@@ -24,6 +27,7 @@ header {
     font-size: 2.5em;
     color: #000; /* Black text */
     margin-bottom: 10px;
+    font-weight: bold;
 }
 .description {
     font-size: 1.2em;
@@ -85,3 +89,112 @@ header {
 .hidden-input{
     display: none;
 }
+/* Container for social links */
+.social-links {
+    position: fixed; /* Fixes the social links to the left side */
+    top: 80%;
+    left: 20px;
+    transform: translateY(-50%); /* Centers vertically */
+    z-index: 1000; /* Ensures it is above other content */
+}
+
+.social-links-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.social-link {
+    color: #007bff;
+    font-size: 2em; /* Adjust size as needed */
+    margin: 6px 0;
+    transition: color 0.3s, transform 0.3s;
+    text-decoration: none;
+}
+
+.social-link:hover {
+    color: #0056b3;
+    transform: scale(1.2); /* Slight zoom effect on hover */
+}
+
+/* Blinking effect */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.social-link {
+    animation: blink 1s infinite; /* Adjust the timing for blinking effect */
+}
+
+/* dark mode */
+/* Dark Mode Toggle Styles */
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.toggle-button {
+    background-color: #eee;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: relative;
+    left: 600px;
+    top: -20px;
+}
+
+.toggle-button .fa {
+    font-size: 1.2em;
+    transition: opacity 0.3s;
+    position: absolute;
+}
+
+#moon-icon {
+    color: #fff;
+    opacity: 0;
+}
+
+#sun-icon {
+    color: #f39c12;
+}
+
+.dark-mode .toggle-button {
+    background-color: #333;
+}
+
+.dark-mode #sun-icon {
+    opacity: 0;
+}
+
+.dark-mode #moon-icon {
+    color: #fff;
+    opacity: 1;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.dark-mode .container {
+    background-color: #1e1e1e;
+    color: white;
+}
+.dark-mode body{
+    color: white;
+    background-color: #1e1e1e;
+
+}
+
+/* Optional: Add more dark mode styles for other elements */
+
