@@ -18,8 +18,8 @@
                     <li>
                         <span><%= file.file.slice(14) %></span>
                         <div>
-                            <a href="#" class="copy-link" onclick="copyToClipboard('<%= url + file.file %>')">Copy Link</a>
-                            <a href="<%= url + file.file %>" target="_blank" class="visit-link">Visit Link</a>
+                            <a href="<%= file.file %>" class="copy-link"  download>Download</a>
+                            <a href="<%=file.file %>" target="_blank" class="visit-link">Visit Link</a>
                         </div>
                     </li>
                 <% }); %>
@@ -33,13 +33,13 @@
     </div>
 
     <script>
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Link copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy link:', err);
-            });
-        }
+        // function copyToClipboard(text) {
+        //     navigator.clipboard.writeText(text).then(() => {
+        //         alert('Link copied to clipboard!');
+        //     }).catch(err => {
+        //         console.error('Failed to copy link:', err);
+        //     });
+        // }
     </script>
 </body>
 </html>
