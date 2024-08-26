@@ -53,7 +53,7 @@
         .file-list a ,a{
             text-decoration: none;
             color: #007bff;
-            background-color: #e9ecef;
+            background-color: #1f2327;
             padding: 10px 15px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -91,7 +91,7 @@
                         <span><%= text.title %></span>
                         <div>
                             <a href="#" class="copy-link" onclick="copyToClipboard('<%= text.text %>')">Copy code</a>
-                            <a href="/single/<%= text._id %>" target="_blank" class="visit-link">see code</a>
+                            <a href="/text/single/<%= text._id %>"  class="visit-link">see code</a>
                         </div>
                     </li>
                 <% }); %>
