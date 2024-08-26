@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: green;
+    text-align: center;
+}
+h1 {
+    color: white;
+    padding: 10px 0;
+    width: 100%;
+    text-shadow: 0 10px 2px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    width: 80%;
+    margin: 60px auto 10px; /* Adjusted margin to account for fixed header */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-height: 70vh; /* Ensures there's enough space to center content */
+}
+.file-list {
+    list-style: none;
+    padding: 0;
+}
+.file-list li, li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 0;
+    font-size: 1.1em;
+
+}
+.file-list li{
+    border: 2px solid blue;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 5px 15px 10px rgba(0, 0, 0, 0.1);
+}
+.file-list span {
+    margin-right: 20px;
+}
+.file-list a ,a{
+    text-decoration: none;
+    color: #007bff;
+    background-color: #e9ecef;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, color 0.3s;
+    width: 48%;
+}
+.file-list a:hover,a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+.copy-link {
+    text-align: left;
+}
+.visit-link {
+    text-align: right;
+}
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+    .file-list a {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
