@@ -5,7 +5,7 @@ const { errorHandler } = require('../middleware/errorHandler');
 const upload = multer({storage:storage})
 const router = express.Router()
 router.route('/file').post(upload.array('file'),errorHandler(postFiles))
-router.route('/file/:userId').get(errorHandler(getFilesByUserId))
+router.route('/:userId').get(errorHandler(getFilesByUserId))
 router.route('/file/delete/:id').get(errorHandler(deleteFile))
 
 module.exports = router;
