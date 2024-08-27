@@ -72,7 +72,7 @@ exports.deleteText = async(req,res)=>{
        }
        if(ipAddress == text.ipAddress){
         await Text.findByIdAndDelete(id);
-        res.redirect(`/text/${text.userId}`)
+        res.redirect(`/code/${text.userId}`)
         }else{
             return res.status(401).json({
                 message:"You are not authorized to delete this text"

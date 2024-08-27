@@ -13,6 +13,9 @@ const fs = require('fs');
 const path = require('path');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.get('/',(req,res)=>{
+  res.render('home.ejs')
+})
 
 
 
@@ -44,9 +47,7 @@ app.use(session({
   saveUninitialized: false
 }))
 app.use(flash());
-app.get('/',(req,res)=>{
-    res.render('home.ejs')
-})
+
 
 
 // require bcrypt which is used to hashed the password (bcrypt.hashSync(password,10))
@@ -57,24 +58,21 @@ app.use(cookies())
 
 
 
-// set view engine to the ejs where all the ejs file under views folder have access to the ejs 
-
-
 // 404 Error Page
 app.use((req, res, next) => {
   res.status(404).render('404.ejs');
 });
-app.use(async (req,res,next)=>{
-    const token =  req.cookies.jwtToken 
-   try {
-     const decryptedResult =  await promisify(jwt.verify)(token,'aashish')
-     const data = await users.findByPk(decryptedResult.id)
-     res.locals.userName = data.username 
-   } catch (error) {
-     res.locals.isAuthenticated = false 
-   }
-    next()
- })
+// app.use(async (req,res,next)=>{
+//     const token =  req.cookies.jwtToken 
+//    try {
+//      const decryptedResult =  await promisify(jwt.verify)(token,'aashish')
+//      const data = await users.findByPk(decryptedResult.id)
+//      res.locals.userName = data.username 
+//    } catch (error) {
+//      res.locals.isAuthenticated = false 
+//    }
+//     next()
+//  })
  app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
