@@ -1,3 +1,3 @@
 exports.chat = (req,res)=>{
-    res.send("OOOOPSSSSS sabar karo");
+    res.render("chat")
 }

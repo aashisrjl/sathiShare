@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SathiShare</title>
     <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Include your CSS here or in /css/home.css */
@@ -13,6 +14,7 @@
 </head>
 <body>
     <div class="container">
+        <div class="loading-spinner" id="loadingSpinner"></div>
           <!-- Dark Mode Toggle Button -->
           <div class="dark-mode-toggle">
             <button class="toggle-button" onclick="toggleDarkMode()">
@@ -49,6 +51,7 @@
         </div>
     <script>
         function submitForm() {
+            document.getElementById('loadingSpinner').style.display = 'block';
             // Trigger form submission when a file is selected
             document.getElementById('fileForm').submit();
         }
@@ -60,5 +63,6 @@
             e.preventDefault();
         }
     </script>
+    <script src="/script/loader.js"></script>
 </body>
 </html>
