@@ -20,8 +20,8 @@
                     <li>
                         <span><%= file.file.slice(14) %></span>
                         <div>
-                            <a href="<%= '/' + file.file %>" class="copy-link" download>Download</a>
-                            <a href="<%= '/' + file.file %>" target="_blank" class="visit-link">Visit</a>
+                            <a href="/storage/<%= file.file %>" class="copy-link" download>Download</a>
+                            <a href="/storage/<%= file.file %>" target="_blank" class="visit-link">Visit</a>                            
                             <a  style="background-color: red; color: white; border-radius: 50%;" href="/file/delete/<%= file._id %>"  class="visit-link"><i class="fas fa-times"></i></a>
 
                             

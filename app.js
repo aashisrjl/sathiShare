@@ -9,6 +9,7 @@ connectToDatabase();
 
 // to perform with file search delete 
 const fs = require('fs');
+const path = require('path');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -29,7 +30,7 @@ app.use("",textRoute);
 const jwt = require("jsonwebtoken")
 //give access the css folder to the node js 
 app.use(express.static('public/'));
-app.use(express.static('storage/'));
+app.use('/storage', express.static(path.join(__dirname, 'storage')));
 
 const socketio = require('socket.io');
 const flash = require('connect-flash')
