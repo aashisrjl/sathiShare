@@ -7,16 +7,14 @@ dotenv.config();
 const connectToDatabase = require('./database/index.js');
 connectToDatabase();
 
+app.set("view engine", "ejs");
 // to perform with file search delete 
 const fs = require('fs');
 const path = require('path');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 404 Error Page
-app.use((req, res, next) => {
-  res.status(404).render('404');
-});
+
 
 // require database table to access in this project 
 const Chat = require('./model/chatModel.js');
@@ -60,8 +58,12 @@ app.use(cookies())
 
 
 // set view engine to the ejs where all the ejs file under views folder have access to the ejs 
-app.set("view engine", "ejs");
 
+
+// 404 Error Page
+app.use((req, res, next) => {
+  res.status(404).render('404.ejs');
+});
 app.use(async (req,res,next)=>{
     const token =  req.cookies.jwtToken 
    try {
