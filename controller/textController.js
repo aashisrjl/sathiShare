@@ -60,3 +60,22 @@ exports.getSingleText = async(req,res)=>{
     const text = await Text.findById(id);
     res.render('singleText',{text});
 }
+
+exports.deleteText = async(req,res)=>{
+    const ipAddress = req.ip;
+    const {id} = req.params;
+    const text =await Text.findById(id);
+    if(!text){
+        return res.status(400).json({
+            message:"No text found"
+            })
+       }
+       if(ipAddress == text.ipAddress){
+        await Text.findByIdAndDelete(id);
+        res.redirect(`/text/${text.userId}`)
+        }else{
+            return res.status(401).json({
+                message:"You are not authorized to delete this text"
+                })
+        }
+}

@@ -116,3 +116,29 @@ exports.getFilesByUserId = async (req, res) => {
         });
     }
 };
+
+exports.deleteFile = async (req, res) => {
+    const ipAddress = req.ip;
+    const { id } = req.params;
+
+        const file = await File.findById(id);
+        console.log("file", file);
+        console.log("ip", ipAddress);
+        console.log("id", id);
+
+        if (!file) {
+            return res.status(400).json({
+                message: "No text found"
+            });
+        }
+
+        if (ipAddress === file.ipAddress) {
+            await File.findByIdAndDelete(id);
+            res.redirect(`/file/${file.userId}`);
+        } else {
+            return res.status(401).json({
+                message: "You are not authorized to delete this text"
+            });
+        }
+    
+};

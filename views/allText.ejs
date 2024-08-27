@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Files</title>
     <link rel="stylesheet" href="/css/allText.css"> <!-- Optional: Add your CSS file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         
     </style>
@@ -18,8 +19,9 @@
                     <li>
                         <span><%= text.title %></span>
                         <div>
-                            <a href="#" class="copy-link" onclick="copyToClipboard('<%= text.text %>')">Copy code</a>
-                            <a href="/text/single/<%= text._id %>"  class="visit-link">see code</a>
+                            <a href="#" class="copy-link" onclick="copyToClipboard('<%= text.text %>')">Copy</a>
+                            <a href="/text/single/<%= text._id %>"  class="visit-link">View</a>
+                            <a  style="background-color: red; color: white; border-radius: 50%;" href="/text/delete/<%= text._id %>"  class="visit-link"><i class="fas fa-times"></i></a>
                         </div>
                     </li>
                 <% }); %>
