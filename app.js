@@ -13,6 +13,11 @@ const path = require('path');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// 404 Error Page
+app.use((req, res, next) => {
+  res.status(404).render('404');
+});
+
 // require database table to access in this project 
 const Chat = require('./model/chatModel.js');
 const Text = require('./model/textModel.js');
