@@ -80,7 +80,7 @@ exports.postFiles = async (req, res) => {
         }
 
         // Redirect to the page showing all files for the userId
-        res.redirect(`/${userId}`);
+        res.redirect(`/file/${userId}`);
 
     } catch (error) {
         console.error(error);

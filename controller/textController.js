@@ -36,7 +36,7 @@ exports.createText = async(req,res)=>{
         if (code) {
             // scheduleDeletion(code._id);
            
-            res.redirect(`/${userId}`)
+            res.redirect(`/code/${userId}`)
           } else {
             res.status(500).json({
               status: 500,
