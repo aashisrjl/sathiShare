@@ -93,11 +93,10 @@ exports.postFiles = async (req, res) => {
 exports.getFilesByUserId = async (req, res) => {
     try {
         const { userId } = req.params; // Extract userId from URL parameters
-        console.log("Extracted userId:", userId);
+        
 
         // Retrieve all files associated with the userId
         const files = await File.find({ userId });
-        console.log("Files found:", files);
 
         const url = process.env.BASE_URL;
 
