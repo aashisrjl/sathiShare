@@ -73,6 +73,7 @@ footer button,footer a {
     border-radius: 15px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-bottom: 5px;
 }
 
 footer button:hover, a:hover {
