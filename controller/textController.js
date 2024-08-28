@@ -11,7 +11,7 @@ exports.renderTextPage = (req,res)=>{
 
 exports.createText = async(req,res)=>{
     const {title,text} = req.body;
-    const ipAddress = req.ip;//req.headers['x-forwarded-for'] || req.connection.remoteAddress || 
+    const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip;
     if(!title || !text){
         return res.status(400).json({
             message:"Please fill in all fields"
@@ -62,7 +62,7 @@ exports.getSingleText = async(req,res)=>{
 }
 
 exports.deleteText = async(req,res)=>{
-    const ipAddress = req.ip;
+    const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip;
     const {id} = req.params;
     const text =await Text.findById(id);
     if(!text){

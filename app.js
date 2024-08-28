@@ -8,6 +8,8 @@ const connectToDatabase = require('./database/index.js');
 connectToDatabase();
 
 app.set("view engine", "ejs");
+// Enable trusting proxy headers
+app.set('trust proxy', true);
 // to perform with file search delete 
 const fs = require('fs');
 const path = require('path');
@@ -73,6 +75,7 @@ app.use((req, res, next) => {
 //    }
 //     next()
 //  })
+
  app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
