@@ -18,8 +18,9 @@
         <!-- Search Bar -->
         <div class="search-container">
             <div class="search-box">
-                <input type="text" placeholder="Search...">
-                <i class="fas fa-search"></i>
+                
+                <input id = "search" type="text" placeholder="Search...">
+                <i class="fas fa-search" onclick="window.location.href=`/search/${document.getElementById('search').value}`"></i> 
             </div>
         </div>
         <!-- Dark Mode Toggle Button -->

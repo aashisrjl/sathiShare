@@ -79,3 +79,20 @@ exports.deleteText = async(req,res)=>{
                 })
         }
 }
+
+//search by userId
+exports.handleSearch = async(req,res)=>{
+    const {id} = req.params
+    if(!id){
+        return res.status(400).json({
+            message: "please Enter the search field"
+        })
+    }
+    const text = await Text.find({userId:id})
+    if(!text){
+        return res.status(400).json({
+            message:"No text found"
+            })
+    }
+    res.redirect(`/code/${id}`);
+}

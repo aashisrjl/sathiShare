@@ -22,6 +22,8 @@ body {
     border-radius: 20px;
     scroll-behavior: smooth;
     background-color: aliceblue;
+    height: 90vh;
+    
     
 }
 header {
