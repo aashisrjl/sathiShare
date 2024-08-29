@@ -39,6 +39,7 @@ const jwt = require("jsonwebtoken")
 //give access the css folder to the node js 
 app.use(express.static('public/'));
 app.use('/storage', express.static(path.join(__dirname, 'storage')));
+app.use(express.static('storage/'))
 
 const socketio = require('socket.io');
 const flash = require('connect-flash')
