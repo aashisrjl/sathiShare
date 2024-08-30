@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const chatSchema = new Schema({
-    name: {
+    ipAddress: {
         type: String,
-        required: true,      // Makes the name field mandatory
-        trim: true           // Removes any leading or trailing spaces
+                   // Removes any leading or trailing spaces
     },
     message: {
         type: String,
