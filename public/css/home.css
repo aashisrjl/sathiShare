@@ -9,6 +9,7 @@ body {
     justify-content: center;
     text-align: center;
 }
+
 .container {
     position: relative;
     display: flex;
@@ -17,49 +18,62 @@ body {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    padding: 50px;
+    padding: 20px;
     border-radius: 20px;
     scroll-behavior: smooth;
     background-color: aliceblue;
     height: fit-content;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    overflow: hidden; /* Prevent overflow outside the container */
+}
 
-    
-}
 header {
-    margin-bottom: 70px; /* Space between header and logo */
+    margin-bottom: 60px;
+    margin-top: 20px; /* Space between header and logo */
 }
+
 .title {
     font-size: 2.5em;
     color: #000; /* Black text */
     margin-bottom: 15px;
     font-weight: bold;
 }
+
 .description {
     font-size: 1.2em;
     color: #666; /* Gray text */
     margin-bottom: 20px;
 }
+
 .logo-container {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 150px; /* Adjust to fit your design */
+    margin-bottom: 50px;
 }
+.logo{
+    margin-top: 70px;
+}
+
 .logo img {
     max-width: 150px;
     height: auto;
     border-radius: 20%; /* Rounded logo */
 }
+
 .buttons-wrapper {
-    position: absolute;
+    position: relative; /* Changed from absolute */
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allow wrapping to stay within container */
+    gap: 10px; /* Space between buttons */
+    padding: 20px 0; /* Padding to ensure buttons stay within bounds */
 }
+
 .button {
     background: #000; /* Black background */
     color: #fff; /* White text */
@@ -74,26 +88,28 @@ header {
     transition: background 0.3s ease, transform 0.3s ease;
     cursor: pointer;
     font-size: 0.9em;
-    margin: 10px; /* Space between buttons */
-    padding: 10px;
+    flex: 0 1 120px; /* Adjusts to available space */
     animation: round linear infinite 5s;
 }
+
 @keyframes round {
-    0%{
+    0% {
         transform: rotate(0deg);
     }
-    100%{
+    100% {
         transform: rotate(360deg);
     }
-    
 }
+
 .button:hover {
     background: #333; /* Darker background on hover */
     transform: scale(1.1); /* Slight scaling effect */
 }
-.hidden-input{
+
+.hidden-input {
     display: none;
 }
+
 /* Container for social links */
 .social-links {
     position: absolute; /* Make it relative to the container */
@@ -131,7 +147,6 @@ header {
     animation: blink 1s infinite; /* Adjust the timing for blinking effect */
 }
 
-/* dark mode */
 /* Dark Mode Toggle Styles */
 .dark-mode-toggle {
     display: flex;
@@ -186,7 +201,6 @@ header {
 
 /* Dark Mode Styles */
 .dark-mode {
-    
     color: #e0e0e0;
 }
 
@@ -194,18 +208,21 @@ header {
     background-color: #1e1e1e;
     color: white;
 }
-.dark-mode .title{
+
+.dark-mode .title {
     color: white;
 }
-.dark-mode .description{
+
+.dark-mode .description {
     color: white;
 }
-.dark-mode body{
+
+.dark-mode body {
     color: white;
     background-color: green;
-
 }
 
+/* Search Box Styles */
 .search-container {
     position: absolute;
     top: 20px;
@@ -214,13 +231,15 @@ header {
 
 .search-box {
     position: relative;
-    width: 40px;
+    width: 200px; /* Set a fixed width */
     height: 40px;
     background: #fff;
     border-radius: 40px;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    transition: 0.5s;
     overflow: hidden;
+    display: flex; /* Flexbox to align content */
+    align-items: center;
+    padding: 0 10px; /* Add padding for spacing */
 }
 
 .search-box input {
@@ -228,46 +247,17 @@ header {
     height: 100%;
     border: none;
     outline: none;
-    padding: 1px;
-    font-size: 18px;
+    font-size: 16px; /* Slightly smaller font for better fit */
     color: #333;
     background: none;
-    position: absolute;
-    top: 0;
-    left: 5px;
+    padding-left: 10px; /* Spacing from the left edge */
     border-radius: 40px;
-    transition: 0.5s;
-    opacity: 0;
-    pointer-events: none;
-    align-items: center;
-}
-
-.search-box input:focus {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.search-box:hover {
-    width: 240px;
-    cursor: pointer;
-}
-
-.search-box:hover input {
-    opacity: 1;
-    pointer-events: auto;
+    flex: 1; /* Use flex to fill available space */
 }
 
 .search-box .fa-search {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
+    margin-left: auto; /* Align icon to the right */
     color: #333;
     font-size: 20px;
-    transition: 0.5s;
+    cursor: pointer;
 }
-
-.search-box:hover .fa-search {
-    right: 15px;
-}
-
