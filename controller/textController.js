@@ -47,19 +47,24 @@ exports.createText = async(req,res)=>{
 
 }
 exports.getAllText = async(req,res)=>{
+    const [error] = req.flash('error');
+    const [success] = req.flash('success');
     const {userId} = req.params;
     const text = await Text.find({userId})
     if(text.length === 0){
         req.flash('error','Sorry code not found')
         res.redirect(`/text`);
     }
-    res.render("allText",{texts:text});
+  
+    res.render("allText",{texts:text,error,success});
 }
 exports.getSingleText = async(req,res)=>{
+    const [error] = req.flash('error');
+    const [success] = req.flash('success');
     const id = req.params.id;
     const text = await Text.findById(id);
     req.flash('success',"single code fetched");
-    res.render('singleText',{text});
+    res.render('singleText',{text,error,success});
 }
 
 exports.deleteText = async(req,res)=>{
@@ -68,7 +73,7 @@ exports.deleteText = async(req,res)=>{
     const text =await Text.findById(id);
     if(!text){
         req.flash('error',"no text found")
-        res.redirect(`/text/delete/${id}`)
+        res.redirect(`/text/`)
        }
        if(ipAddress == text.ipAddress){
         await Text.findByIdAndDelete(id);
@@ -76,7 +81,7 @@ exports.deleteText = async(req,res)=>{
         res.redirect(`/code/${text.userId}`)
         }else{
         req.flash('error',"you are not authorized");
-        res.redirect(`/text/delete/${text.userId}`)
+        res.redirect(`/code/${text.userId}`)
         }
 }
 

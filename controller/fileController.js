@@ -79,7 +79,7 @@ exports.postFiles = async (req, res) => {
             savedFiles.push(savedFile);
         }
 
-        // Redirect to the page showing all files for the userId
+        req.flash("success","file uploaded")
         res.redirect(`/file/${userId}`);
 
     } catch (error) {
@@ -92,6 +92,9 @@ exports.postFiles = async (req, res) => {
 
 exports.getFilesByUserId = async (req, res) => {
     try {
+        const [error] = req.flash('error');
+        const [success] = req.flash('success');
+
         const { userId } = req.params; // Extract userId from URL parameters
         
 
@@ -101,12 +104,10 @@ exports.getFilesByUserId = async (req, res) => {
         const url = process.env.BASE_URL;
 
         if (files.length === 0) {
-            return res.status(404).json({
-                message: "No files found for this user"
-            });
+            
+            req.flash('error','no file found for this user');
+            res.redirect("/");
         }
-        const [error] = req.flash('error');
-        const [success] = req.flash('success');
 
         res.render("files", { files: files, url,error,success });
 
@@ -128,18 +129,17 @@ exports.deleteFile = async (req, res) => {
         console.log("id", id);
 
         if (!file) {
-            return res.status(400).json({
-                message: "No text found"
-            });
+            req.flash('error','no file found');
+            res.redirect("/");
         }
 
         if (ipAddress === file.ipAddress) {
             await File.findByIdAndDelete(id);
+            req.flash("success","file deleted successfully");
             res.redirect(`/file/${file.userId}`);
         } else {
-            return res.status(401).json({
-                message: "You are not authorized to delete this text"
-            });
+            req.flash("error","you are not authorized!!");
+            res.redirect(`/file/${file.userId}`);
         }
     
 };
