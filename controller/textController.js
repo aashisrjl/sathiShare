@@ -6,16 +6,17 @@ function generateUserId() {
 }
 
 exports.renderTextPage = (req,res)=>{
-    res.render('text');
+    const [error] = req.flash('error');
+    const [success] = req.flash('success');
+    res.render('text',{error,success});
 }
 
 exports.createText = async(req,res)=>{
     const {title,text} = req.body;
     const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip;
     if(!title || !text){
-        return res.status(400).json({
-            message:"Please fill in all fields"
-        })
+        req.flash('error','please Enter all fields')
+        res.redirect('/text/')
     }
 
     let existingFile = await Text.findOne({ ipAddress });
@@ -35,7 +36,7 @@ exports.createText = async(req,res)=>{
         })
         if (code) {
             // scheduleDeletion(code._id);
-           
+           req.flash('success','Shared Successfully');
             res.redirect(`/code/${userId}`)
           } else {
             res.status(500).json({
@@ -49,15 +50,15 @@ exports.getAllText = async(req,res)=>{
     const {userId} = req.params;
     const text = await Text.find({userId})
     if(text.length === 0){
-        return res.status(400).json({
-            message:"No text found"
-        })
+        req.flash('error','Sorry code not found')
+        res.redirect(`/text`);
     }
     res.render("allText",{texts:text});
 }
 exports.getSingleText = async(req,res)=>{
     const id = req.params.id;
     const text = await Text.findById(id);
+    req.flash('success',"single code fetched");
     res.render('singleText',{text});
 }
 
@@ -66,17 +67,16 @@ exports.deleteText = async(req,res)=>{
     const {id} = req.params;
     const text =await Text.findById(id);
     if(!text){
-        return res.status(400).json({
-            message:"No text found"
-            })
+        req.flash('error',"no text found")
+        res.redirect(`/text/delete/${id}`)
        }
        if(ipAddress == text.ipAddress){
         await Text.findByIdAndDelete(id);
+        req.flash("success","deleted successfully")
         res.redirect(`/code/${text.userId}`)
         }else{
-            return res.status(401).json({
-                message:"You are not authorized to delete this text"
-                })
+        req.flash('error',"you are not authorized");
+        res.redirect(`/text/delete/${text.userId}`)
         }
 }
 
@@ -84,15 +84,14 @@ exports.deleteText = async(req,res)=>{
 exports.handleSearch = async(req,res)=>{
     const {id} = req.params
     if(!id){
-        return res.status(400).json({
-            message: "please Enter the search field"
-        })
+        req.flash('error',"please Enter the field")
+        res.redirect(`/`)
     }
     const text = await Text.find({userId:id})
     if(!text){
-        return res.status(400).json({
-            message:"No text found"
-            })
+        req.flash('error',"code not found")
+        res.redirect(`/`)
     }
+    req.flash("success","Item Searched");
     res.redirect(`/code/${id}`);
 }

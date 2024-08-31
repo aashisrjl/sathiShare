@@ -1,129 +1,133 @@
 <!DOCTYPE html>
 <html>
+<html>
 <head>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-     
-    }
-    
-    #chat-container {
-      max-width: 400px;
-      margin: 20px auto;
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    .chat-header {
-      background-color: #3498db;
-      color: #fff;
-      padding: 10px;
-      text-align: center;
-      font-weight: bold;
-    }
-    
-    #chat-messages {
-      padding: 10px;
-      overflow-y: scroll;
-      max-height: 300px;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .message {
-      background-color: #ecf0f1;
-      padding: 10px;
-      margin: 5px;
-      border-radius: 5px;
-    }
-    
-    .user-message {
-      background-color: #2ecc71;
-      color: #fff;
-    }
-    
-    #input-container {
-      border-top: 1px solid #ccc;
-      padding: 10px;
-    }
-    
-    input[type="text"] {
-      flex: 1;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      outline: none;
-    }
-    
-    .send-button {
-      background-color: #3498db;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 15px;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-    .msg{
-      background-color: blue;
-      padding: 15px;
-      border-radius: 15px;
-      margin: 10px;
-      max-width: 200px;
-      overflow: hidden;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/chat.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  
 </head>
 <body>
-  <div class="chat-container">
+  <!-- Modal HTML -->
+  <div id="nameModal">
+    <div class="modal-content">
+      <h2>Enter Your Name</h2>
+      <input type="text" id="userNameInput" placeholder="Your name..." required>
+      <button id="saveNameButton">Save</button>
+    </div>
+  </div>
+
+  <div id="chat-container">
     <div class="chat-header">
+      <i onclick="window.location.href='/'" style="float: left; cursor: pointer;" class="fas fa-arrow-left"></i>
       Chat
     </div>
     <div id="chat-messages">
-      <% msgg.forEach((msg)=>{ %>
-        <h4 class="msg"><%- msg.message %></h4>
-
-     <% }) %>
-        
-      <!-- Messages will be displayed here -->
+      <% msgg.forEach((msg) => { %>
+        <div class="msg <%= msg.ipAddress === clientIp ? 'user-message' : 'other-message' %>">
+          <div class="msg-circle"><%= msg.userName ? msg.userName.charAt(0) : '?' %></div>
+          <div class="msg-content">
+            <div class="msg-text"><%- msg.message %></div>
+            <div class="msg-username"><%= msg.userName %></div>
+          </div>
+        </div>
+      <% }) %>
     </div>
     <form id="input-container">
       <input type="text" id="messageInput" placeholder="Type a message...">
-      <button class="send-button" >Send</button>
+      <button class="send-button" type="submit">➤</button>
     </form>
   </div>
+
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-    var message = document.getElementById('messageInput');
-    var form = document.getElementById('input-container');
-    var chatMessages = document.getElementById('chat-messages');
-    var button = document.getElementsByClassName('send-button');
+    const messageInput = document.getElementById('messageInput');
+    const form = document.getElementById('input-container');
+    const chatMessages = document.getElementById('chat-messages');
+    const nameModal = document.getElementById('nameModal');
+    const userNameInput = document.getElementById('userNameInput');
+    const saveNameButton = document.getElementById('saveNameButton');
+    let clientSocketId;
+    let userName = localStorage.getItem('userName');
 
-    form.addEventListener("submit",(e)=>{
-        e.preventDefault();
-        if(message.value){
-          const data = {
-            ipAddress: 1,
-            message: message.value,
-            
-          }
-            socket.emit('message',data);
-            
-        }
-    })
-    socket.on('broadcast',(msg)=>{
-              const h2 = document.createElement('h4');
-              h2.classList.add("msg");
-              h2.textContent = msg;
-              chatMessages.appendChild(h2);
-            })
-    
+    // Show modal if name is not set
+    if (!userName) {
+      nameModal.style.display = 'flex';
+    } else {
+      // Update chat messages with the stored user name
+      const userNameElements = document.querySelectorAll('.userName');
+      userNameElements.forEach(el => el.textContent = userName);
+
+      const messageCircles = document.querySelectorAll('.msg-circle');
+      messageCircles.forEach(el => el.textContent = userName.charAt(0));
+    }
+
+    saveNameButton.addEventListener('click', () => {
+      userName = userNameInput.value.trim() || 'Anonymous';
+      localStorage.setItem('userName', userName);
+      nameModal.style.display = 'none';
+
+      // Update chat messages with the newly set user name
+      const userNameElements = document.querySelectorAll('.userName');
+      userNameElements.forEach(el => el.textContent = userName);
+
+      const messageCircles = document.querySelectorAll('.msg-circle');
+      messageCircles.forEach(el => el.textContent = userName.charAt(0));
+    });
+
+    // Get the socket ID when the connection is established
+    socket.on('connect', () => {
+      clientSocketId = socket.id;
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (messageInput.value.trim()) {
+        const data = {
+          message: messageInput.value.trim(),
+          socketId: clientSocketId,
+          userName: userName
+        };
+        socket.emit('message', data);
+        messageInput.value = '';
+      }
+    });
+
+    socket.on('broadcast', (msg) => {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('msg');
+
+      const messageCircle = document.createElement('div');
+      messageCircle.classList.add('msg-circle');
+      messageCircle.textContent = msg.userName ? msg.userName.charAt(0) : '?';
+      messageElement.appendChild(messageCircle);
+
+      const messageContent = document.createElement('div');
+      messageContent.classList.add("msg-content");
+      // messageContent.innerHTML = `<strong>${msg.userName || 'Unknown'}:</strong> ${msg.message}`;
+        // Create the div for the message text
+    const messageText = document.createElement('div');
+    messageText.classList.add('msg-text');
+    messageText.textContent = msg.message;
+    messageContent.appendChild(messageText);
+    // username 
+    // Create the div for the username
+    const messageUsername = document.createElement('div');
+    messageUsername.classList.add('msg-username');
+    messageUsername.textContent = msg.userName || 'Unknown';
+    messageContent.append(messageUsername)
+      messageElement.appendChild(messageContent);
+
+      if (msg.socketId === clientSocketId) {
+        messageElement.classList.add('user-message');
+      } else {
+        messageElement.classList.add('other-message');
+      }
+
+      chatMessages.appendChild(messageElement);
+      chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to the bottom
+    });
   </script>
 </body>
 </html>

@@ -2,20 +2,22 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const chatSchema = new Schema({
-    ipAddress: {
-        type: String,
-                   // Removes any leading or trailing spaces
-    },
-    message: {
-        type: String,
-        required: true,      // Makes the message field mandatory
-        trim: true           // Removes any leading or trailing spaces
-    },
-    timestamp: {
-        type: Date,
-        default: Date.now    // Automatically sets the current date and time
-    }
-});
+  ipAddress: {
+    type: String
+  },
+  message: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  userName: {
+    type: String,
+    default: 'Unknown' // Default value if userName is not provided
+  },
+  socketId: {
+    type: String
+  }
+}, { timestamps: true });
 
 const Chat = mongoose.model('Chat', chatSchema);
 module.exports = Chat;

@@ -12,6 +12,7 @@
        
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="loading-spinner" id="loadingSpinner"></div>
@@ -73,5 +74,12 @@
         }
     </script>
     <script src="/script/loader.js"></script>
+    <%- include('component/messageBox') %>
+<script>
+    const msgBox = document.querySelector(".msg");
+    setTimeout(() => {
+      msgBox.remove();
+      }, 3000);
+</script>
 </body>
 </html>

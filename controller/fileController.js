@@ -105,8 +105,10 @@ exports.getFilesByUserId = async (req, res) => {
                 message: "No files found for this user"
             });
         }
+        const [error] = req.flash('error');
+        const [success] = req.flash('success');
 
-        res.render("files", { files: files, url });
+        res.render("files", { files: files, url,error,success });
 
     } catch (error) {
         console.error("Error retrieving files:", error);
