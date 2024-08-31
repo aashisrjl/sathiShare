@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="/img/logo.PNG">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>code</title>
     <link rel="stylesheet" href="/css/text.css">
     <link rel="stylesheet" href="/css/style.css">
 
@@ -27,6 +27,14 @@
             </footer>
     
     </div>
+    <script src="/script/loader.js"></script>
+    <%- include('component/messageBox') %>
+    <script>
+        const msgBox = document.querySelector(".msg");
+        setTimeout(() => {
+          msgBox.remove();
+          }, 3000);
+    </script>
     <script>
          const a = document.getElementsByTagName('a');
         a.addEventListener("click",()=>{
@@ -40,7 +48,6 @@
             });
         }
     </script>
-    <script src="/script/loader.js"></script>
 </body>
 
 

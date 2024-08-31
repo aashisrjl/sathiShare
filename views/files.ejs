@@ -39,6 +39,15 @@
         </ul>
     </div>
 
+    <script src="/script/loader.js"></script>
+    <%- include('component/messageBox') %>
+    <script>
+        const msgBox = document.querySelector(".msg");
+        setTimeout(() => {
+          msgBox.remove();
+          }, 3000);
+    </script>
+
     <script>
         const a = document.getElementsByTagName('a');
         a.addEventListener("click",()=>{
@@ -52,6 +61,6 @@
         //     });
         // }
     </script>
-       <script src="/script/script.js"></script>
+    
 </body>
 </html>
