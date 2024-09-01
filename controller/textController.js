@@ -2,7 +2,7 @@ const Text = require("../model/textModel");
 
 function generateUserId() {
     const digits = Math.floor(10000 + Math.random() * 90000); // Generates a random 4-digit number
-    return 'T' + digits.toString(); // Prefix 'A' to the 4-digit number
+    return 't' + digits.toString(); // Prefix 'A' to the 4-digit number
 }
 
 exports.renderTextPage = (req,res)=>{
@@ -37,7 +37,7 @@ exports.createText = async(req,res)=>{
         if (code) {
             // scheduleDeletion(code._id);
            req.flash('success','Shared Successfully');
-            res.redirect(`/code/${userId}`)
+            res.redirect(`/${userId}`)
           } else {
             res.status(500).json({
               status: 500,
@@ -78,10 +78,10 @@ exports.deleteText = async(req,res)=>{
        if(ipAddress == text.ipAddress){
         await Text.findByIdAndDelete(id);
         req.flash("success","deleted successfully")
-        res.redirect(`/code/${text.userId}`)
+        res.redirect(`/${text.userId}`)
         }else{
         req.flash('error',"you are not authorized");
-        res.redirect(`/code/${text.userId}`)
+        res.redirect(`/${text.userId}`)
         }
 }
 
@@ -98,5 +98,5 @@ exports.handleSearch = async(req,res)=>{
         res.redirect(`/`)
     }
     req.flash("success","Item Searched");
-    res.redirect(`/code/${id}`);
+    res.redirect(`/${id}`);
 }
