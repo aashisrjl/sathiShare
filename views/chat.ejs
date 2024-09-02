@@ -54,6 +54,7 @@
     // Show modal if name is not set
     if (!userName) {
       nameModal.style.display = 'flex';
+      nameModal.style.zIndex = '12';
     } else {
       // Update chat messages with the stored user name
       const userNameElements = document.querySelectorAll('.userName');

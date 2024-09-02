@@ -4,6 +4,10 @@ body {
     padding: 0;
     background-color: rgb(61, 102, 61);
     text-align: center;
+    background: url("/img/back.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #333;
 }
 h1 {
     color: white;
@@ -16,7 +20,7 @@ h1 {
     width: 80%;
     margin: 60px auto 10px; /* Adjusted margin to account for fixed header */
     padding: 20px;
-    background-color: #fff;
+    background-color: aliceblue;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     min-height: 70vh; /* Ensures there's enough space to center content */
