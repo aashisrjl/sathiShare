@@ -143,3 +143,19 @@ exports.deleteFile = async (req, res) => {
         }
     
 };
+
+//send mail
+exports.renderEmail = async(req,res)=>{
+    const file = req.params.file;
+    res.render('email.ejs',{file})  
+}
+
+exports.sendEmail = async(req,res)=>{
+    const file = req.params.file;
+    const {email} = req.body;
+    res.status(200).json({
+        email,
+        file
+    })
+
+}
