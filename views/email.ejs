@@ -4,16 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        fieldset {
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        legend {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        h2 {
+            color: #555;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #777;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="email"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Additional inline CSS */
+        a.home-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none; /* Remove underline from the link */
+            color: inherit; /* Use inherited color */
+        }
+
+        a.home-link h2 {
+            margin: 0;
+            font-size: 2em; /* Adjust size as needed */
+            color: #333; /* Adjust color as needed */
+        }
+
+        a.home-link i {
+            margin-right: 10px; /* Space between icon and text */
+        }
+        .home-link{
+            position: relative;
+            top: -40px;
+            right: -430px;
+        }
+    </style>
 </head>
 <body>
     <fieldset>
         <legend>Send file</legend>
+        <a href="/" class="home-link">
+            <i class="fas fa-home"></i>
+            <h3>Home</h3>
+        </a>
         <h2>Enter your mail</h2>
-        <form action="/file/send/<%= file %>">
-            <input type="email" name="email" id="email" placeholder="example#gmail.com">
+        <form action="/file/send/<%= file %>" method="post">
+            <input type="email" name="email" id="email" placeholder="example@gmail.com" required>
             <button type="submit">Send</button>
         </form>
     </fieldset>
-    
 </body>
 </html>

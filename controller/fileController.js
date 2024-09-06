@@ -2,6 +2,7 @@ const File = require("../model/fileModel");
 const fs = require('fs');
 const path = require('path');
 const schedule = require('node-schedule');
+const sendEmail = require("../utils/sendMail");
 var userJobs = {}
 
 // Function to generate a random userId
@@ -150,12 +151,18 @@ exports.renderEmail = async(req,res)=>{
     res.render('email.ejs',{file})  
 }
 
-exports.sendEmail = async(req,res)=>{
+exports.sendmail = async(req,res)=>{
     const file = req.params.file;
     const {email} = req.body;
-    res.status(200).json({
-        email,
-        file
-    })
+   sendEmail({
+    email,
+    subject: "File received from SathiShare",
+    text: `You have received a file from SathiShare. Please download it from the link
+    <a href="https://sathishare.onrender.com/storage/${file}">Click here to download
+    `
+   })
+   req.flash("success","Mail send Successfully");
+   res.redirect("/")
+
 
 }
