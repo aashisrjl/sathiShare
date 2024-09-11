@@ -1,0 +1,422 @@
+
+C:\xampp\mysql\bin>mysql -u root -p -h 127.0.0.1
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 9
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use aashis;
+Database changed
+MariaDB [aashis]> CREATE TABLE product (
+    ->     pid INT PRIMARY KEY,       -- Product ID (Primary Key)
+    ->     pname VARCHAR(50),         -- Product Name
+    ->     price DECIMAL(10, 2),      -- Price of the Product
+    ->     quantity INT               -- Quantity of the Product in Stock
+    -> );
+Query OK, 0 rows affected (0.025 sec)
+
+MariaDB [aashis]> INSERT INTO product (pid, pname, price, quantity) VALUES
+    -> (1, 'Laptop', 1000.50, 10),
+    -> (2, 'Smartphone', 599.99, 20),
+    -> (3, 'Headphones', 99.99, 50),
+    -> (4, 'Monitor', 250.00, 15);
+Query OK, 4 rows affected (0.014 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> select * from product;
++-----+------------+---------+----------+
+| pid | pname      | price   | quantity |
++-----+------------+---------+----------+
+|   1 | Laptop     | 1000.50 |       10 |
+|   2 | Smartphone |  599.99 |       20 |
+|   3 | Headphones |   99.99 |       50 |
+|   4 | Monitor    |  250.00 |       15 |
++-----+------------+---------+----------+
+4 rows in set (0.001 sec)
+
+MariaDB [aashis]> update product set price= price*0.05;
+Query OK, 4 rows affected, 3 warnings (0.005 sec)
+Rows matched: 4  Changed: 4  Warnings: 3
+
+MariaDB [aashis]> select * from product;
++-----+------------+-------+----------+
+| pid | pname      | price | quantity |
++-----+------------+-------+----------+
+|   1 | Laptop     | 50.03 |       10 |
+|   2 | Smartphone | 30.00 |       20 |
+|   3 | Headphones |  5.00 |       50 |
+|   4 | Monitor    | 12.50 |       15 |
++-----+------------+-------+----------+
+4 rows in set (0.001 sec)
+
+MariaDB [aashis]> update product set price= price*1.05;
+Query OK, 4 rows affected, 2 warnings (0.006 sec)
+Rows matched: 4  Changed: 4  Warnings: 2
+
+MariaDB [aashis]> select * from product;
++-----+------------+-------+----------+
+| pid | pname      | price | quantity |
++-----+------------+-------+----------+
+|   1 | Laptop     | 52.53 |       10 |
+|   2 | Smartphone | 31.50 |       20 |
+|   3 | Headphones |  5.25 |       50 |
+|   4 | Monitor    | 13.13 |       15 |
++-----+------------+-------+----------+
+4 rows in set (0.000 sec)
+
+MariaDB [aashis]> select pname from product IN max(price);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'IN max(price)' at line 1
+MariaDB [aashis]> SELECT pname, price
+    -> FROM product
+    -> ORDER BY price DESC
+    -> LIMIT 1;
++--------+-------+
+| pname  | price |
++--------+-------+
+| Laptop | 52.53 |
++--------+-------+
+1 row in set (0.001 sec)
+
+MariaDB [aashis]> select pname,price from product between(30,60);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'between(30,60)' at line 1
+MariaDB [aashis]> select pname,price from product where price BETWEEN 30 AND 60;
++------------+-------+
+| pname      | price |
++------------+-------+
+| Laptop     | 52.53 |
+| Smartphone | 31.50 |
++------------+-------+
+2 rows in set (0.001 sec)
+
+MariaDB [aashis]> select pname,price from product order by price limit=1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '=1' at line 1
+MariaDB [aashis]> select pname,price from product order by price ASC limit=1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '=1' at line 1
+MariaDB [aashis]> SELECT pname, price
+    -> FROM product
+    -> ORDER BY price ASC
+    -> LIMIT 1;
++------------+-------+
+| pname      | price |
++------------+-------+
+| Headphones |  5.25 |
++------------+-------+
+1 row in set (0.003 sec)
+
+MariaDB [aashis]> SELECT pname, price
+    -> FROM product
+    -> WHERE price = 7000;
+Empty set (0.005 sec)
+
+MariaDB [aashis]> SELECT pname, price
+    -> FROM product
+    -> WHERE price = 52.53;
++--------+-------+
+| pname  | price |
++--------+-------+
+| Laptop | 52.53 |
++--------+-------+
+1 row in set (0.005 sec)
+
+MariaDB [aashis]> select count(*) AS total_product
+    -> FROM product
+    -> WHERE price = 52.53;
++---------------+
+| total_product |
++---------------+
+|             1 |
++---------------+
+1 row in set (0.008 sec)
+
+MariaDB [aashis]> ---*****NOW QUESTIOon NUMber 2 of lab 4 ****--
+MariaDB [aashis]> CREATE TABLE employee (
+    ->     employee_name VARCHAR(50) PRIMARY KEY,
+    ->     street VARCHAR(100),
+    ->     city VARCHAR(50),
+    ->     salary DECIMAL(10, 2)
+    -> );
+ERROR 1050 (42S01): Table 'employee' already exists
+MariaDB [aashis]> CREATE TABLE employeee (
+    ->     employee_name VARCHAR(50) PRIMARY KEY,
+    ->     street VARCHAR(100),
+    ->     city VARCHAR(50),
+    ->     salary DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.036 sec)
+
+MariaDB [aashis]> CREATE TABLE works (
+    ->     employee_name VARCHAR(50),
+    ->     company_name VARCHAR(50),
+    ->     PRIMARY KEY (employee_name, company_name),
+    ->     FOREIGN KEY (employee_name) REFERENCES employee(employee_name)
+    -> );
+ERROR 1005 (HY000): Can't create table `aashis`.`works` (errno: 150 "Foreign key constraint is incorrectly formed")
+MariaDB [aashis]> CREATE TABLE company (
+    ->     company_name VARCHAR(50) PRIMARY KEY,
+    ->     city VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.038 sec)
+
+MariaDB [aashis]> CREATE TABLE works (
+    ->     employee_name VARCHAR(50),
+    ->     company_name VARCHAR(50),
+    ->     PRIMARY KEY (employee_name, company_name),
+    ->     FOREIGN KEY (employee_name) REFERENCES employee(employee_name)
+    -> );
+ERROR 1005 (HY000): Can't create table `aashis`.`works` (errno: 150 "Foreign key constraint is incorrectly formed")
+MariaDB [aashis]> CREATE TABLE manages (
+    ->     employee_name VARCHAR(50),
+    ->     manager_name VARCHAR(50),
+    ->     PRIMARY KEY (employee_name, manager_name),
+    ->     FOREIGN KEY (employee_name) REFERENCES employee(employee_name),
+    ->     FOREIGN KEY (manager_name) REFERENCES employee(employee_name)
+    -> );
+ERROR 1005 (HY000): Can't create table `aashis`.`manages` (errno: 150 "Foreign key constraint is incorrectly formed")
+MariaDB [aashis]> CREATE TABLE works (
+    ->     employee_name VARCHAR(50),
+    ->     company_name VARCHAR(50),
+    ->     FOREIGN KEY (company_name) REFERENCES company(company_name),
+    ->     FOREIGN KEY (employee_name) REFERENCES employee(employee_name)
+    -> );
+ERROR 1005 (HY000): Can't create table `aashis`.`works` (errno: 150 "Foreign key constraint is incorrectly formed")
+MariaDB [aashis]> show tables;
++------------------+
+| Tables_in_aashis |
++------------------+
+| company          |
+| csitaashis       |
+| emp              |
+| employee         |
+| employee1        |
+| employeee        |
+| product          |
+| worker           |
++------------------+
+8 rows in set (0.005 sec)
+
+MariaDB [aashis]> desc employeee;
++---------------+---------------+------+-----+---------+-------+
+| Field         | Type          | Null | Key | Default | Extra |
++---------------+---------------+------+-----+---------+-------+
+| employee_name | varchar(50)   | NO   | PRI | NULL    |       |
+| street        | varchar(100)  | YES  |     | NULL    |       |
+| city          | varchar(50)   | YES  |     | NULL    |       |
+| salary        | decimal(10,2) | YES  |     | NULL    |       |
++---------------+---------------+------+-----+---------+-------+
+4 rows in set (0.057 sec)
+
+MariaDB [aashis]> desc company;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| company_name | varchar(50) | NO   | PRI | NULL    |       |
+| city         | varchar(50) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+2 rows in set (0.016 sec)
+
+MariaDB [aashis]> CREATE TABLE manages(
+    -> employee_name varchar(50) references employeee(employee_name),
+    -> manager_name varchar(50)
+    -> );
+Query OK, 0 rows affected (0.041 sec)
+
+MariaDB [aashis]> CREATE TABLE works(
+    -> employee_name varhchar(50) references employeee(employee_name),
+    -> company_name varchar(50) refenreces company(company_name));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(50) references employeee(employee_name),
+company_name varchar(50) refenreces...' at line 2
+MariaDB [aashis]>  CREATE TABLE works(
+    ->     employee_name varchar(50) references employeee(employee_name),
+    ->      company_name varchar(50) refenreces company(company_name));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'company(company_name))' at line 3
+MariaDB [aashis]>  CREATE TABLE works(
+    ->     employee_name varchar(50) references employeee(employee_name),
+    ->      company_name varchar(50) references company(company_name));
+Query OK, 0 rows affected (0.031 sec)
+
+MariaDB [aashis]> show tables;
++------------------+
+| Tables_in_aashis |
++------------------+
+| company          |
+| csitaashis       |
+| emp              |
+| employee         |
+| employee1        |
+| employeee        |
+| manages          |
+| product          |
+| worker           |
+| works            |
++------------------+
+10 rows in set (0.001 sec)
+
+MariaDB [aashis]> INSERT INTO company (company_name, city)
+    -> VALUES
+    ->     ('Asian Bank Corporation', 'New York'),
+    ->     ('Small Bank Corporation', 'Chicago'),
+    ->     ('Big Bank Corporation', 'Los Angeles');
+Query OK, 3 rows affected (0.719 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> INSERT INTO employeee (employee_name, street, city, salary)
+    -> VALUES
+    ->     ('Alice', '123 Maple St', 'New York', 12000.00),
+    ->     ('Bob', '456 Oak St', 'Chicago', 8000.00),
+    ->     ('Charlie', '789 Pine St', 'Los Angeles', 15000.00),
+    ->     ('David', '123 Maple St', 'New York', 11000.00);
+Query OK, 4 rows affected (0.010 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> INSERT INTO works (employee_name, company_name)
+    -> VALUES
+    ->     ('Alice', 'Asian Bank Corporation'),
+    ->     ('Bob', 'Small Bank Corporation'),
+    ->     ('Charlie', 'Big Bank Corporation'),
+    ->     ('David', 'Asian Bank Corporation');
+Query OK, 4 rows affected (0.008 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> INSERT INTO manages (employee_name, manager_name)
+    -> VALUES
+    ->     ('Alice', 'David'),
+    ->     ('Bob', 'Charlie'),
+    ->     ('Charlie', 'Alice'),
+    ->     ('David', 'Charlie');
+Query OK, 4 rows affected (0.016 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> -----a---
+MariaDB [aashis]> select employee_name,company_name from employee e,works w where e.employee_name = w.employee.name;
+ERROR 1054 (42S22): Unknown column 'e.employee_name' in 'where clause'
+MariaDB [aashis]> SELECT employee_name
+    -> FROM works
+    -> WHERE company_name = 'Asian Bank Corporation';
++---------------+
+| employee_name |
++---------------+
+| Alice         |
+| David         |
++---------------+
+2 rows in set (0.003 sec)
+
+MariaDB [aashis]> SELECT e.employee_name, e.city
+    -> FROM employeee e
+    -> JOIN works w ON e.employee_name = w.employee_name
+    -> WHERE w.company_name = 'Asian Bank Corporation';
++---------------+----------+
+| employee_name | city     |
++---------------+----------+
+| Alice         | New York |
+| David         | New York |
++---------------+----------+
+2 rows in set (0.016 sec)
+
+MariaDB [aashis]> SELECT e.employee_name, e.street, e.city
+    -> FROM employeee e
+    -> JOIN works w ON e.employee_name = w.employee_name
+    -> WHERE w.company_name = 'Asian Bank Corporation' AND e.salary > 10000;
++---------------+--------------+----------+
+| employee_name | street       | city     |
++---------------+--------------+----------+
+| Alice         | 123 Maple St | New York |
+| David         | 123 Maple St | New York |
++---------------+--------------+----------+
+2 rows in set (0.003 sec)
+
+MariaDB [aashis]> SELECT e.employee_name
+    -> FROM employeee e
+    -> JOIN works w ON e.employee_name = w.employee_name
+    -> JOIN company c ON w.company_name = c.company_name
+    -> WHERE e.city = c.city;
++---------------+
+| employee_name |
++---------------+
+| Alice         |
+| Bob           |
+| Charlie       |
+| David         |
++---------------+
+4 rows in set (0.003 sec)
+
+MariaDB [aashis]> SELECT e1.employee_name
+    -> FROM employeee e1
+    -> JOIN manages m ON e1.employee_name = m.employee_name
+    -> JOIN employeee e2 ON m.manager_name = e2.employee_name
+    -> WHERE e1.city = e2.city AND e1.street = e2.street;
++---------------+
+| employee_name |
++---------------+
+| Alice         |
++---------------+
+1 row in set (0.007 sec)
+
+MariaDB [aashis]> SELECT e.employee_name
+    -> FROM employeee e
+    -> JOIN works w ON e.employee_name = w.employee_name
+    -> WHERE w.company_name <> 'Asian Bank Corporation';
++---------------+
+| employee_name |
++---------------+
+| Bob           |
+| Charlie       |
++---------------+
+2 rows in set (0.002 sec)
+
+MariaDB [aashis]> SELECT e.employee_name
+    -> FROM employeee e
+    -> WHERE e.salary > ALL (
+    ->     SELECT e2.salary
+    ->     FROM employeee e2
+    ->     JOIN works w2 ON e2.employee_name = w2.employee_name
+    ->     WHERE w2.company_name = 'Small Bank Corporation'
+    -> );
++---------------+
+| employee_name |
++---------------+
+| Alice         |
+| Charlie       |
+| David         |
++---------------+
+3 rows in set (0.003 sec)
+
+MariaDB [aashis]> SELECT c1.company_name
+    -> FROM company c1
+    -> WHERE NOT EXISTS (
+    ->     SELECT c2.city
+    ->     FROM company c2
+    ->     WHERE c2.company_name = 'Small Bank Corporation'
+    ->     AND c2.city NOT IN (
+    ->         SELECT c3.city
+    ->         FROM company c3
+    ->         WHERE c3.company_name = c1.company_name
+    ->     )
+    -> );
++------------------------+
+| company_name           |
++------------------------+
+| Small Bank Corporation |
++------------------------+
+1 row in set (0.009 sec)
+
+MariaDB [aashis]> SELECT e.employee_name
+    -> FROM employeee e
+    -> JOIN works w ON e.employee_name = w.employee_name
+    -> WHERE e.salary > (
+    ->     SELECT AVG(e2.salary)
+    ->     FROM employeee e2
+    ->     JOIN works w2 ON e2.employee_name = w2.employee_name
+    ->     WHERE w2.company_name = w.company_name
+    -> );
++---------------+
+| employee_name |
++---------------+
+| Alice         |
++---------------+
+1 row in set (0.004 sec)
+
+MariaDB [aashis]>

@@ -1,0 +1,416 @@
+
+C:\xampp\mysql\bin>mysql -u root -p -h 127.0.0.1
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 11
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use aashis;
+Database changed
+MariaDB [aashis]> CREATE TABLE Employee (
+    ->     eid INT(6),
+    ->     eName VARCHAR(15),
+    ->     salary FLOAT,
+    ->     Department VARCHAR(25)
+    -> );
+Query OK, 0 rows affected (0.022 sec)
+
+MariaDB [aashis]> CREATE TABLE employee1 (
+    ->     Eid INT(6),
+    ->     eName VARCHAR(15),
+    ->     Salary VARCHAR(4),
+    ->     Department VARCHAR(25)
+    -> );
+Query OK, 0 rows affected (0.023 sec)
+
+MariaDB [aashis]> show tables;
++------------------+
+| Tables_in_aashis |
++------------------+
+| csitaashis       |
+| employee         |
+| employee1        |
++------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [aashis]> INSERT INTO Employee (eid, eName, salary, Department)
+    -> VALUES
+    ->     (1001, 'aashis', 75000.00, 'Mathematics'),
+    ->     (1002, 'rojan', 68000.00, 'Mathematics');
+Query OK, 2 rows affected (0.012 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> INSERT INTO employee1 (Eid, eName, Salary, Department)
+    -> VALUES
+    ->     (2001, 'kedar', '70000', 'Computer'),
+    ->     (2002, 'kusal', '72000', 'Computer');
+Query OK, 2 rows affected, 2 warnings (0.006 sec)
+Records: 2  Duplicates: 0  Warnings: 2
+
+MariaDB [aashis]> select eid As id,name,salary,Department from Employee
+    -> UNION
+    -> select eid As id,name,;salary,Department from Employee
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 3
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'salary,Department from Employee' at line 1
+MariaDB [aashis]> desc employee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| eid        | int(6)      | YES  |     | NULL    |       |
+| eName      | varchar(15) | YES  |     | NULL    |       |
+| salary     | float       | YES  |     | NULL    |       |
+| Department | varchar(25) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.011 sec)
+
+MariaDB [aashis]> desc emINSERT INTO employee1 (Eid, eName, Salary, Department)
+    -> VALUES
+    ->     (2001, 'kedar', '70000', 'Computer'),
+    ->     (2002, 'kusal', '72000', 'Computer');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'INTO employee1 (Eid, eName, Salary, Department)
+VALUES
+    (2001, 'kedar', '7...' at line 1
+MariaDB [aashis]> desc employINSERT INTO employee1 (Eid, eName, Salary, Department)
+    -> VALUES
+    ->     (2001, 'kedar', '70000', 'Computer'),
+    ->     (2002, 'kusal', '72000', 'Computer');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'INTO employee1 (Eid, eName, Salary, Department)
+VALUES
+    (2001, 'kedar', '7...' at line 1
+MariaDB [aashis]> desc employee1;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Eid        | int(6)      | YES  |     | NULL    |       |
+| eName      | varchar(15) | YES  |     | NULL    |       |
+| Salary     | varchar(4)  | YES  |     | NULL    |       |
+| Department | varchar(25) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.007 sec)
+
+MariaDB [aashis]> select eid As id,eName,salary,Department from employee
+    -> UNION
+    -> select Eid As id,eName,salary,Department from employee1;
++------+--------+--------+-------------+
+| id   | eName  | salary | Department  |
++------+--------+--------+-------------+
+| 1001 | aashis | 75000  | Mathematics |
+| 1002 | rojan  | 68000  | Mathematics |
+| 2001 | kedar  | 7000   | Computer    |
+| 2002 | kusal  | 7200   | Computer    |
++------+--------+--------+-------------+
+4 rows in set (0.008 sec)
+
+MariaDB [aashis]> insert into employee1 values (2003,"aashis",75000.0,"Computer");
+Query OK, 1 row affected, 1 warning (0.007 sec)
+
+MariaDB [aashis]> select eid As id,eName,salary,Department from employee
+    -> INTERSECTION
+    -> select Eid As id,eName,salary,Department from employee1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'select Eid As id,eName,salary,Department from employee1' at line 3
+MariaDB [aashis]> select eid As id,eName,salary,Department from employee
+    -> INTERSECT
+    -> select Eid As id,eName,salary,Department from employee1;
+Empty set (0.001 sec)
+
+MariaDB [aashis]> select eName from Employee
+    -> INTERSECT
+    -> select eName from employee1;
++--------+
+| eName  |
++--------+
+| aashis |
++--------+
+1 row in set (0.003 sec)
+
+MariaDB [aashis]> select eName from Employee
+    -> MINUS
+    -> select eName from employee1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'select eName from employee1' at line 3
+MariaDB [aashis]> select eName from employee where Department="Mathematics"
+    -> MINUS
+    -> select eName from employee1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MINUS
+select eName from employee1' at line 2
+MariaDB [aashis]> -- Display employees who belong to the Mathematics department but not in the Computer department
+MariaDB [aashis]> SELECT eName
+    -> FROM Employee
+    -> WHERE Department = 'Mathematics'
+    -> MINUS
+    -> SELECT eName
+    -> FROM employee1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MINUS
+SELECT eName
+FROM employee1' at line 4
+MariaDB [aashis]> select * from employee where Department= "Mathematics"
+    -> MINUS
+    -> select * from employee1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'MINUS
+select * from employee1' at line 2
+MariaDB [aashis]> select * from employee
+    -> MINUS
+    -> select * from employee1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'select * from employee1' at line 3
+MariaDB [aashis]> -- Display employees who belong to the Mathematics department but not in the Computer department
+MariaDB [aashis]> SELECT eName
+    -> FROM Employee
+    -> WHERE Department = 'Mathematics'
+    -> EXCEPT
+    -> SELECT eName
+    -> FROM employee1;
++-------+
+| eName |
++-------+
+| rojan |
++-------+
+1 row in set (0.004 sec)
+
+MariaDB [aashis]> select * from employee cross join employee1;
++------+--------+--------+-------------+------+--------+--------+------------+
+| eid  | eName  | salary | Department  | Eid  | eName  | Salary | Department |
++------+--------+--------+-------------+------+--------+--------+------------+
+| 1001 | aashis |  75000 | Mathematics | 2001 | kedar  | 7000   | Computer   |
+| 1002 | rojan  |  68000 | Mathematics | 2001 | kedar  | 7000   | Computer   |
+| 1001 | aashis |  75000 | Mathematics | 2002 | kusal  | 7200   | Computer   |
+| 1002 | rojan  |  68000 | Mathematics | 2002 | kusal  | 7200   | Computer   |
+| 1001 | aashis |  75000 | Mathematics | 2003 | aashis | 7500   | Computer   |
+| 1002 | rojan  |  68000 | Mathematics | 2003 | aashis | 7500   | Computer   |
++------+--------+--------+-------------+------+--------+--------+------------+
+6 rows in set (0.002 sec)
+
+MariaDB [aashis]> CREATE TABLE employee (    emp_name VARCHAR(50),    street VARCHAR(100),    city VARCHAR(50));
+ERROR 1050 (42S01): Table 'employee' already exists
+MariaDB [aashis]> -- Create tables
+MariaDB [aashis]> CREATE TABLE employee (
+    ->     emp_name VARCHAR(50),
+    ->     street VARCHAR(100),
+    ->     city VARCHAR(50)
+    -> );
+ERROR 1050 (42S01): Table 'employee' already exists
+MariaDB [aashis]>
+MariaDB [aashis]> CREATE TABLE worker (
+    ->     emp_name VARCHAR(50),
+    ->     branch VARCHAR(50),
+    ->     salary DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.023 sec)
+
+MariaDB [aashis]>
+MariaDB [aashis]> -- Insert sample data into employee
+MariaDB [aashis]> INSERT INTO employee (emp_name, street, city) VALUES
+    -> ('John Doe', '123 Elm St', 'New York'),
+    -> ('Jane Smith', '456 Oak St', 'Los Angeles'),
+    -> ('Emily Davis', '789 Pine St', 'Chicago');
+ERROR 1054 (42S22): Unknown column 'emp_name' in 'field list'
+MariaDB [aashis]>
+MariaDB [aashis]> -- Insert sample data into worker
+MariaDB [aashis]> INSERT INTO worker (emp_name, branch, salary) VALUES
+    -> ('John Doe', 'Branch A', 70000.00),
+    -> ('Jane Smith', 'Branch B', 80000.00),
+    -> ('Michael Brown', 'Branch C', 90000.00);
+Query OK, 3 rows affected (0.007 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> CREATE TABLE emp (
+    ->     emp_name VARCHAR(50),
+    ->     street VARCHAR(100),
+    ->     city VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.324 sec)
+
+MariaDB [aashis]>
+MariaDB [aashis]> CREATE TABLE worker (
+    ->     emp_name VARCHAR(50),
+    ->     branch VARCHAR(50),
+    ->     salary DECIMAL(10, 2)
+    -> );
+ERROR 1050 (42S01): Table 'worker' already exists
+MariaDB [aashis]>
+MariaDB [aashis]> -- Insert sample data into employee
+MariaDB [aashis]> INSERT INTO employee (emp_name, street, city) VALUES
+    -> ('John Doe', '123 Elm St', 'New York'),
+    -> ('Jane Smith', '456 Oak St', 'Los Angeles'),
+    -> ('Emily Davis', '789 Pine St', 'Chicago');
+ERROR 1054 (42S22): Unknown column 'emp_name' in 'field list'
+MariaDB [aashis]>
+MariaDB [aashis]> -- Insert sample data into worker
+MariaDB [aashis]> INSERT INTO worker (emp_name, branch, salary) VALUES
+    -> ('John Doe', 'Branch A', 70000.00),
+    -> ('Jane Smith', 'Branch B', 80000.00),
+    -> ('Michael Brown', 'Branch C', 90000.00);
+Query OK, 3 rows affected (0.005 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> select * from emp;
+Empty set (0.005 sec)
+
+MariaDB [aashis]> desc emp;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| emp_name | varchar(50)  | YES  |     | NULL    |       |
+| street   | varchar(100) | YES  |     | NULL    |       |
+| city     | varchar(50)  | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+3 rows in set (0.010 sec)
+
+MariaDB [aashis]> INSERT INTO employee (emp_name, street, city) VALUES
+    -> ('rijal ', '123 Elm St', 'pkhra'),
+    -> ('dhungana ', '456 Oak St', 'ktm'),
+    -> ('aryal', '789 Pine St', 'nwkt');
+ERROR 1054 (42S22): Unknown column 'emp_name' in 'field list'
+MariaDB [aashis]> INSERT INTO emp (emp_name, street, city) VALUES
+    -> ('rijal ', '123 Elm St', 'pkhra'),
+    -> ('dhungana ', '456 Oak St', 'ktm'),
+    -> ('aryal', '789 Pine St', 'nwkt');
+Query OK, 3 rows affected (0.005 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> select * from emp;
++-----------+-------------+-------+
+| emp_name  | street      | city  |
++-----------+-------------+-------+
+| rijal     | 123 Elm St  | pkhra |
+| dhungana  | 456 Oak St  | ktm   |
+| aryal     | 789 Pine St | nwkt  |
++-----------+-------------+-------+
+3 rows in set (0.001 sec)
+
+MariaDB [aashis]> select * from worker;
++---------------+----------+----------+
+| emp_name      | branch   | salary   |
++---------------+----------+----------+
+| John Doe      | Branch A | 70000.00 |
+| Jane Smith    | Branch B | 80000.00 |
+| Michael Brown | Branch C | 90000.00 |
+| John Doe      | Branch A | 70000.00 |
+| Jane Smith    | Branch B | 80000.00 |
+| Michael Brown | Branch C | 90000.00 |
++---------------+----------+----------+
+6 rows in set (0.002 sec)
+
+MariaDB [aashis]> -- Natural join (inner join)
+MariaDB [aashis]> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM employee e
+    -> NATURAL JOIN worker w;
+ERROR 1054 (42S22): Unknown column 'e.emp_name' in 'field list'
+MariaDB [aashis]> -- Natural join (inner join)
+MariaDB [aashis]> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM emp e
+    -> NATURAL JOIN worker w;
+Empty set (0.004 sec)
+
+MariaDB [aashis]> -- Left outer join
+MariaDB [aashis]> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM emp e
+    -> LEFT JOIN worker w ON e.emp_name = w.emp_name;
++-----------+-------------+-------+--------+--------+
+| emp_name  | street      | city  | branch | salary |
++-----------+-------------+-------+--------+--------+
+| rijal     | 123 Elm St  | pkhra | NULL   |   NULL |
+| dhungana  | 456 Oak St  | ktm   | NULL   |   NULL |
+| aryal     | 789 Pine St | nwkt  | NULL   |   NULL |
++-----------+-------------+-------+--------+--------+
+3 rows in set (0.006 sec)
+
+MariaDB [aashis]> -- Natural join (inner join)
+MariaDB [aashis]> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM emp e
+    -> JOIN worker w;
++-----------+-------------+-------+----------+----------+
+| emp_name  | street      | city  | branch   | salary   |
++-----------+-------------+-------+----------+----------+
+| rijal     | 123 Elm St  | pkhra | Branch A | 70000.00 |
+| dhungana  | 456 Oak St  | ktm   | Branch A | 70000.00 |
+| aryal     | 789 Pine St | nwkt  | Branch A | 70000.00 |
+| rijal     | 123 Elm St  | pkhra | Branch B | 80000.00 |
+| dhungana  | 456 Oak St  | ktm   | Branch B | 80000.00 |
+| aryal     | 789 Pine St | nwkt  | Branch B | 80000.00 |
+| rijal     | 123 Elm St  | pkhra | Branch C | 90000.00 |
+| dhungana  | 456 Oak St  | ktm   | Branch C | 90000.00 |
+| aryal     | 789 Pine St | nwkt  | Branch C | 90000.00 |
+| rijal     | 123 Elm St  | pkhra | Branch A | 70000.00 |
+| dhungana  | 456 Oak St  | ktm   | Branch A | 70000.00 |
+| aryal     | 789 Pine St | nwkt  | Branch A | 70000.00 |
+| rijal     | 123 Elm St  | pkhra | Branch B | 80000.00 |
+| dhungana  | 456 Oak St  | ktm   | Branch B | 80000.00 |
+| aryal     | 789 Pine St | nwkt  | Branch B | 80000.00 |
+| rijal     | 123 Elm St  | pkhra | Branch C | 90000.00 |
+| dhungana  | 456 Oak St  | ktm   | Branch C | 90000.00 |
+| aryal     | 789 Pine St | nwkt  | Branch C | 90000.00 |
++-----------+-------------+-------+----------+----------+
+18 rows in set (0.001 sec)
+
+MariaDB [aashis]> -- Right outer join
+MariaDB [aashis]> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM employee e
+    -> RIGHT JOIN worker w ON e.emp_name = w.emp_name;
+ERROR 1054 (42S22): Unknown column 'e.emp_name' in 'field list'
+MariaDB [aashis]> -- Right outer join
+MariaDB [aashis]> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM emp e
+    -> RIGHT JOIN worker w ON e.emp_name = w.emp_name;
++----------+--------+------+----------+----------+
+| emp_name | street | city | branch   | salary   |
++----------+--------+------+----------+----------+
+| NULL     | NULL   | NULL | Branch A | 70000.00 |
+| NULL     | NULL   | NULL | Branch B | 80000.00 |
+| NULL     | NULL   | NULL | Branch C | 90000.00 |
+| NULL     | NULL   | NULL | Branch A | 70000.00 |
+| NULL     | NULL   | NULL | Branch B | 80000.00 |
+| NULL     | NULL   | NULL | Branch C | 90000.00 |
++----------+--------+------+----------+----------+
+6 rows in set (0.001 sec)
+
+MariaDB [aashis]>
+MariaDB [aashis]> -- Full outer join (using UNION of LEFT JOIN and RIGHT JOIN)
+MariaDB [aashis]> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM empe
+    -> LEFT JOIN worker w ON e.emp_name = w.emp_name
+    ->
+    -> UNION
+    ->
+    -> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM emp e
+    -> RIGHT JOIN worker w ON e.emp_name = w.emp_name;
+ERROR 1146 (42S02): Table 'aashis.empe' doesn't exist
+MariaDB [aashis]> -- Full outer join (using UNION of LEFT JOIN and RIGHT JOIN)
+MariaDB [aashis]> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM emp
+    -> LEFT JOIN worker w ON e.emp_name = w.emp_name
+    ->
+    -> UNION
+    ->
+    -> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM emp e
+    -> RIGHT JOIN worker w ON e.emp_name = w.emp_name;
+ERROR 1054 (42S22): Unknown column 'e.emp_name' in 'field list'
+MariaDB [aashis]>
+MariaDB [aashis]> -- Full outer join (using UNION of LEFT JOIN and RIGHT JOIN)
+MariaDB [aashis]> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM emp e
+    -> LEFT JOIN worker w ON e.emp_name = w.emp_name
+    ->
+    -> UNION
+    ->
+    -> SELECT e.emp_name, e.street, e.city, w.branch, w.salary
+    -> FROM emp e
+    -> RIGHT JOIN worker w ON e.emp_name = w.emp_name;
++-----------+-------------+-------+----------+----------+
+| emp_name  | street      | city  | branch   | salary   |
++-----------+-------------+-------+----------+----------+
+| rijal     | 123 Elm St  | pkhra | NULL     |     NULL |
+| dhungana  | 456 Oak St  | ktm   | NULL     |     NULL |
+| aryal     | 789 Pine St | nwkt  | NULL     |     NULL |
+| NULL      | NULL        | NULL  | Branch A | 70000.00 |
+| NULL      | NULL        | NULL  | Branch B | 80000.00 |
+| NULL      | NULL        | NULL  | Branch C | 90000.00 |
++-----------+-------------+-------+----------+----------+
+6 rows in set (0.001 sec)
+
+MariaDB [aashis]>

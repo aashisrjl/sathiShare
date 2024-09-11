@@ -1,0 +1,176 @@
+Microsoft Windows [Version 10.0.19045.4780]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Dell>color F0
+
+C:\Users\Dell>cd /
+
+C:\>cd xampp/mysql/bin
+
+C:\xampp\mysql\bin>mysql -u root -p -h 127.0.0.1
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database aashis;
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [(none)]> create database aashis1;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| aashis             |
+| aashis1            |
+| bookstore          |
+| csit4th            |
+| eco_explorers      |
+| information_schema |
+| multitenant        |
+| mysql              |
+| nodeblog           |
+| nodejs             |
+| performance_schema |
+| phpmyadmin         |
+| portfolio          |
+| project2mern       |
+| sathishare         |
+| shop_db            |
+| test               |
++--------------------+
+17 rows in set (0.015 sec)
+
+MariaDB [(none)]> drop database aashis1;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [(none)]> use aashis;
+Database changed
+MariaDB [aashis]> CREATE TABLE csitrecord (
+    ->         roll INT PRIMARY KEY AUTO_INCREMENT,
+    ->        name VARCHAR(15),
+    ->         dept VARCHAR(15),
+    ->         city VARCHAR(15),
+    ->         dob VARCHAR(15),
+    ->          gender CHAR(1) CHECK (gender IN ('M', 'F', 'O'))
+    ->      );
+Query OK, 0 rows affected (0.021 sec)
+
+MariaDB [aashis]> CREATE TABLE csit (
+    ->         roll INT PRIMARY KEY AUTO_INCREMENT,
+    ->        name VARCHAR(15),
+    ->         dept VARCHAR(15),
+    ->         city VARCHAR(15),
+    ->         dob VARCHAR(15),
+    ->          gender CHAR(1) CHECK (gender IN ('M', 'F', 'O'))
+    ->      );
+Query OK, 0 rows affected (0.022 sec)
+
+MariaDB [aashis]> show tables;
++------------------+
+| Tables_in_aashis |
++------------------+
+| csit             |
+| csitrecord       |
++------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [aashis]> drop table csit;
+Query OK, 0 rows affected (0.034 sec)
+
+MariaDB [aashis]> show tables;
++------------------+
+| Tables_in_aashis |
++------------------+
+| csitrecord       |
++------------------+
+1 row in set (0.001 sec)
+
+MariaDB [aashis]> alter table csitrecord add column contact1 int ;
+Query OK, 0 rows affected (0.011 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> desc csitrecord;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| roll     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(15) | YES  |     | NULL    |                |
+| dept     | varchar(15) | YES  |     | NULL    |                |
+| city     | varchar(15) | YES  |     | NULL    |                |
+| dob      | varchar(15) | YES  |     | NULL    |                |
+| gender   | char(1)     | YES  |     | NULL    |                |
+| contact1 | int(11)     | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+7 rows in set (0.010 sec)
+
+MariaDB [aashis]> alter table csitrecord add column district varchar(20) ;
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> desc csitrecord;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| roll     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(15) | YES  |     | NULL    |                |
+| dept     | varchar(15) | YES  |     | NULL    |                |
+| city     | varchar(15) | YES  |     | NULL    |                |
+| dob      | varchar(15) | YES  |     | NULL    |                |
+| gender   | char(1)     | YES  |     | NULL    |                |
+| contact1 | int(11)     | YES  |     | NULL    |                |
+| district | varchar(20) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+8 rows in set (0.009 sec)
+
+MariaDB [aashis]> alter table csitrecord rename to csitaashis;
+Query OK, 0 rows affected (0.025 sec)
+
+MariaDB [aashis]> alter table csitaashis modify contact varchar(20);
+ERROR 1054 (42S22): Unknown column 'contact' in 'csitaashis'
+MariaDB [aashis]> alter table csitaashis modify contact1 varchar(20);
+Query OK, 0 rows affected (0.064 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> desc asitaashis;
+ERROR 1146 (42S02): Table 'aashis.asitaashis' doesn't exist
+MariaDB [aashis]> desc csitaashis;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| roll     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(15) | YES  |     | NULL    |                |
+| dept     | varchar(15) | YES  |     | NULL    |                |
+| city     | varchar(15) | YES  |     | NULL    |                |
+| dob      | varchar(15) | YES  |     | NULL    |                |
+| gender   | char(1)     | YES  |     | NULL    |                |
+| contact1 | varchar(20) | YES  |     | NULL    |                |
+| district | varchar(20) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+8 rows in set (0.014 sec)
+
+MariaDB [aashis]> ALTER TABLE csitaashis CHANGE contact1 phone_no VARCHAR(20);
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [aashis]> desc csitaashis;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| roll     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(15) | YES  |     | NULL    |                |
+| dept     | varchar(15) | YES  |     | NULL    |                |
+| city     | varchar(15) | YES  |     | NULL    |                |
+| dob      | varchar(15) | YES  |     | NULL    |                |
+| gender   | char(1)     | YES  |     | NULL    |                |
+| phone_no | varchar(20) | YES  |     | NULL    |                |
+| district | varchar(20) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+8 rows in set (0.010 sec)
+

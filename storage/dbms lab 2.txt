@@ -1,0 +1,201 @@
+
+MariaDB [aashis]> desc csitaashis;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| roll     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(15) | YES  |     | NULL    |                |
+| dept     | varchar(15) | YES  |     | NULL    |                |
+| city     | varchar(15) | YES  |     | NULL    |                |
+| dob      | varchar(15) | YES  |     | NULL    |                |
+| gender   | char(1)     | YES  |     | NULL    |                |
+| phone_no | varchar(20) | YES  |     | NULL    |                |
+| district | varchar(20) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+8 rows in set (0.010 sec)
+
+MariaDB [aashis]> insert into aashis values(1,"aashis","csit","ktm","2058","male","984774997","nuwakot"),(1,"aashis","csit","ktm","2058","male","984774997","nuwakot")
+    -> ;
+ERROR 1146 (42S02): Table 'aashis.aashis' doesn't exist
+MariaDB [aashis]> insert into aashis values(1,"aashis","csit","ktm","2058","male","984774997","nuwakot"),
+    -> (2,"rojan","csit","bidur","2059","male","984774997","nuwakot"),
+    -> (3,"kusal","csit","banepa","2058","male","984774997","nuwakot"),
+    -> (4,"biplov","csit","ktm","2058","male","984774997","nuwakot"),
+    -> (5,"ram","csit","ktm","2058","male","984774997","nuwakot");
+ERROR 1146 (42S02): Table 'aashis.aashis' doesn't exist
+MariaDB [aashis]> insert into csitaashis values(1,"aashis","csit","ktm","2058","male","984774997","nuwakot"),
+    ->     (2,"rojan","csit","bidur","2059","male","984774997","nuwakot"),
+    ->     (3,"kusal","csit","banepa","2058","male","984774997","nuwakot"),
+    ->      (4,"biplov","csit","ktm","2058","male","984774997","nuwakot"),
+    ->     (5,"ram","csit","ktm","2058","male","984774997","nuwakot");
+Query OK, 5 rows affected, 5 warnings (0.008 sec)
+Records: 5  Duplicates: 0  Warnings: 5
+
+MariaDB [aashis]> select * from csitaashis;
++------+--------+------+--------+------+--------+-----------+----------+
+| roll | name   | dept | city   | dob  | gender | phone_no  | district |
++------+--------+------+--------+------+--------+-----------+----------+
+|    1 | aashis | csit | ktm    | 2058 | m      | 984774997 | nuwakot  |
+|    2 | rojan  | csit | bidur  | 2059 | m      | 984774997 | nuwakot  |
+|    3 | kusal  | csit | banepa | 2058 | m      | 984774997 | nuwakot  |
+|    4 | biplov | csit | ktm    | 2058 | m      | 984774997 | nuwakot  |
+|    5 | ram    | csit | ktm    | 2058 | m      | 984774997 | nuwakot  |
++------+--------+------+--------+------+--------+-----------+----------+
+5 rows in set (0.001 sec)
+
+MariaDB [aashis]> insert into csitaashis (roll,name,dept,dob) values (6,"kedar","bim","2050-10-5");
+Query OK, 1 row affected (0.006 sec)
+
+MariaDB [aashis]> select * from csitaashis;
++------+--------+------+--------+-----------+--------+-----------+----------+
+| roll | name   | dept | city   | dob       | gender | phone_no  | district |
++------+--------+------+--------+-----------+--------+-----------+----------+
+|    1 | aashis | csit | ktm    | 2058      | m      | 984774997 | nuwakot  |
+|    2 | rojan  | csit | bidur  | 2059      | m      | 984774997 | nuwakot  |
+|    3 | kusal  | csit | banepa | 2058      | m      | 984774997 | nuwakot  |
+|    4 | biplov | csit | ktm    | 2058      | m      | 984774997 | nuwakot  |
+|    5 | ram    | csit | ktm    | 2058      | m      | 984774997 | nuwakot  |
+|    6 | kedar  | bim  | NULL   | 2050-10-5 | NULL   | NULL      | NULL     |
++------+--------+------+--------+-----------+--------+-----------+----------+
+6 rows in set (0.001 sec)
+
+MariaDB [aashis]> select name,dept from csitaashis orderby dept;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'dept' at line 1
+MariaDB [aashis]> select name,dept from csitaashis orderby(dept);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(dept)' at line 1
+MariaDB [aashis]> select name,dept from csitaashis order by dept;
++--------+------+
+| name   | dept |
++--------+------+
+| kedar  | bim  |
+| aashis | csit |
+| rojan  | csit |
+| kusal  | csit |
+| biplov | csit |
+| ram    | csit |
++--------+------+
+6 rows in set (0.005 sec)
+
+MariaDB [aashis]> update table csitaashis set city="pokhara" where roll = 2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'table csitaashis set city="pokhara" where roll = 2' at line 1
+MariaDB [aashis]> update csitaashis set city="pokhara" where roll = 2;
+Query OK, 1 row affected (0.008 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [aashis]> select * from csitaashis;
++------+--------+------+---------+-----------+--------+-----------+----------+
+| roll | name   | dept | city    | dob       | gender | phone_no  | district |
++------+--------+------+---------+-----------+--------+-----------+----------+
+|    1 | aashis | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    2 | rojan  | csit | pokhara | 2059      | m      | 984774997 | nuwakot  |
+|    3 | kusal  | csit | banepa  | 2058      | m      | 984774997 | nuwakot  |
+|    4 | biplov | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    5 | ram    | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    6 | kedar  | bim  | NULL    | 2050-10-5 | NULL   | NULL      | NULL     |
++------+--------+------+---------+-----------+--------+-----------+----------+
+6 rows in set (0.002 sec)
+
+MariaDB [aashis]> update csitaashis set dept="IT" where dept = null;
+Query OK, 0 rows affected (0.002 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+MariaDB [aashis]> select * from csitaashis;
++------+--------+------+---------+-----------+--------+-----------+----------+
+| roll | name   | dept | city    | dob       | gender | phone_no  | district |
++------+--------+------+---------+-----------+--------+-----------+----------+
+|    1 | aashis | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    2 | rojan  | csit | pokhara | 2059      | m      | 984774997 | nuwakot  |
+|    3 | kusal  | csit | banepa  | 2058      | m      | 984774997 | nuwakot  |
+|    4 | biplov | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    5 | ram    | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    6 | kedar  | bim  | NULL    | 2050-10-5 | NULL   | NULL      | NULL     |
++------+--------+------+---------+-----------+--------+-----------+----------+
+6 rows in set (0.001 sec)
+
+MariaDB [aashis]> insert into csitaashis (roll,name) values (7,"chakra");
+Query OK, 1 row affected (0.014 sec)
+
+MariaDB [aashis]> update csitaashis set dept="IT" where dept = null;
+Query OK, 0 rows affected (0.001 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+MariaDB [aashis]> select * from csitaashis;
++------+--------+------+---------+-----------+--------+-----------+----------+
+| roll | name   | dept | city    | dob       | gender | phone_no  | district |
++------+--------+------+---------+-----------+--------+-----------+----------+
+|    1 | aashis | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    2 | rojan  | csit | pokhara | 2059      | m      | 984774997 | nuwakot  |
+|    3 | kusal  | csit | banepa  | 2058      | m      | 984774997 | nuwakot  |
+|    4 | biplov | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    5 | ram    | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    6 | kedar  | bim  | NULL    | 2050-10-5 | NULL   | NULL      | NULL     |
+|    7 | chakra | NULL | NULL    | NULL      | NULL   | NULL      | NULL     |
++------+--------+------+---------+-----------+--------+-----------+----------+
+7 rows in set (0.001 sec)
+
+MariaDB [aashis]> update csitaashis set dept="IT" where dept =NULL;
+Query OK, 0 rows affected (0.001 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+MariaDB [aashis]> select * from csitaashis;
++------+--------+------+---------+-----------+--------+-----------+----------+
+| roll | name   | dept | city    | dob       | gender | phone_no  | district |
++------+--------+------+---------+-----------+--------+-----------+----------+
+|    1 | aashis | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    2 | rojan  | csit | pokhara | 2059      | m      | 984774997 | nuwakot  |
+|    3 | kusal  | csit | banepa  | 2058      | m      | 984774997 | nuwakot  |
+|    4 | biplov | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    5 | ram    | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    6 | kedar  | bim  | NULL    | 2050-10-5 | NULL   | NULL      | NULL     |
+|    7 | chakra | NULL | NULL    | NULL      | NULL   | NULL      | NULL     |
++------+--------+------+---------+-----------+--------+-----------+----------+
+7 rows in set (0.001 sec)
+
+MariaDB [aashis]> UPDATE csitaashis SET dept = "IT" WHERE dept IS NULL;
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [aashis]> select * from csitaashis;
++------+--------+------+---------+-----------+--------+-----------+----------+
+| roll | name   | dept | city    | dob       | gender | phone_no  | district |
++------+--------+------+---------+-----------+--------+-----------+----------+
+|    1 | aashis | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    2 | rojan  | csit | pokhara | 2059      | m      | 984774997 | nuwakot  |
+|    3 | kusal  | csit | banepa  | 2058      | m      | 984774997 | nuwakot  |
+|    4 | biplov | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    5 | ram    | csit | ktm     | 2058      | m      | 984774997 | nuwakot  |
+|    6 | kedar  | bim  | NULL    | 2050-10-5 | NULL   | NULL      | NULL     |
+|    7 | chakra | IT   | NULL    | NULL      | NULL   | NULL      | NULL     |
++------+--------+------+---------+-----------+--------+-----------+----------+
+7 rows in set (0.001 sec)
+
+MariaDB [aashis]> delete * from csitaashis where city = "ktm";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '* from csitaashis where city = "ktm"' at line 1
+MariaDB [aashis]> DELETE FROM csitaashis WHERE city = "ktm";
+Query OK, 3 rows affected (0.005 sec)
+
+MariaDB [aashis]> select * from csitaashis;
++------+--------+------+---------+-----------+--------+-----------+----------+
+| roll | name   | dept | city    | dob       | gender | phone_no  | district |
++------+--------+------+---------+-----------+--------+-----------+----------+
+|    2 | rojan  | csit | pokhara | 2059      | m      | 984774997 | nuwakot  |
+|    3 | kusal  | csit | banepa  | 2058      | m      | 984774997 | nuwakot  |
+|    6 | kedar  | bim  | NULL    | 2050-10-5 | NULL   | NULL      | NULL     |
+|    7 | chakra | IT   | NULL    | NULL      | NULL   | NULL      | NULL     |
++------+--------+------+---------+-----------+--------+-----------+----------+
+4 rows in set (0.001 sec)
+
+MariaDB [aashis]> delete from csitaashis where gender IS NULL;
+Query OK, 2 rows affected (0.011 sec)
+
+MariaDB [aashis]> select * from csitaashis;
++------+-------+------+---------+------+--------+-----------+----------+
+| roll | name  | dept | city    | dob  | gender | phone_no  | district |
++------+-------+------+---------+------+--------+-----------+----------+
+|    2 | rojan | csit | pokhara | 2059 | m      | 984774997 | nuwakot  |
+|    3 | kusal | csit | banepa  | 2058 | m      | 984774997 | nuwakot  |
++------+-------+------+---------+------+--------+-----------+----------+
+2 rows in set (0.001 sec)
+
+MariaDB [aashis]>
+-- Create tables

@@ -1,0 +1,24 @@
+ls = The ls command is used to list files or directories in Linux and other Unix-based
+operating systems.
+
+pwd = The pwd command writes to standard output the full path name of your current
+directory from the root directory.
+
+mkdir = The mkdir command is used to create one or more directories specified by
+the Directory parameter
+
+rmdir = The rmdir command is used to remove an empty folder.
+
+rm = The rm command is used ti remove a file.
+
+cd = The cd command in Linux stands for change directory. It is used to change the
+current directory of the terminal.
+
+touch = The touch command is a standard command used in UNIX/Linux operating
+system which is used to create, change and modify timestamps of a file.
+
+cat = The cat command reads each File parameter in sequence and writes it to
+standard output
+
+run message passing program in the linux also
+
