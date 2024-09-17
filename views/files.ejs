@@ -15,6 +15,11 @@
 <body>
    <h1>Keep Sharing Guys 😁😎</h1>
     <div class="container">
+        <div class="header" style="margin: 20px;">
+            <mark><i onclick="window.location.href='/'" style="float: left; cursor: pointer; color: blue; font-weight: bolder;" class="fas fa-arrow-left"></i></mark>
+        <h3 style="margin-left: auto;">code: <mark><%= userId %></mark></h3>
+        </div>
+        
         <div class="loading-spinner" id="loadingSpinner"></div>
         <% if (files.length > 0) { %>
             <ul class="file-list">
@@ -34,10 +39,14 @@
         <% } else { %>
             <p>No files found for this user ID.</p>
         <% } %>
-        <ul style="border-radius: 20px; list-style: none; text-align: center; margin-left: 30%; margin-right: 20%; ">
-            <li  class="new"><a style="background-color: blue; color: white;" href="/"> Share Another</a></li>
+        <ul style="border-radius: 20px; list-style: none; text-align: center; margin-left: 40%; margin-right: 30%; ">
+            <li  class="new"><p style="background-color: blue; color: white; padding: 10px; border-radius: 10px;cursor: pointer;"  onclick="document.getElementById('fileInput').click()"> Share Another</p></li>
         </ul>
+        <form  id="fileForm" action="/file" method="post" enctype="multipart/form-data">
+            <input style="display: none;" type="file" id="fileInput" name="file" class="hidden-input" onchange="submitForm()" multiple>
+        </form>
     </div>
+
 
     <script src="/script/loader.js"></script>
     <%- include('component/messageBox') %>
@@ -49,6 +58,11 @@
     </script>
 
     <script>
+         function submitForm() {
+            document.getElementById('loadingSpinner').style.display = 'block';
+            // Trigger form submission when a file is selected
+            document.getElementById('fileForm').submit();
+        }
         const a = document.getElementsByTagName('a');
         a.addEventListener("click",()=>{
             document.getElementById("loadingSpinner").style.display= "block";

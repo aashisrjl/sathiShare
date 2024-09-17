@@ -81,7 +81,7 @@ exports.postFiles = async (req, res) => {
         }
 
         req.flash("success","file uploaded")
-        res.redirect(`/file/${userId}`);
+        res.redirect(`/${userId}`);
 
     } catch (error) {
         console.error(error);
@@ -110,7 +110,7 @@ exports.getFilesByUserId = async (req, res) => {
             res.redirect("/");
         }
 
-        res.render("files", { files: files, url,error,success });
+        res.render("files", { files: files, url,error,success,userId });
 
     } catch (error) {
         console.error("Error retrieving files:", error);
@@ -137,10 +137,10 @@ exports.deleteFile = async (req, res) => {
         if (ipAddress === file.ipAddress) {
             await File.findByIdAndDelete(id);
             req.flash("success","file deleted successfully");
-            res.redirect(`/file/${file.userId}`);
+            res.redirect(`/${file.userId}`);
         } else {
             req.flash("error","you are not authorized!!");
-            res.redirect(`/file/${file.userId}`);
+            res.redirect(`/${file.userId}`);
         }
     
 };
@@ -165,4 +165,19 @@ exports.sendmail = async(req,res)=>{
    res.redirect("/")
 
 
+}
+//search by userId
+exports.handleSearch = async(req,res)=>{
+    const {id} = req.params
+    if(!id){
+        req.flash('error',"please Enter the field")
+        res.redirect(`/`)
+    }
+    const file = await File.find({userId:id})
+    if(!file){
+        req.flash('error',"file not found")
+        res.redirect(`/`)
+    }
+    req.flash("success","Item Searched");
+    res.redirect(`/${id}`);
 }

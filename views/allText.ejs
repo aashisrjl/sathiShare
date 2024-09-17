@@ -15,6 +15,10 @@
 <body>
    <h1>Keep Sharing Guys 😁😎</h1>
     <div class="container">
+        <div class="header" style="margin: 20px;">
+            <mark><i onclick="window.location.href='/'" style="float: left; cursor: pointer; color: blue; font-weight: bolder;" class="fas fa-arrow-left"></i></mark>
+        <h3 style="margin-left: auto;">code: <mark><%-texts[0].userId %></mark></h3>
+        </div>
         <div class="loading-spinner" id="loadingSpinner"></div>
         <% if (texts.length > 0) { %>
             <ul class="file-list">

@@ -40,7 +40,7 @@ app.get('/',(req,res)=>{
 // require database table to access in this project 
 const Chat = require('./model/chatModel.js');
 const Text = require('./model/textModel.js');
-const File = require('./route/fileRoute.js');
+const File = require('./model/fileModel.js');
 
 
 const chatRoute = require('./route/chatRoute.js')
@@ -76,10 +76,10 @@ app.use((req, res, next) => {
 });
 
 
- app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
-});
+//  app.use((err, req, res, next) => {
+//     console.error(err.stack);
+//     res.status(500).send('Something went wrong!');
+// });
 
 
 //allocate port number to the server 
@@ -144,9 +144,9 @@ cron.schedule('* * * * *', async () => {
     const result = await File.deleteMany({
       createdAt: { $lt: tenMinutesAgo }
     });
-    console.log(`${result.deletedCount} messages deleted successfully.`);
+
   } catch (error) {
-    console.error('Error deleting old messages:', error);
+    console.error('Error deleting old file:', error);
   }
 });
 
@@ -155,12 +155,11 @@ cron.schedule('* * * * *', async () => {
   const tenMinutesAgo = new Date(Date.now() - 24 *60 * 60 * 1000 *7);
 
   try {
-    const result = await File.deleteMany({
+    const result = await Text.deleteMany({
       createdAt: { $lt: tenMinutesAgo }
     });
-    console.log(`${result.deletedCount} messages deleted successfully.`);
   } catch (error) {
-    console.error('Error deleting old messages:', error);
+    console.error('Error deleting old text:', error);
   }
 });
 

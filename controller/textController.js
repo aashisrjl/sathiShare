@@ -2,13 +2,17 @@ const Text = require("../model/textModel");
 
 function generateUserId() {
     const digits = Math.floor(10000 + Math.random() * 90000); // Generates a random 4-digit number
-    return 't' + digits.toString(); // Prefix 'A' to the 4-digit number
+    return digits.toString(); // Prefix 'A' to the 4-digit number
 }
 
 exports.renderTextPage = (req,res)=>{
     const [error] = req.flash('error');
     const [success] = req.flash('success');
-    res.render('text',{error,success});
+    // Check if response has already been sent
+  if (res.headersSent) {
+    return;
+  }
+    res.render('text.ejs',{error,success});
 }
 
 exports.createText = async(req,res)=>{
@@ -16,7 +20,7 @@ exports.createText = async(req,res)=>{
     const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip;
     if(!title || !text){
         req.flash('error','please Enter all fields')
-        res.redirect('/text/')
+        res.redirect('/text/post/')
     }
 
     let existingFile = await Text.findOne({ ipAddress });
@@ -73,7 +77,7 @@ exports.deleteText = async(req,res)=>{
     const text =await Text.findById(id);
     if(!text){
         req.flash('error',"no text found")
-        res.redirect(`/text/`)
+        res.redirect(`/text`)
        }
        if(ipAddress == text.ipAddress){
         await Text.findByIdAndDelete(id);
