@@ -3,7 +3,7 @@ const { renderTextPage, createText, getAllText, getSingleText, deleteText, handl
 const { errorHandler } = require('../middleware/errorHandler');
 const router = express.Router()
 router.route('/text/post/').post(errorHandler(createText)).get(renderTextPage)
-router.route('/:userId').get(errorHandler(getAllText))
+router.route('/text/:userId').get(errorHandler(getAllText))
 router.route('/text/single/:id').get(errorHandler(getSingleText))
 router.route('/text/delete/:id').get(errorHandler(deleteText))
 router.route('/search/:id').get(errorHandler(handleSearch))

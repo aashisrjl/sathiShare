@@ -8,7 +8,7 @@ var userJobs = {}
 // Function to generate a random userId
 function generateUserId() {
     const digits = Math.floor(1000 + Math.random() * 9000); // Generates a random 4-digit number
-    return 'f' + digits.toString(); // Prefix 'A' to the 4-digit number
+    return 'f' + digits; // Prefix 'A' to the 4-digit number
 }
 
 const scheduleDeletion = (userId) => {

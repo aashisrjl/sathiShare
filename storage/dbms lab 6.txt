@@ -1,0 +1,311 @@
+
+C:\xampp\mysql\bin>mysql -u root -p -h 127.0.0.1
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 10
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database aashislib;
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [(none)]> use aashislib;
+Database changed
+MariaDB [aashislib]> -- Creating the BOOK table
+MariaDB [aashislib]> CREATE TABLE BOOK (
+    ->     Book_id INT PRIMARY KEY,
+    ->     Title VARCHAR(100),
+    ->     Publisher_Name VARCHAR(100),
+    ->     Pub_Year YEAR
+    -> );
+Query OK, 0 rows affected (0.028 sec)
+
+MariaDB [aashislib]>
+MariaDB [aashislib]> -- Creating the BOOK_AUTHORS table
+MariaDB [aashislib]> CREATE TABLE BOOK_AUTHORS (
+    ->     Book_id INT,
+    ->     Author_Name VARCHAR(100),
+    ->     PRIMARY KEY (Book_id, Author_Name),
+    ->     FOREIGN KEY (Book_id) REFERENCES BOOK(Book_id)
+    -> );
+Query OK, 0 rows affected (0.025 sec)
+
+MariaDB [aashislib]>
+MariaDB [aashislib]> -- Creating the PUBLISHER table
+MariaDB [aashislib]> CREATE TABLE PUBLISHER (
+    ->     Name VARCHAR(100) PRIMARY KEY,
+    ->     Address VARCHAR(255),
+    ->     Phone VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.021 sec)
+
+MariaDB [aashislib]>
+MariaDB [aashislib]> -- Creating the BOOK_COPIES table
+MariaDB [aashislib]> CREATE TABLE BOOK_COPIES (
+    ->     Book_id INT,
+    ->     Branch_id INT,
+    ->     No_of_Copies INT,
+    ->     PRIMARY KEY (Book_id, Branch_id),
+    ->     FOREIGN KEY (Book_id) REFERENCES BOOK(Book_id),
+    ->     FOREIGN KEY (Branch_id) REFERENCES LIBRARY_BRANCH(Branch_id)
+    -> );
+ERROR 1005 (HY000): Can't create table `aashislib`.`book_copies` (errno: 150 "Foreign key constraint is incorrectly formed")
+MariaDB [aashislib]>
+MariaDB [aashislib]> -- Creating the BOOK_LENDING table
+MariaDB [aashislib]> CREATE TABLE BOOK_LENDING (
+    ->     Book_id INT,
+    ->     Branch_id INT,
+    ->     Card_No INT,
+    ->     Date_Out DATE,
+    ->     Due_Date DATE,
+    ->     PRIMARY KEY (Book_id, Branch_id, Card_No, Date_Out),
+    ->     FOREIGN KEY (Book_id) REFERENCES BOOK(Book_id),
+    ->     FOREIGN KEY (Branch_id) REFERENCES LIBRARY_BRANCH(Branch_id)
+    -> );
+ERROR 1005 (HY000): Can't create table `aashislib`.`book_lending` (errno: 150 "Foreign key constraint is incorrectly formed")
+MariaDB [aashislib]>
+MariaDB [aashislib]> -- Creating the LIBRARY_BRANCH table
+MariaDB [aashislib]> CREATE TABLE LIBRARY_BRANCH (
+    ->     Branch_id INT PRIMARY KEY,
+    ->     Branch_Name VARCHAR(100),
+    ->     Address VARCHAR(255)
+    -> );
+Query OK, 0 rows affected (0.025 sec)
+
+MariaDB [aashislib]> -- Creating the BOOK_COPIES table
+MariaDB [aashislib]> CREATE TABLE BOOK_COPIES (
+    ->     Book_id INT,
+    ->     Branch_id INT,
+    ->     No_of_Copies INT,
+    ->     PRIMARY KEY (Book_id, Branch_id),
+    ->     FOREIGN KEY (Book_id) REFERENCES BOOK(Book_id),
+    ->     FOREIGN KEY (Branch_id) REFERENCES LIBRARY_BRANCH(Branch_id)
+    -> );
+Query OK, 0 rows affected (0.028 sec)
+
+MariaDB [aashislib]> -- Creating the BOOK_LENDING table
+MariaDB [aashislib]> CREATE TABLE BOOK_LENDING (
+    ->     Book_id INT,
+    ->     Branch_id INT,
+    ->     Card_No INT,
+    ->     Date_Out DATE,
+    ->     Due_Date DATE,
+    ->     PRIMARY KEY (Book_id, Branch_id, Card_No, Date_Out),
+    ->     FOREIGN KEY (Book_id) REFERENCES BOOK(Book_id),
+    ->     FOREIGN KEY (Branch_id) REFERENCES LIBRARY_BRANCH(Branch_id)
+    -> );
+Query OK, 0 rows affected (0.033 sec)
+
+MariaDB [aashislib]> desc BOOK;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| Book_id        | int(11)      | NO   | PRI | NULL    |       |
+| Title          | varchar(100) | YES  |     | NULL    |       |
+| Publisher_Name | varchar(100) | YES  |     | NULL    |       |
+| Pub_Year       | year(4)      | YES  |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+4 rows in set (0.012 sec)
+
+MariaDB [aashislib]> desc BOOK_AUTHORS;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| Book_id     | int(11)      | NO   | PRI | NULL    |       |
+| Author_Name | varchar(100) | NO   | PRI | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+2 rows in set (0.013 sec)
+
+MariaDB [aashislib]> desc PUBLISHER;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| Name    | varchar(100) | NO   | PRI | NULL    |       |
+| Address | varchar(255) | YES  |     | NULL    |       |
+| Phone   | varchar(20)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+3 rows in set (0.012 sec)
+
+MariaDB [aashislib]> DESC BOOK_COPIES;
++--------------+---------+------+-----+---------+-------+
+| Field        | Type    | Null | Key | Default | Extra |
++--------------+---------+------+-----+---------+-------+
+| Book_id      | int(11) | NO   | PRI | NULL    |       |
+| Branch_id    | int(11) | NO   | PRI | NULL    |       |
+| No_of_Copies | int(11) | YES  |     | NULL    |       |
++--------------+---------+------+-----+---------+-------+
+3 rows in set (0.008 sec)
+
+MariaDB [aashislib]> DESC BOOK_LENDING;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| Book_id   | int(11) | NO   | PRI | NULL    |       |
+| Branch_id | int(11) | NO   | PRI | NULL    |       |
+| Card_No   | int(11) | NO   | PRI | NULL    |       |
+| Date_Out  | date    | NO   | PRI | NULL    |       |
+| Due_Date  | date    | YES  |     | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+5 rows in set (0.008 sec)
+
+MariaDB [aashislib]> DESC LIBREARY_BRANCH;
+ERROR 1146 (42S02): Table 'aashislib.libreary_branch' doesn't exist
+MariaDB [aashislib]> DESC LIBRARY_BRANCH;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| Branch_id   | int(11)      | NO   | PRI | NULL    |       |
+| Branch_Name | varchar(100) | YES  |     | NULL    |       |
+| Address     | varchar(255) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+3 rows in set (0.012 sec)
+
+MariaDB [aashislib]> INSERT INTO BOOK (Book_id, Title, Publisher_Name, Pub_Year) VALUES
+    -> (1, 'Introduction to Algorithms', 'MIT Press', 2009),
+    -> (2, 'Database Systems', 'Pearson', 2015),
+    -> (3, 'Operating System Concepts', 'Wiley', 2018),
+    -> (4, 'Data Structures', 'Pearson', 2016);
+Query OK, 4 rows affected (0.006 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [aashislib]> INSERT INTO BOOK_AUTHORS (Book_id, Author_Name) VALUES
+    -> (1, 'Thomas H. Cormen'),
+    -> (2, 'Abraham Silberschatz'),
+    -> (2, 'Henry F. Korth'),
+    -> (3, 'Abraham Silberschatz'),
+    -> (3, 'Peter B. Galvin'),
+    -> (4, 'Mark Allen Weiss');
+Query OK, 6 rows affected (0.006 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MariaDB [aashislib]> INSERT INTO PUBLISHER (Name, Address, Phone) VALUES
+    -> ('MIT Press', 'Cambridge, MA', '123-456-7890'),
+    -> ('Pearson', 'Boston, MA', '234-567-8901'),
+    -> ('Wiley', 'Hoboken, NJ', '345-678-9012');
+Query OK, 3 rows affected (0.005 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [aashislib]> INSERT INTO LIBRARY_BRANCH (Branch_id, Branch_Name, Address) VALUES
+    -> (1, 'Central Library', '123 Main St'),
+    -> (2, 'East Branch', '456 East St');
+Query OK, 2 rows affected (0.005 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [aashislib]> INSERT INTO BOOK_COPIES (Book_id, Branch_id, No_of_Copies) VALUES
+    -> (1, 1, 4),
+    -> (1, 2, 2),
+    -> (2, 1, 5),
+    -> (2, 2, 3),
+    -> (3, 1, 6),
+    -> (4, 2, 7);
+Query OK, 6 rows affected (0.005 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MariaDB [aashislib]> INSERT INTO BOOK_LENDING (Book_id, Branch_id, Card_No, Date_Out, Due_Date) VALUES
+    -> (1, 1, 101, '2019-02-01', '2019-02-15'),
+    -> (1, 1, 102, '2019-05-03', '2019-05-17'),
+    -> (2, 2, 101, '2019-04-10', '2019-04-24'),
+    -> (3, 1, 103, '2019-01-12', '2019-01-26'),
+    -> (4, 2, 104, '2019-03-15', '2019-03-29'),
+    -> (3, 1, 101, '2019-06-15', '2019-06-29'),
+    -> (2, 1, 101, '2019-06-01', '2019-06-15');
+Query OK, 7 rows affected (0.012 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+MariaDB [aashislib]> SELECT b.Book_id, b.Title, b.Publisher_Name, p.Address, p.Phone,
+    ->        ba.Author_Name, bc.Branch_id, bc.No_of_Copies
+    -> FROM BOOK b
+    -> JOIN PUBLISHER p ON b.Publisher_Name = p.Name
+    -> JOIN BOOK_AUTHORS ba ON b.Book_id = ba.Book_id
+    -> JOIN BOOK_COPIES bc ON b.Book_id = bc.Book_id;
++---------+----------------------------+----------------+---------------+--------------+----------------------+-----------+--------------+
+| Book_id | Title                      | Publisher_Name | Address       | Phone        | Author_Name          | Branch_id | No_of_Copies |
++---------+----------------------------+----------------+---------------+--------------+----------------------+-----------+--------------+
+|       1 | Introduction to Algorithms | MIT Press      | Cambridge, MA | 123-456-7890 | Thomas H. Cormen     |         1 |            4 |
+|       1 | Introduction to Algorithms | MIT Press      | Cambridge, MA | 123-456-7890 | Thomas H. Cormen     |         2 |            2 |
+|       2 | Database Systems           | Pearson        | Boston, MA    | 234-567-8901 | Abraham Silberschatz |         1 |            5 |
+|       2 | Database Systems           | Pearson        | Boston, MA    | 234-567-8901 | Abraham Silberschatz |         2 |            3 |
+|       2 | Database Systems           | Pearson        | Boston, MA    | 234-567-8901 | Henry F. Korth       |         1 |            5 |
+|       2 | Database Systems           | Pearson        | Boston, MA    | 234-567-8901 | Henry F. Korth       |         2 |            3 |
+|       4 | Data Structures            | Pearson        | Boston, MA    | 234-567-8901 | Mark Allen Weiss     |         2 |            7 |
+|       3 | Operating System Concepts  | Wiley          | Hoboken, NJ   | 345-678-9012 | Abraham Silberschatz |         1 |            6 |
+|       3 | Operating System Concepts  | Wiley          | Hoboken, NJ   | 345-678-9012 | Peter B. Galvin      |         1 |            6 |
++---------+----------------------------+----------------+---------------+--------------+----------------------+-----------+--------------+
+9 rows in set (0.002 sec)
+
+MariaDB [aashislib]> SELECT bl.Card_No, COUNT(bl.Book_id) AS Books_Borrowed
+    -> FROM BOOK_LENDING bl
+    -> WHERE bl.Date_Out BETWEEN '2019-01-01' AND '2019-06-30'
+    -> GROUP BY bl.Card_No
+    -> HAVING COUNT(bl.Book_id) > 3;
++---------+----------------+
+| Card_No | Books_Borrowed |
++---------+----------------+
+|     101 |              4 |
++---------+----------------+
+1 row in set (0.011 sec)
+
+MariaDB [aashislib]> -- Delete from BOOK table
+MariaDB [aashislib]> DELETE FROM BOOK WHERE Book_id = 1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`aashislib`.`book_authors`, CONSTRAINT `book_authors_ibfk_1` FOREIGN KEY (`Book_id`) REFERENCES `book` (`Book_id`))
+MariaDB [aashislib]>
+MariaDB [aashislib]> -- Update other tables to reflect the deletion
+MariaDB [aashislib]> DELETE FROM BOOK_AUTHORS WHERE Book_id = 1;
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [aashislib]> DELETE FROM BOOK_COPIES WHERE Book_id = 1;
+Query OK, 2 rows affected (0.003 sec)
+
+MariaDB [aashislib]> DELETE FROM BOOK_LENDING WHERE Book_id = 1;
+Query OK, 2 rows affected (0.008 sec)
+
+MariaDB [aashislib]> DELETE FROM BOOK WHERE Book_id = 1;
+Query OK, 1 row affected (0.005 sec)
+
+MariaDB [aashislib]> -- Recreate the BOOK table with partitioning
+MariaDB [aashislib]> CREATE TABLE BOOK (
+    ->     Book_id INT PRIMARY KEY,
+    ->     Title VARCHAR(100),
+    ->     Publisher_Name VARCHAR(100),
+    ->     Pub_Year YEAR
+    -> )
+    -> PARTITION BY RANGE (Pub_Year) (
+    ->     PARTITION p1 VALUES LESS THAN (2010),
+    ->     PARTITION p2 VALUES LESS THAN (2015),
+    ->     PARTITION p3 VALUES LESS THAN (2020),
+    ->     PARTITION p4 VALUES LESS THAN MAXVALUE
+    -> );
+ERROR 1050 (42S01): Table 'book' already exists
+MariaDB [aashislib]>
+MariaDB [aashislib]> -- Query to check the partitions
+MariaDB [aashislib]> EXPLAIN PARTITIONS SELECT * FROM BOOK WHERE Pub_Year = 2018;
++------+-------------+-------+------------+------+---------------+------+---------+------+------+-------------+
+| id   | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | Extra       |
++------+-------------+-------+------------+------+---------------+------+---------+------+------+-------------+
+|    1 | SIMPLE      | BOOK  | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 3    | Using where |
++------+-------------+-------+------------+------+---------------+------+---------+------+------+-------------+
+1 row in set (0.002 sec)
+
+MariaDB [aashislib]> CREATE VIEW Books_Available AS
+    -> SELECT b.Book_id, b.Title, SUM(bc.No_of_Copies) AS Total_Copies
+    -> FROM BOOK b
+    -> JOIN BOOK_COPIES bc ON b.Book_id = bc.Book_id
+    -> GROUP BY b.Book_id, b.Title;
+Query OK, 0 rows affected (0.014 sec)
+
+MariaDB [aashislib]>
+MariaDB [aashislib]> -- Query to select from the view
+MariaDB [aashislib]> SELECT * FROM Books_Available;
++---------+---------------------------+--------------+
+| Book_id | Title                     | Total_Copies |
++---------+---------------------------+--------------+
+|       2 | Database Systems          |            8 |
+|       3 | Operating System Concepts |            6 |
+|       4 | Data Structures           |            7 |
++---------+---------------------------+--------------+
+3 rows in set (0.004 sec)
+
+MariaDB [aashislib]>

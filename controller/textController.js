@@ -1,7 +1,7 @@
 const Text = require("../model/textModel");
 
 function generateUserId() {
-    const digits = Math.floor(10000 + Math.random() * 90000); // Generates a random 4-digit number
+    const digits = Math.floor(1000 + Math.random() * 9000); // Generates a random 4-digit number
     return digits.toString(); // Prefix 'A' to the 4-digit number
 }
 
@@ -20,7 +20,7 @@ exports.createText = async(req,res)=>{
     const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip;
     if(!title || !text){
         req.flash('error','please Enter all fields')
-        res.redirect('/text/post/')
+        res.redirect('/text/')
     }
 
     let existingFile = await Text.findOne({ ipAddress });
@@ -41,7 +41,7 @@ exports.createText = async(req,res)=>{
         if (code) {
             // scheduleDeletion(code._id);
            req.flash('success','Shared Successfully');
-            res.redirect(`/${userId}`)
+            res.redirect(`/text/${userId}`)
           } else {
             res.status(500).json({
               status: 500,
@@ -82,10 +82,10 @@ exports.deleteText = async(req,res)=>{
        if(ipAddress == text.ipAddress){
         await Text.findByIdAndDelete(id);
         req.flash("success","deleted successfully")
-        res.redirect(`/${text.userId}`)
+        res.redirect(`/text/${text.userId}`)
         }else{
         req.flash('error',"you are not authorized");
-        res.redirect(`/${text.userId}`)
+        res.redirect(`/text/${text.userId}`)
         }
 }
 
@@ -102,5 +102,5 @@ exports.handleSearch = async(req,res)=>{
         res.redirect(`/`)
     }
     req.flash("success","Item Searched");
-    res.redirect(`/${id}`);
+    res.redirect(`/text/${id}`);
 }
