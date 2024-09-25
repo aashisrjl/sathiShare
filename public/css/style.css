@@ -11,6 +11,7 @@
     border-top: 8px solid #3498db;
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    backdrop-filter: blur(10px);
 }
 
 @keyframes spin {
