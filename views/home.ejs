@@ -20,8 +20,8 @@
         <div class="search-container">
             <div class="search-box">
                 
-                <input id = "search" type="text" placeholder="Search...">
-                <i class="fas fa-search" onclick="window.location.href=`/search/${document.getElementById('search').value}`"></i> 
+                <input id = "search" type="text" placeholder="Search..." onkeypress="if(event.key === 'Enter') window.location.href=`/search/${this.value}`">
+                <i onkeypress="window.location.href=`/search/${document.getElementById('search').value}" class="fas fa-search" onclick="window.location.href=`/search/${document.getElementById('search').value}`"></i> 
             </div>
         </div>
         <!-- Dark Mode Toggle Button -->
