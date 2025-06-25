@@ -54,6 +54,7 @@ app.use("",textRoute);
 const jwt = require("jsonwebtoken")
 //give access the css folder to the node js 
 app.use(express.static('public/'));
+// app.use(express.static('src/'));
 app.use('/storage', express.static(path.join(__dirname, 'storage')));
 app.use(express.static('storage/'))
 
@@ -75,6 +76,10 @@ app.use((req, res, next) => {
   res.status(404).render('404.ejs');
 });
 
+app.get('/css/style.css', (req, res) => {
+  console.log('CSS file requested');
+  res.sendFile(path.join(__dirname, 'public/css/style.css'));
+});
 
 //  app.use((err, req, res, next) => {
 //     console.error(err.stack);

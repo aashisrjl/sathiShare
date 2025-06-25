@@ -5,81 +5,107 @@
     <link rel="icon" type="image/svg+xml" href="/img/logo.PNG">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SathiShare</title>
-    <link rel="stylesheet" href="/css/home.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link href="/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-       
+        /* Custom animations using Tailwind and vanilla CSS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes bounceIn {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .bounce-in {
+            animation: bounceIn 1.5s ease-in-out infinite;
+        }
     </style>
 </head>
+<body class="bg-gray-900 text-gray-200 font-sans min-h-screen flex flex-col">
+    <div class="container mx-auto px-4 py-6 flex-1">
+        <div class="loading-spinner hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 rounded-full w-12 h-12 border-4 border-t-blue-400 border-b-blue-400 animate-spin" id="loadingSpinner"></div>
 
-<body>
-    <div class="container">
-        <div class="loading-spinner" id="loadingSpinner"></div>
-        <!-- Search Bar -->
-        <div class="search-container">
-            <div class="search-box">
-                
-                <input id = "search" type="text" placeholder="Search..." onkeypress="if(event.key === 'Enter') window.location.href=`/search/${this.value}`">
-                <i onkeypress="window.location.href=`/search/${document.getElementById('search').value}" class="fas fa-search" onclick="window.location.href=`/search/${document.getElementById('search').value}`"></i> 
+        <!-- Centered Logo with Animation -->
+        <div class="text-center mb-10 mt-12">
+            <div class="logo inline-block fade-in-up delay-100">
+                <span class="text-blue-600 text-4xl font-extrabold"> ---|| Sathi <span class="text-white"> Share ||---</span></span>
             </div>
         </div>
-        <!-- Dark Mode Toggle Button -->
-        <div class="dark-mode-toggle">
-            <button class="toggle-button" onclick="toggleDarkMode()">
-                <i class="fas fa-sun" id="sun-icon"></i>
-                <i class="fas fa-moon" id="moon-icon"></i>
-            </button>
+
+        <!-- Search Bar with Animation -->
+        <div class="search-container w-full max-w-xl mx-auto mb-8">
+            <div class="search-box flex items-center bg-gray-800 rounded-lg shadow-md p-2 fade-in-up delay-200">
+                <input id="search" type="text" placeholder="Search..." class="w-full outline-none text-sm bg-transparent text-gray-200" onkeypress="if(event.key === 'Enter') window.location.href=`/search/${this.value}`">
+                <i class="fas fa-search text-gray-400 cursor-pointer ml-2" onclick="window.location.href=`/search/${document.getElementById('search').value}`"></i>
+            </div>
         </div>
-        <div class="logo">
-            <img src="/img/logo.PNG" alt="Project Logo">
-        </div>
-        <header>
-            <div class="title">Welcome to SathiShare</div>
-            <div class="description">Share photos, videos, and files, or start chatting with friends. No login required; just enter your name and start connecting!</div>
+
+        <!-- Main Content -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-blue-400 mb-4 fade-in-up delay-300">Welcome to SathiShare</h1>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto fade-in-up delay-400">Share photos, videos, and files, or start chatting with friends. No login required; just enter your name and start connecting!</p>
         </header>
-        <div class="logo-container">
-            <div class="buttons-wrapper">
-                <div class="button" onclick="window.location.href='/text/post/'">Share Code</div>
-                <div class="button" onclick="document.getElementById('fileInput').click()">Share Files</div>
-                <div class="button" onclick="window.location.href='/chat'">Start Chat</div>
+
+        <div class="logo-container mb-12">
+            <div class="buttons-wrapper grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="button bg-blue-600 text-white p-4 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105 transition duration-300 ease-in-out text-center cursor-pointer fade-in-up delay-500" onclick="window.location.href='/text/post/'">Share Code</div>
+                <div class="button bg-green-600 text-white p-4 rounded-lg shadow-md hover:bg-green-700 hover:scale-105 transition duration-300 ease-in-out text-center cursor-pointer fade-in-up delay-600" onclick="document.getElementById('fileInput').click()">Share Files</div>
+                <div class="button bg-purple-600 text-white p-4 rounded-lg shadow-md hover:bg-purple-700 hover:scale-105 transition duration-300 ease-in-out text-center cursor-pointer fade-in-up delay-700" onclick="window.location.href='/chat'">Start Chat</div>
             </div>
         </div>
+
         <!-- Hidden form for file upload -->
-        <form id="fileForm" action="/file" method="post" enctype="multipart/form-data">
+        <form id="fileForm" action="/file" method="post" enctype="multipart/form-data" class="hidden">
             <input type="file" id="fileInput" name="file" class="hidden-input" onchange="submitForm()" multiple>
         </form>
 
-        <!-- Social Links Section -->
-        <div class="social-links">
-            <div class="social-links-container">
-                <a href="https://www.linkedin.com/in/aashis-rijal-190402276" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
-                <a href="https://www.facebook.com/aashis.rijal.92" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://github.com/aashisrjl" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
+        <!-- Social Links with Animation -->
+        <div class="social-links text-center mb-12">
+            <div class="social-links-container inline-flex space-x-6">
+                <a href="https://www.linkedin.com/in/aashis-rijal-190402276" target="_blank" class="social-link text-blue-400 hover:text-blue-300 transition duration-300 bounce-in" style="animation-delay: 0.1s"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.facebook.com/aashis.rijal.92" target="_blank" class="social-link text-blue-400 hover:text-blue-300 transition duration-300 bounce-in" style="animation-delay: 0.2s"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://github.com/aashisrjl" target="_blank" class="social-link text-gray-300 hover:text-gray-400 transition duration-300 bounce-in" style="animation-delay: 0.3s"><i class="fab fa-github"></i></a>
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-auto">
+        <p>© 2025 SathiShare. All rights reserved.</p>
+    </footer>
+
     <script>
         function submitForm() {
-            document.getElementById('loadingSpinner').style.display = 'block';
-            // Trigger form submission when a file is selected
+            document.getElementById('loadingSpinner').classList.remove('hidden');
             document.getElementById('fileForm').submit();
-        }
-        function toggleDarkMode(e) {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            document.getElementById('sun-icon').style.display = isDarkMode ? 'none' : 'inline';
-            document.getElementById('moon-icon').style.display = isDarkMode ? 'inline' : 'none';
-            e.preventDefault();
         }
     </script>
     <script src="/script/loader.js"></script>
     <%- include('component/messageBox') %>
-<script>
-    const msgBox = document.querySelector(".msg");
-    setTimeout(() => {
-      msgBox.remove();
-      }, 3000);
-</script>
+    <script>
+        const msgBox = document.querySelector(".msg");
+        if (msgBox) {
+            setTimeout(() => {
+                msgBox.remove();
+            }, 3000);
+        }
+    </script>
 </body>
 </html>

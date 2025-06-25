@@ -1,134 +1,294 @@
 <!DOCTYPE html>
-<html>
-<html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="/css/chat.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-  
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/img/logo.PNG">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .fade-in-scale {
+            animation: fadeInScale 0.6s ease-out forwards;
+        }
+        .fade-in-message {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        #nameModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #1f2937;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90%;
+            max-height: 90vh;
+            text-align: center;
+            animation: fadeInScale 0.3s ease-out;
+        }
+        .modal-content input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #4b5563;
+            border-radius: 5px;
+            background-color: #374151;
+            color: #d1d5db;
+        }
+        .modal-content button {
+            padding: 10px 20px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .modal-content button:hover {
+            background-color: #2563eb;
+            transform: scale(1.05);
+        }
+        .msg-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            background: linear-gradient(135deg, #4b5bd7, #8b5cf6);
+            color: white;
+            margin-right: 10px;
+        }
+        .user-message {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+        .other-message {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+        }
+        .msg-content {
+            max-width: 70%;
+            background-color: #2d3748;
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .msg-text {
+            word-break: break-word;
+            margin-bottom: 5px;
+        }
+        .msg-username {
+            font-style: italic;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+    </style>
 </head>
-<body>
-  <!-- Modal HTML -->
-  <div id="nameModal">
-    <div class="modal-content">
-      <h2>Enter Your Name</h2>
-      <input type="text" id="userNameInput" placeholder="Your name..." required>
-      <button id="saveNameButton">Save</button>
-    </div>
-  </div>
+<body class="bg-gray-900 text-gray-200 font-sans min-h-screen flex flex-col">
+    <div class="container mx-auto px-4 py-6 flex-1">
+        <div class="loading-spinner hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 rounded-full w-12 h-12 border-4 border-t-blue-400 border-b-blue-400 animate-spin" id="loadingSpinner"></div>
 
-  <div id="chat-container">
-    <div class="chat-header">
-      <i onclick="window.location.href='/'" style="float: left; cursor: pointer;" class="fas fa-arrow-left"></i>
-      Chat
-    </div>
-    <div id="chat-messages">
-      <% msgg.forEach((msg) => { %>
-        <div class="msg <%= msg.ipAddress === clientIp ? 'user-message' : 'other-message' %>">
-          <div class="msg-circle"><%= msg.userName ? msg.userName.charAt(0) : '?' %></div>
-          <div class="msg-content">
-            <div class="msg-text"><%- msg.message %></div>
-            <div class="msg-username"><%= msg.userName %></div>
-          </div>
+        <!-- Modal for Name Input -->
+        <div id="nameModal">
+            <div class="modal-content">
+                <h2 class="text-2xl font-bold text-blue-400 mb-4">Enter Your Name</h2>
+                <input type="text" id="userNameInput" placeholder="Your name..." required class="fade-in-scale delay-100">
+                <button id="saveNameButton" class="fade-in-scale delay-200">Save</button>
+            </div>
         </div>
-      <% }) %>
+
+        <!-- Chat Container -->
+        <div id="chat-container" class="max-w-2xl mx-auto">
+            <div class="chat-header flex items-center p-4 bg-gray-800 rounded-t-lg shadow-md fade-in-up delay-100">
+                <i onclick="window.location.href='/'" class="fas fa-arrow-left cursor-pointer text-blue-400 text-2xl mr-4 hover:text-blue-300 transition duration-300"></i>
+                <h2 class="text-xl font-semibold">Chat</h2>
+            </div>
+            <div id="chat-messages" class="h-96 overflow-y-auto p-4 bg-gray-800 rounded-b-lg shadow-inner space-y-4 fade-in-up delay-200">
+                <% msgg.forEach((msg, index) => { %>
+                    <div class="msg <%= msg.ipAddress === clientIp ? 'user-message' : 'other-message' %> fade-in-message delay-<%= index * 100 %>" style="animation-delay: <%= index * 0.1 %>s">
+                        <div class="flex items-start <%= msg.ipAddress === clientIp ? 'flex-row-reverse' : 'flex-row' %>">
+                            <div class="msg-circle"><%= msg.userName ? msg.userName.charAt(0) : '?' %></div>
+                            <div class="msg-content ml-2">
+                                <div class="msg-text text-sm break-words"><%= msg.message %></div>
+                                <div class="msg-username text-xs text-gray-400"><%= msg.userName || 'Unknown' %></div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <form id="input-container" class="p-4 bg-gray-800 rounded-b-lg shadow-md flex space-x-2 fade-in-scale delay-300">
+                <input type="text" id="messageInput" placeholder="Type a message..." class="flex-1 p-2 bg-gray-700 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 transition duration-300">
+                <button type="submit" class="send-button bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-300 ease-in-out">➤</button>
+            </form>
+        </div>
     </div>
-    <form id="input-container">
-      <input type="text" id="messageInput" placeholder="Type a message...">
-      <button class="send-button" type="submit">➤</button>
-    </form>
-  </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io();
-    const messageInput = document.getElementById('messageInput');
-    const form = document.getElementById('input-container');
-    const chatMessages = document.getElementById('chat-messages');
-    const nameModal = document.getElementById('nameModal');
-    const userNameInput = document.getElementById('userNameInput');
-    const saveNameButton = document.getElementById('saveNameButton');
-    let clientSocketId;
-    let userName = localStorage.getItem('userName');
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-auto">
+        <p>© 2025 SathiShare. All rights reserved.</p>
+    </footer>
 
-    // Show modal if name is not set
-    if (!userName) {
-      nameModal.style.display = 'flex';
-      nameModal.style.zIndex = '12';
-    } else {
-      // Update chat messages with the stored user name
-      const userNameElements = document.querySelectorAll('.userName');
-      userNameElements.forEach(el => el.textContent = userName);
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const messageInput = document.getElementById('messageInput');
+        const form = document.getElementById('input-container');
+        const chatMessages = document.getElementById('chat-messages');
+        const nameModal = document.getElementById('nameModal');
+        const userNameInput = document.getElementById('userNameInput');
+        const saveNameButton = document.getElementById('saveNameButton');
+        let clientSocketId;
+        let userName = localStorage.getItem('userName');
 
-      const messageCircles = document.querySelectorAll('.msg-circle');
-      messageCircles.forEach(el => el.textContent = userName.charAt(0));
-    }
+        document.getElementById('userNameInput').addEventListener('keypress', function (event) {
+  if (event.key === 'Enter') {
+    event.preventDefault(); // Prevent form submission if inside a form
+    document.getElementById('saveNameButton').click();
+  }
+});
 
-    saveNameButton.addEventListener('click', () => {
-      userName = userNameInput.value.trim() || 'Anonymous';
-      localStorage.setItem('userName', userName);
-      nameModal.style.display = 'none';
+        // Show modal if name is not set
+        if (!userName) {
+            nameModal.style.display = 'flex';
+            nameModal.style.zIndex = '1000';
+        } else {
+            const userNameElements = document.querySelectorAll('.msg-username');
+            userNameElements.forEach(el => {
+                if (el.textContent === 'Unknown' && el.parentElement.parentElement.classList.contains('user-message')) {
+                    el.textContent = userName;
+                }
+            });
+            const messageCircles = document.querySelectorAll('.msg-circle');
+            messageCircles.forEach(el => {
+                if (el.parentElement.parentElement.classList.contains('user-message')) {
+                    el.textContent = userName.charAt(0);
+                }
+            });
+        }
 
-      // Update chat messages with the newly set user name
-      const userNameElements = document.querySelectorAll('.userName');
-      userNameElements.forEach(el => el.textContent = userName);
+        saveNameButton.addEventListener('click', () => {
+            userName = userNameInput.value.trim() || 'Anonymous';
+            localStorage.setItem('userName', userName);
+            nameModal.style.display = 'none';
 
-      const messageCircles = document.querySelectorAll('.msg-circle');
-      messageCircles.forEach(el => el.textContent = userName.charAt(0));
-    });
+            const userNameElements = document.querySelectorAll('.msg-username');
+            userNameElements.forEach(el => {
+                if (el.textContent === 'Unknown' && el.parentElement.parentElement.classList.contains('user-message')) {
+                    el.textContent = userName;
+                }
+            });
+            const messageCircles = document.querySelectorAll('.msg-circle');
+            messageCircles.forEach(el => {
+                if (el.parentElement.parentElement.classList.contains('user-message')) {
+                    el.textContent = userName.charAt(0);
+                }
+            });
+        });
 
-    // Get the socket ID when the connection is established
-    socket.on('connect', () => {
-      clientSocketId = socket.id;
-    });
+        // Get the socket ID when the connection is established
+        socket.on('connect', () => {
+            clientSocketId = socket.id;
+        });
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (messageInput.value.trim()) {
-        const data = {
-          message: messageInput.value.trim(),
-          socketId: clientSocketId,
-          userName: userName
-        };
-        socket.emit('message', data);
-        messageInput.value = '';
-      }
-    });
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (messageInput.value.trim()) {
+                const data = {
+                    message: messageInput.value.trim(),
+                    socketId: clientSocketId,
+                    userName: userName
+                };
+                socket.emit('message', data);
+                messageInput.value = '';
+            }
+        });
 
-    socket.on('broadcast', (msg) => {
-      const messageElement = document.createElement('div');
-      messageElement.classList.add('msg');
+        socket.on('broadcast', (msg) => {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('msg', 'fade-in-message');
+            messageElement.style.animationDelay = `${chatMessages.children.length * 0.1}s`;
 
-      const messageCircle = document.createElement('div');
-      messageCircle.classList.add('msg-circle');
-      messageCircle.textContent = msg.userName ? msg.userName.charAt(0) : '?';
-      messageElement.appendChild(messageCircle);
+            const flexContainer = document.createElement('div');
+            flexContainer.classList.add('flex', 'items-start');
+            if (msg.socketId === clientSocketId) {
+                flexContainer.classList.add('flex-row-reverse');
+            } else {
+                flexContainer.classList.add('flex-row');
+            }
 
-      const messageContent = document.createElement('div');
-      messageContent.classList.add("msg-content");
-      // messageContent.innerHTML = `<strong>${msg.userName || 'Unknown'}:</strong> ${msg.message}`;
-        // Create the div for the message text
-    const messageText = document.createElement('div');
-    messageText.classList.add('msg-text');
-    messageText.textContent = msg.message;
-    messageContent.appendChild(messageText);
-    // username 
-    // Create the div for the username
-    const messageUsername = document.createElement('div');
-    messageUsername.classList.add('msg-username');
-    messageUsername.textContent = msg.userName || 'Unknown';
-    messageContent.append(messageUsername)
-      messageElement.appendChild(messageContent);
+            const messageCircle = document.createElement('div');
+            messageCircle.classList.add('msg-circle');
+            messageCircle.textContent = msg.userName ? msg.userName.charAt(0) : '?';
+            messageCircle.classList.add(msg.socketId === clientSocketId ? 'bg-blue-500' : 'bg-green-500');
+            flexContainer.appendChild(messageCircle);
 
-      if (msg.socketId === clientSocketId) {
-        messageElement.classList.add('user-message');
-      } else {
-        messageElement.classList.add('other-message');
-      }
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('msg-content', 'ml-2');
+            if (msg.socketId === clientSocketId) {
+                messageElement.classList.add('user-message');
+            } else {
+                messageElement.classList.add('other-message');
+            }
 
-      chatMessages.appendChild(messageElement);
-      chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to the bottom
-    });
-  </script>
+            const messageText = document.createElement('div');
+            messageText.classList.add('msg-text', 'text-sm', 'break-words');
+            messageText.textContent = msg.message;
+            messageContent.appendChild(messageText);
+
+            const messageUsername = document.createElement('div');
+            messageUsername.classList.add('msg-username', 'text-xs', 'text-gray-400');
+            messageUsername.textContent = msg.userName || 'Unknown';
+            messageContent.appendChild(messageUsername);
+
+            flexContainer.appendChild(messageContent);
+            messageElement.appendChild(flexContainer);
+
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll to the bottom
+        });
+
+        document.querySelectorAll('a, button').forEach(element => {
+            element.addEventListener("click", () => {
+                document.getElementById("loadingSpinner").classList.remove('hidden');
+            });
+        });
+    </script>
 </body>
 </html>

@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const schedule = require('node-schedule');
 const sendEmail = require("../utils/sendMail");
+const Text = require("../model/textModel");
 var userJobs = {}
 
 // Function to generate a random userId
@@ -147,8 +148,10 @@ exports.deleteFile = async (req, res) => {
 
 //send mail
 exports.renderEmail = async(req,res)=>{
+      const [error] = req.flash('error');
+    const [success] = req.flash('success');
     const file = req.params.file;
-    res.render('email.ejs',{file})  
+    res.render('email.ejs',{file,error,success})  
 }
 
 exports.sendmail = async(req,res)=>{
@@ -166,18 +169,58 @@ exports.sendmail = async(req,res)=>{
 
 
 }
-//search by userId
-exports.handleSearch = async(req,res)=>{
-    const {id} = req.params
-    if(!id){
-        req.flash('error',"please Enter the field")
-        res.redirect(`/`)
+// //search by userId
+// exports.handleSearch = async(req,res)=>{
+//     const {id} = req.params
+//     if(!id){
+//         req.flash('error',"please Enter the field")
+//         res.redirect(`/`)
+//     }
+//     const file = await File.find({userId:id})
+//     if(!file){
+//         req.flash('error',"file not found")
+//         res.redirect(`/`)
+//     }
+//     req.flash("success","Item Searched");
+//     res.redirect(`/${id}`);
+// }
+
+exports.handleSearch = async(req, res)=> {
+    const { id } = req.params;
+
+    if (!id) {
+        req.flash('error', 'Please enter a search term');
+        return res.redirect('/');
     }
-    const file = await File.find({userId:id})
-    if(!file){
-        req.flash('error',"file not found")
-        res.redirect(`/`)
+
+    try {
+        // Search for both File and Text by userId
+        const file = await File.find({ userId: id });
+        const text = await Text.find({ userId: id });
+
+        // If neither file nor text is found
+        if (!file.length && !text.length) {
+            req.flash('error', 'No files or text found');
+            return res.redirect('/');
+        }
+
+        // If only files are found
+        if (file.length && !text.length) {
+            req.flash('success', 'Files found');
+            return res.redirect(`/${id}`);
+        }
+
+        // If only text is found
+        if (!file.length && text.length) {
+            req.flash('success', 'Text found');
+            return res.redirect(`/text/${id}`);
+        }
+
+        // If both are found (optional: prioritize one or handle both)
+        req.flash('success', 'Items found');
+        return res.redirect(`/${id}`); // Prioritize files, or customize as needed
+    } catch (error) {
+        req.flash('error', 'An error occurred during search');
+        return res.redirect('/');
     }
-    req.flash("success","Item Searched");
-    res.redirect(`/${id}`);
 }

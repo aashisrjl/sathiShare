@@ -1,10 +1,10 @@
-<% if(error){ %>
-    <div style="background-Color:red" class="msg">
-     <p> <%- error %></p> 
+<% if (error) { %>
+    <div class="msg fixed top-4 right-4 bg-red-600/80 text-white p-4 rounded-lg shadow-md fade-in-up delay-100 max-w-md text-center z-50">
+        <p><%- error %></p>
     </div>
-  <% } %>
-  <% if(success){ %>
-    <div style="background-Color:green" class="msg">
-      <p><%- success %></p> 
+<% }else{ %>
+
+    <div class="msg fixed top-4 right-4 bg-green-600/80 text-white p-4 rounded-lg shadow-md fade-in-up delay-200 max-w-md text-center z-50">
+        <p><%- success %></p>
     </div>
-  <% } %>
+<% } %>

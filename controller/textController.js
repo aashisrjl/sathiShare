@@ -89,18 +89,18 @@ exports.deleteText = async(req,res)=>{
         }
 }
 
-//search by userId
-exports.handleSearch = async(req,res)=>{
-    const {id} = req.params
-    if(!id){
-        req.flash('error',"please Enter the field")
-        res.redirect(`/`)
-    }
-    const text = await Text.find({userId:id})
-    if(!text){
-        req.flash('error',"code not found")
-        res.redirect(`/`)
-    }
-    req.flash("success","Item Searched");
-    res.redirect(`/text/${id}`);
-}
+// //search by userId
+// exports.handleSearch = async(req,res)=>{
+//     const {id} = req.params
+//     if(!id){
+//         req.flash('error',"please Enter the field")
+//         res.redirect(`/`)
+//     }
+//     const text = await Text.find({userId:id})
+//     if(!text){
+//         req.flash('error',"code not found")
+//         res.redirect(`/`)
+//     }
+//     req.flash("success","Item Searched");
+//     res.redirect(`/text/${id}`);
+// }

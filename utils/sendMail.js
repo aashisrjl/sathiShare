@@ -4,7 +4,7 @@ const sendEmail = async(data)=>{
         service: 'gmail',
         auth:{
             user: "aashisrijal252@gmail.com",
-            pass: "igxygsohyqgziafq"
+            pass: "dyebjjiyjdaaivki"
         }
     })
     const mailOption={

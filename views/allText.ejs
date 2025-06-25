@@ -5,57 +5,93 @@
     <link rel="icon" type="image/svg+xml" href="/img/logo.PNG">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your codes</title>
-    <link rel="stylesheet" href="/css/allText.css"> 
+    <!-- <link rel="stylesheet" href="/css/allText.css"> -->
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .fade-in-item {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
     </style>
 </head>
-<body>
-   <h1>Keep Sharing Guys 😁😎</h1>
-    <div class="container">
-        <div class="header" style="margin: 20px;">
-            <mark><i onclick="window.location.href='/'" style="float: left; cursor: pointer; color: blue; font-weight: bolder;" class="fas fa-arrow-left"></i></mark>
-        <h3 style="margin-left: auto;">code: <mark><%-texts[0].userId %></mark></h3>
+<body class="bg-gray-900 text-gray-200 font-sans min-h-screen flex flex-col">
+    <div class="container mx-auto px-4 py-6 flex-1">
+        <div class="loading-spinner hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 rounded-full w-12 h-12 border-4 border-t-blue-400 border-b-blue-400 animate-spin" id="loadingSpinner"></div>
+
+        <!-- Centered Header with Animation -->
+        <div class="header text-center mb-10 fade-in-up delay-100">
+            <i onclick="window.location.href='/'" class="fas fa-arrow-left cursor-pointer text-blue-400 text-2xl hover:text-blue-300 transition duration-300" style="float: left;"></i>
+            <h3 class="text-xl font-semibold inline-block">code: <span class="text-blue-400"><%- texts[0].userId %></span></h3>
+            <h1 class="text-3xl font-bold text-white mt-4">Keep Sharing Guys 😁😎</h1>
         </div>
-        <div class="loading-spinner" id="loadingSpinner"></div>
-        <% if (texts.length > 0) { %>
-            <ul class="file-list">
-                <p>To Open each <b>code</b>,click on the <span style="color: blue;">View</span>button </p>
-                <% texts.forEach(text => { %>
-                    <li>
-                        <span><%= text.title %></span>
-                        <div>
-                            <a href="#" class="copy-link" onclick="copyToClipboard('<%= text.text %>')">Copy</a>
-                            <a href="/text/single/<%= text._id %>"  class="visit-link">View</a>
-                            <a  style="background-color: red; color: white; border-radius: 50%;" href="/text/delete/<%= text._id %>"  class="visit-link"><i class="fas fa-times"></i></a>
-                        </div>
-                    </li>
-                <% }); %>
+
+        <!-- Main Content -->
+        <div class="mb-12">
+            <% if (texts.length > 0) { %>
+                <p class="text-center text-gray-400 mb-6">To Open each <b>code</b>, click on the <span class="text-blue-400">View</span> button</p>
+                <ul class="file-list space-y-4 max-w-2xl mx-auto">
+                    <% texts.forEach((text, index) => { %>
+                        <li class="fade-in-item delay-<%= index * 100 %>" style="animation-delay: <%= index * 0.1 %>s">
+                            <div class="bg-gray-800 p-4 rounded-lg shadow-md flex justify-between items-center">
+                                <span class="text-lg"><%= text.title %></span>
+                                <div class="space-x-4">
+                                    <a href="#" class="copy-link text-blue-400 hover:text-blue-300 transition duration-300" onclick="copyToClipboard('<%= text.text %>')">Copy</a>
+                                    <a href="/text/single/<%= text._id %>" class="visit-link text-green-400 hover:text-green-300 transition duration-300">View</a>
+                                    <a href="/text/delete/<%= text._id %>" class="visit-link text-red-400 hover:text-red-300 transition duration-300" style="border-radius: 50%; padding: 4px 8px;"><i class="fas fa-times"></i></a>
+                                </div>
+                            </div>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p class="text-center text-gray-400">No files found for this user ID.</p>
+            <% } %>
+        </div>
+
+        <!-- Share Another Button -->
+        <div class="text-center mb-12">
+            <ul class="inline-flex space-x-4">
+                <li class="new">
+                    <a href="/text/post" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105 transition duration-300 ease-in-out">Share Another</a>
+                </li>
             </ul>
-        <% } else { %>
-            <p>No files found for this user ID.</p>
-        <% } %>
-        <ul style="border-radius: 20px; list-style: none; text-align: center; margin-left: 30%; margin-right: 20%; ">
-            <li  class="new"><a style="background-color: blue; color: white;" href="/"> Share Another</a></li>
-        </ul>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-auto">
+        <p>© 2025 SathiShare. All rights reserved.</p>
+    </footer>
 
     <script src="/script/loader.js"></script>
     <%- include('component/messageBox') %>
     <script>
         const msgBox = document.querySelector(".msg");
-        setTimeout(() => {
-          msgBox.remove();
-          }, 3000);
-    </script>
+        if (msgBox) {
+            setTimeout(() => {
+                msgBox.remove();
+            }, 3000);
+        }
 
-    <script>
-        const a = document.getElementsByTagName('a');
-        a.addEventListener("click",()=>{
-            document.getElementById("loadingSpinner").style.display= "block";
-        })
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener("click", () => {
+                document.getElementById("loadingSpinner").classList.remove('hidden');
+            });
+        });
+
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 console.log('Link copied to clipboard!');
@@ -64,6 +100,5 @@
             });
         }
     </script>
-   
 </body>
 </html>
