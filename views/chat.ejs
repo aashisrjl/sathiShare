@@ -135,12 +135,12 @@
         </div>
 
         <!-- Chat Container -->
-        <div id="chat-container" class="max-w-2xl mx-auto">
+        <div id="chat-container" class="max-w-4xl mx-auto">
             <div class="chat-header flex items-center p-4 bg-gray-800 rounded-t-lg shadow-md fade-in-up delay-100">
                 <i onclick="window.location.href='/'" class="fas fa-arrow-left cursor-pointer text-blue-400 text-2xl mr-4 hover:text-blue-300 transition duration-300"></i>
                 <h2 class="text-xl font-semibold">Chat</h2>
             </div>
-            <div id="chat-messages" class="h-96 overflow-y-auto p-4 bg-gray-800 rounded-b-lg shadow-inner space-y-4 fade-in-up delay-200">
+            <div id="chat-messages" class="h-96 overflow-y-auto p-4 bg-gray-800 rounded-b-lg shadow-inner space-y-6 fade-in-up delay-200">
                 <% msgg.forEach((msg, index) => { %>
                     <div class="msg <%= msg.ipAddress === clientIp ? 'user-message' : 'other-message' %> fade-in-message delay-<%= index * 100 %>" style="animation-delay: <%= index * 0.1 %>s">
                         <div class="flex items-start <%= msg.ipAddress === clientIp ? 'flex-row-reverse' : 'flex-row' %>">

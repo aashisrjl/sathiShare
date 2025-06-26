@@ -57,7 +57,7 @@ exports.getAllText = async(req,res)=>{
     const text = await Text.find({userId})
     if(text.length === 0){
         req.flash('error','Sorry code not found')
-        res.redirect(`/text`);
+        return res.redirect(`/`);
     }
   
     res.render("allText",{texts:text,error,success});
@@ -77,7 +77,7 @@ exports.deleteText = async(req,res)=>{
     const text =await Text.findById(id);
     if(!text){
         req.flash('error',"no text found")
-        res.redirect(`/text`)
+        res.redirect(`/`)
        }
        if(ipAddress == text.ipAddress){
         await Text.findByIdAndDelete(id);

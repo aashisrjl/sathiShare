@@ -75,6 +75,11 @@ app.use(cookies())
 app.use((req, res, next) => {
   res.status(404).render('404.ejs');
 });
+// 500 Error Page
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render('500.ejs');
+});
 
 app.get('/css/style.css', (req, res) => {
   console.log('CSS file requested');

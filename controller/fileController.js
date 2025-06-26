@@ -82,7 +82,7 @@ exports.postFiles = async (req, res) => {
         }
 
         req.flash("success","file uploaded")
-        res.redirect(`/${userId}`);
+        res.redirect(`/file/${userId}`);
 
     } catch (error) {
         console.error(error);
@@ -96,30 +96,35 @@ exports.getFilesByUserId = async (req, res) => {
     try {
         const [error] = req.flash('error');
         const [success] = req.flash('success');
+        console.log("Fetching files for userId:", req.params.userId);
 
-        const { userId } = req.params; // Extract userId from URL parameters
-        
+        const { userId } = req.params;
+        if (!userId) {
+            req.flash('error', 'User ID is required');
+            return res.redirect("/");
+        }
 
-        // Retrieve all files associated with the userId
         const files = await File.find({ userId });
-
         const url = process.env.BASE_URL;
 
         if (files.length === 0) {
-            
-            req.flash('error','no file found for this user');
-            res.redirect("/");
+            req.flash('error', 'No file found for this user');
+            return res.redirect("/");
         }
 
-        res.render("files", { files: files, url,error,success,userId });
+        res.render("files", { files, url, error, success, userId });
 
     } catch (error) {
         console.error("Error retrieving files:", error);
-        res.status(500).json({
-            message: "Internal server error"
-        });
+        // If headers already sent, don't try to respond again
+        if (!res.headersSent) {
+            res.status(500).json({
+                message: "Internal server error"
+            });
+        }
     }
 };
+
 
 exports.deleteFile = async (req, res) => {
     const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip;
@@ -138,10 +143,10 @@ exports.deleteFile = async (req, res) => {
         if (ipAddress === file.ipAddress) {
             await File.findByIdAndDelete(id);
             req.flash("success","file deleted successfully");
-            res.redirect(`/${file.userId}`);
+            res.redirect(`/file/${file.userId}`);
         } else {
             req.flash("error","you are not authorized!!");
-            res.redirect(`/${file.userId}`);
+            res.redirect(`/file/${file.userId}`);
         }
     
 };
@@ -207,7 +212,7 @@ exports.handleSearch = async(req, res)=> {
         // If only files are found
         if (file.length && !text.length) {
             req.flash('success', 'Files found');
-            return res.redirect(`/${id}`);
+            return res.redirect(`/file/${id}`);
         }
 
         // If only text is found
@@ -218,7 +223,7 @@ exports.handleSearch = async(req, res)=> {
 
         // If both are found (optional: prioritize one or handle both)
         req.flash('success', 'Items found');
-        return res.redirect(`/${id}`); // Prioritize files, or customize as needed
+        return res.redirect(`/file/${id}`); // Prioritize files, or customize as needed
     } catch (error) {
         req.flash('error', 'An error occurred during search');
         return res.redirect('/');
