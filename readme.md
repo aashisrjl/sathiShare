@@ -1,71 +1,97 @@
 # SathiShare
+[sathishare.aashishrijal.com.np](https://sathishare.aashishrijal.com.np)
 
-SathiShare is a simple platform built with Node.js, MongoDB, and EJS where users can share text, files, photos, and videos, or start chatting with friends without the need for a login. The platform supports dark mode and provides easy access to social media profiles.
+SathiShare is a simple platform built with Node.js, MongoDB, and EJS that lets users share text, files, photos, videos, or chat with friends without requiring a login. It supports dark mode and provides quick links to social profiles.
 
 ## Features
 
-- **Text Sharing**: Share textual content with others quickly and easily.
-- **File Sharing**: Upload and share files. Users can download files or view them directly.
-- **Photo and Video Sharing**: Share your favorite photos and videos.
-- **Chat Functionality**: Start chatting with friends instantly without needing to log in.
-- **No Login Required**: Enter your name and start sharing or chatting immediately.
-- **Dark Mode**: Toggle between light and dark modes for a personalized experience.
-- **Social Media Links**: Quick access to LinkedIn, Facebook, and GitHub profiles.
+- Text sharing
+- File upload and download / preview
+- Photo & video sharing
+- Instant chat (no login required)
+- Dark mode toggle
+- Social media links (LinkedIn, Facebook, GitHub)
 
-## Technologies Used
+## Technologies
 
-- **Backend**: Node.js, Express.js
-- **Frontend**: EJS (Embedded JavaScript Templates), HTML, CSS, JavaScript
-- **Database**: MongoDB
-- **File Storage**: Local storage (with considerations for production environments)
-- **Hosting**: Render.com
+- Backend: Node.js, Express
+- Frontend: EJS, HTML, CSS, JavaScript
+- Database: MongoDB
+- File storage: Local (consider cloud storage for production)
+- Hosting: Render (or other hosts)
 
-## Project Structure
+## Project structure (example)
 
-SathiShare/ │ ├── views/ │ ├── 404.ejs # 404 error page │ ├── index.ejs # Main homepage view │ └── ... # Other views │ ├── public/ │ ├── css/ │ │ └── home.css # Styles for the homepage │ ├── img/ │ │ └── logo.PNG # Logo image │ └── ... # Other static assets (e.g., JS, images) │ ├── routes/ │ ├── index.js # Main routes for the application │ └── ... # Other route files │ ├── models/ │ ├── user.js # User model for MongoDB │ ├── file.js # File model for MongoDB │ └── ... # Other models │ ├── storage/ # Directory for storing uploaded files │ ├── .env # Environment variables ├── .gitignore # Files and directories to be ignored by Git ├── app.js # Main server file ├── package.json # Project dependencies and scripts └── README.md # Project documentation
-
+```
+SathiShare/
+├─ views/
+│  ├─ index.ejs
+│  ├─ 404.ejs
+│  └─ ...
+├─ public/
+│  ├─ css/
+│  │  └─ home.css
+│  ├─ img/
+│  │  └─ logo.png
+│  └─ ...
+├─ routes/
+│  └─ index.js
+├─ models/
+│  ├─ user.js
+│  └─ file.js
+├─ storage/        # uploaded files
+├─ .env
+├─ .gitignore
+├─ app.js
+├─ package.json
+└─ README.md
+```
 
 ## Installation
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/)
-- [Git](https://git-scm.com/)
+- Node.js
+- MongoDB
+- Git
 
 ### Steps
 
 1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/yourusername/SathiShare.git
-   cd SathiShare
-
-2. Install the dependencies:
-    ```bash 
-    npm install
-
-3. Create a `.env` file in the root directory and add the following:
-    
     ```bash
+    git clone https://github.com/yourusername/SathiShare.git
+    cd SathiShare
+    ```
+
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
+
+3. Create a `.env` file in the project root (example):
+    ```env
     PORT=3000
     JWT_SECRET=your_secret_key
     NODE_ENV=development
     MONGODB_URI=mongodb://localhost:27017/sathishare
+    ```
 
-4. Run the application
+4. Start the app:
     ```bash
     npm start
+    ```
 
-5. Visit http://localhost:3000 in your browser to access the application.
+5. Open http://localhost:3000
 
+## Contact
 
-## Contact:
-For any inquiries, you can reach out to aashisrijal252@gmail.com
+For inquiries: aashisrijal252@gmail.com
 
-### Notes:
-- Replace `https://github.com/aashisrjl/SathiShare.git` with your actual GitHub repository URL.
-- Customize the `.env` variables as per your requirements.
-- Adjust the deployment steps based on your actual hosting service if it's not Render.
-- Ensure the `LICENSE` file exists in your project repository if you reference it.
+## Notes
+
+- Replace the GitHub clone URL above with your repository URL.
+- Adjust `.env` values for production.
+- Use cloud file storage in production (S3, etc.) instead of local storage.
+- Update deployment steps according to your hosting provider.
+- Ensure a LICENSE file is present if you reference it.
 
