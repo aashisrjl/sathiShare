@@ -239,5 +239,5 @@ exports.getMyFiles = async(req,res)=>{
     }
     const userId = existingFile.userId;
     console.log("userId", userId);
-    res.redirect(`/files/${userId}`);
+    res.redirect(`/file/${userId}`);
 };
