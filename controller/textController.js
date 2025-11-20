@@ -15,8 +15,6 @@ exports.renderTextPage = (req,res)=>{
     res.render('text.ejs',{error,success});
 }
 exports.getMyTexts = async(req,res)=>{
-    const [error] = req.flash('error');
-    const [success] = req.flash('success');
     const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip;
     let existingFile = await Text.findOne({ ipAddress });
     if(!existingFile){
@@ -24,7 +22,7 @@ exports.getMyTexts = async(req,res)=>{
         return res.redirect('/');
     }
     const userId = existingFile.userId;
-    res.redirect(`/text/${userId}`,{error,success});
+    res.redirect(`text/${userId}`);
 }
 
 exports.createText = async(req,res)=>{
