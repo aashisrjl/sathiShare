@@ -14,6 +14,18 @@ exports.renderTextPage = (req,res)=>{
   }
     res.render('text.ejs',{error,success});
 }
+exports.getMyTexts = async(req,res)=>{
+    const [error] = req.flash('error');
+    const [success] = req.flash('success');
+    const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip;
+    let existingFile = await Text.findOne({ ipAddress });
+    if(!existingFile){
+        req.flash('error','No texts found for your IP');
+        return res.redirect('/');
+    }
+    const userId = existingFile.userId;
+    res.redirect(`/texts/${userId}`,{error,success});
+}
 
 exports.createText = async(req,res)=>{
     const {title,text} = req.body;

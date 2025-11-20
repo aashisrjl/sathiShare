@@ -166,7 +166,7 @@ exports.sendmail = async(req,res)=>{
     email,
     subject: "File received from SathiShare",
     text: `You have received a file from SathiShare. Please download it from the link
-    <a href="https://sathishare.onrender.com/storage/${file}">Click here to download
+    <a href="https://sathishare.aashishrijal.com.np/storage/${file}">Click here to download
     `
    })
    req.flash("success","Mail send Successfully");
@@ -229,3 +229,15 @@ exports.handleSearch = async(req, res)=> {
         return res.redirect('/');
     }
 }
+
+exports.getMyFiles = async(req,res)=>{
+    const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip;
+    let existingFile = await File.findOne({ ipAddress });
+    if(!existingFile){
+        req.flash('error','No files found for your IP');
+        return res.redirect('/');
+    }
+    const userId = existingFile.userId;
+    console.log("userId", userId);
+    res.redirect(`/files/${userId}`);
+};

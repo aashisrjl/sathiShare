@@ -74,12 +74,25 @@
       gtag("config", "G-ZF9E6J4DB5");
     </script>
   </head>
-  <body class="bg-gray-900 text-gray-200 font-sans min-h-screen flex flex-col">
+  <body class="bg-gray-900 font-sans min-h-screen flex flex-col">
     <div class="container mx-auto px-4 py-6 flex-1">
       <div
         class="loading-spinner hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 rounded-full w-12 h-12 border-4 border-t-blue-400 border-b-blue-400 animate-spin"
         id="loadingSpinner"
       ></div>
+      <!-- Bottom-right dropdown -->
+<div class="fixed transform translate-x-1/2 z-50 bg-slate-500">
+  <select id="myshare"
+    class="px-5 py-3 rounded-full ml-2 bg-blue-400 text-black border border-gray-300
+           shadow-lg hover:!border-green-500 focus:!border-green-600
+           focus:ring-2 focus:!ring-green-300 transition-all duration-200
+           cursor-pointer font-medium">
+
+      <option class="text-gray-500" value="" disabled selected> My</option>
+      <option class="text-black" value="texts">Texts</option>
+      <option class="text-black" value="files">Files</option>
+  </select>
+</div>
 
       <!-- Centered Logo with Animation -->
       <div class="text-center mb-10 mt-12">
@@ -89,6 +102,10 @@
           >
         </div>
       </div>
+      <!-- button to get all my share files or texts -->
+
+
+      
 
       <!-- Search Bar with Animation -->
       <div class="search-container w-full max-w-xl mx-auto mb-8">
@@ -195,6 +212,19 @@
     <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-auto">
       <p>© 2025 SathiShare. All rights reserved.</p>
     </footer>
+<script>
+  document.getElementById("myshare").addEventListener("change", function () {
+    const value = this.value;
+
+    if (value === "texts") {
+      window.location.href = "/mytexts";   // route for texts
+    }
+
+    if (value === "files") {
+      window.location.href = "/myfiles";   // route for files
+    }
+  });
+</script>
 
     <script>
       function submitForm() {
@@ -212,5 +242,6 @@
         }, 3000);
       }
     </script>
+
   </body>
 </html>
