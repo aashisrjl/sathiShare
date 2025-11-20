@@ -24,7 +24,7 @@ exports.getMyTexts = async(req,res)=>{
         return res.redirect('/');
     }
     const userId = existingFile.userId;
-    res.redirect(`/texts/${userId}`,{error,success});
+    res.redirect(`/text/${userId}`,{error,success});
 }
 
 exports.createText = async(req,res)=>{
