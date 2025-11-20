@@ -146,30 +146,33 @@ cron.schedule('* * * * *', async () => {
   }
 });
 
-//delete file
-cron.schedule('* * * * *', async () => {
-  const tenMinutesAgo = new Date(Date.now() - 24 *60 * 60 * 1000);
+
+// ----------------------
+// Delete files (after 24 hours)
+// ----------------------
+cron.schedule("* * * * *", async () => {
+  const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
   try {
-    const result = await File.deleteMany({
-      createdAt: { $lt: tenMinutesAgo }
-    });
-
+    const result = await File.deleteMany({ createdAt: { $lt: cutoff } });
+    console.log(`Files: ${result.deletedCount} files deleted`);
   } catch (error) {
-    console.error('Error deleting old file:', error);
+    console.error("File cleanup error:", error);
   }
 });
 
-//delete text
-cron.schedule('* * * * *', async () => {
-  const tenMinutesAgo = new Date(Date.now() - 24 *60 * 60 * 1000 *7);
+
+// ----------------------
+// Delete text (after 7 days)
+// ----------------------
+cron.schedule("* * * * *", async () => {
+  const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
   try {
-    const result = await Text.deleteMany({
-      createdAt: { $lt: tenMinutesAgo }
-    });
+    const result = await Text.deleteMany({ createdAt: { $lt: cutoff } });
+    console.log(`Texts: ${result.deletedCount} texts deleted`);
   } catch (error) {
-    console.error('Error deleting old text:', error);
+    console.error("Text cleanup error:", error);
   }
 });
 
