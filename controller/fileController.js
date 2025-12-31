@@ -169,8 +169,15 @@ exports.sendmail = async(req,res)=>{
     <a href="https://sathishare.aashishrijal.com.np/storage/${file}">Click here to download
     `
    })
-   req.flash("success","Mail send Successfully");
-   res.redirect("/")
+   if(sendEmail){
+    console.log("Email sent successfully");
+    req.flash("success","Mail send Successfully");
+    res.redirect("/")
+    }else{
+    console.log("Error sending email");
+    }
+   req.flash("error","Mail cannot be sent");
+   res.redirect("/file/email/"+file)
 
 
 }
