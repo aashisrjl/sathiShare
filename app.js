@@ -176,15 +176,15 @@ cron.schedule("* * * * *", async () => {
   }
 });
 
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
 
-// Every 15 minutes
-setInterval(async () => {
-  try {
-    const res = await fetch("https://sathishare.aashishrijal.com.np");
-    console.log("Pinged server:", res.status);
-  } catch (err) {
-    console.error("Error pinging server:", err);
-  }
-}, 15 * 60 * 1000); // 15 minutes
+// // Every 10 minutes
+// setInterval(async () => {
+//   try {
+//     const res = await fetch("https://sathishare.aashishrijal.com.np");
+//     console.log("Pinged server:", res.status);
+//   } catch (err) {
+//     console.error("Error pinging server:", err);
+//   }
+// }, 15 * 60 * 1000); // 15 minutes
 
