@@ -303,6 +303,18 @@
       }
       @keyframes spin { to { transform: rotate(360deg); } }
 
+      /* ── Responsive Refinements ── */
+      @media (max-width: 768px) {
+        .container { padding: 0 16px; }
+        .hero h1 { font-size: 32px; }
+        .hero p { font-size: 14px; }
+        .file-grid { grid-template-columns: 1fr; gap: 16px; }
+        .file-card { padding: 16px; }
+        .file-icon { width: 44px; height: 44px; font-size: 20px; }
+        .file-name { font-size: 15px; }
+        .btn-primary { width: 100%; justify-content: center; }
+      }
+
       .hidden { display: none !important; }
     </style>
   </head>

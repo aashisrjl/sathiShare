@@ -11,7 +11,8 @@ const sendEmail = async(data)=>{
         from :'"SathiShare" <aashisrijal252@gmail.com>',
         to: data.email,
         subject: data.subject,
-        text: data.text
+        text: data.text,
+        html: data.html
     }
     await transporter.sendMail(mailOption)
 }

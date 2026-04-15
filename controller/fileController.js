@@ -86,6 +86,7 @@ exports.postFiles = async (req, res) => {
 
     } catch (error) {
         console.error(error);
+        fs.appendFileSync('/tmp/sathishare_error.log', `Error in postFiles: ${error.stack}\n`);
         res.status(500).json({
             message: "Internal server error"
         });
@@ -162,22 +163,42 @@ exports.renderEmail = async(req,res)=>{
 exports.sendmail = async(req,res)=>{
     const file = req.params.file;
     const {email} = req.body;
-   sendEmail({
-    email,
-    subject: "File received from SathiShare",
-    text: `You have received a file from SathiShare. Please download it from the link
-    <a href="https://sathishare.aashishrijal.com.np/storage/${file}">Click here to download
-    `
-   })
-   if(sendEmail){
-    console.log("Email sent successfully");
-    req.flash("success","Mail send Successfully");
-    res.redirect("/")
+    const fileUrl = `https://sathishare.aashishrijal.com.np/storage/${file}`;
+    
+    const htmlTemplate = `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
+        <div style="text-align: center; margin-bottom: 24px;">
+            <h1 style="color: #4f46e5; margin: 0;">SathiShare</h1>
+            <p style="color: #64748b; margin: 4px 0 0;">Seamless Sharing with Friends</p>
+        </div>
+        <div style="padding: 24px; background-color: #f8fafc; border-radius: 8px; margin-bottom: 24px;">
+            <p style="margin: 0 0 16px; color: #1e293b; font-size: 16px;">Hello!</p>
+            <p style="margin: 0 0 24px; color: #475569; line-height: 1.6;">You have received a file from SathiShare: <strong>${file}</strong>. Click the button below to download it.</p>
+            <div style="text-align: center;">
+                <a href="${fileUrl}" style="display: inline-block; padding: 14px 28px; background-color: #4f46e5; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);">Download File</a>
+            </div>
+        </div>
+        <div style="text-align: center; color: #94a3b8; font-size: 12px;">
+            <p style="margin: 0;">&copy; 2025 SathiShare. All rights reserved.</p>
+        </div>
+    </div>
+    `;
+
+    sendEmail({
+        email,
+        subject: "📁 File received from SathiShare",
+        text: `You have received a file from SathiShare: ${file}. Download it here: ${fileUrl}`,
+        html: htmlTemplate
+    })
+    if(sendEmail){
+        console.log("Email sent successfully");
+        req.flash("success","Mail send Successfully");
+        res.redirect("/")
     }else{
-    console.log("Error sending email");
+        console.log("Error sending email");
     }
-   req.flash("error","Mail cannot be sent");
-   res.redirect("/file/email/"+file)
+    req.flash("error","Mail cannot be sent");
+    res.redirect("/file/email/"+file)
 
 
 }

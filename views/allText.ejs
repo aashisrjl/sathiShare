@@ -295,6 +295,17 @@
         z-index: 4000;
       }
       .toast.show { transform: translateX(-50%) translateY(0); }
+      /* ── Responsive Refinements ── */
+      @media (max-width: 768px) {
+        .container { padding: 0 16px; }
+        .hero h1 { font-size: 32px; }
+        .hero p { font-size: 14px; }
+        .code-grid { grid-template-columns: 1fr; gap: 16px; }
+        .code-card { padding: 16px; }
+        .code-preview { height: 160px; }
+        .btn-primary { width: 100%; justify-content: center; }
+        .user-id-badge { font-size: 10px; }
+      }
     </style>
   </head>
 
