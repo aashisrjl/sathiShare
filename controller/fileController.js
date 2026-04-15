@@ -12,6 +12,8 @@ function generateUserId() {
     return 'f' + digits; // Prefix 'A' to the 4-digit number
 }
 
+const { cloudinary } = require('../middleware/multerConfig');
+
 const scheduleDeletion = (userId) => {
     userJobs[userId] = schedule.scheduleJob(
         new Date(Date.now() + 24 * 60 * 60 * 1000),
@@ -21,25 +23,23 @@ const scheduleDeletion = (userId) => {
                 const files = await File.find({ userId });
                 if (files.length) {
                     for (const file of files) {
-                        const filePath = path.join(__dirname, '../storage/', file.file);
-                        fs.unlink(filePath, (err) => {
-                            if (err) {
-                                console.error("Error deleting file:", filePath, err);
-                            } else {
-                                console.log("File deleted successfully:", filePath);
+                        try {
+                            if (file.publicId) {
+                                await cloudinary.uploader.destroy(file.publicId, { resource_type: 'auto' });
+                                console.log("Cloudinary file deleted:", file.publicId);
                             }
-                        });
+                        } catch (err) {
+                            console.error("Error deleting from Cloudinary:", err);
+                        }
                     }
                     await File.deleteMany({ userId });
                     delete userJobs[userId];
-                    console.log("Remaining jobs:", userJobs);
                 }
             } catch (error) {
                 console.error("Error during scheduled file deletion:", error);
             }
         }
     );
-    console.log("Scheduled jobs:", userJobs);
 };
 
 exports.postFiles = async (req, res) => {
@@ -69,12 +69,15 @@ exports.postFiles = async (req, res) => {
         const savedFiles = [];
 
         for (let i = 0; i < files.length; i++) {
-            const fileUrl = files[i].filename;
+            // multer-storage-cloudinary provides path (URL) and filename (Public ID)
+            const fileUrl = files[i].path;
+            const publicId = files[i].filename;
 
             const savedFile = await File.create({
                 userId: userId,
                 ipAddress: ipAddress,
-                file: fileUrl
+                file: fileUrl,
+                publicId: publicId
             });
             scheduleDeletion(userId);
 
@@ -142,6 +145,13 @@ exports.deleteFile = async (req, res) => {
         }
 
         if (ipAddress === file.ipAddress) {
+            if (file.publicId) {
+                try {
+                    await cloudinary.uploader.destroy(file.publicId, { resource_type: 'auto' });
+                } catch (err) {
+                    console.error("Cloudinary manual delete error:", err);
+                }
+            }
             await File.findByIdAndDelete(id);
             req.flash("success","file deleted successfully");
             res.redirect(`/file/${file.userId}`);
@@ -163,7 +173,7 @@ exports.renderEmail = async(req,res)=>{
 exports.sendmail = async(req,res)=>{
     const file = req.params.file;
     const {email} = req.body;
-    const fileUrl = `https://sathishare.aashishrijal.com.np/storage/${file}`;
+    const fileUrl = file; // 'file' is already the full Cloudinary URL
     
     const htmlTemplate = `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">

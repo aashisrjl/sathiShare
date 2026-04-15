@@ -14,6 +14,10 @@ const fileSchema = new Schema({
         required: true,
         trim: true
     },
+    publicId: {
+        type: String,
+        trim: true
+    },
     timestamp: {
         type: Date,
         default: Date.now

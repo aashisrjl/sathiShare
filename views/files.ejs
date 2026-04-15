@@ -356,15 +356,15 @@
               <i class="fas <%= iconClass %>"></i>
             </div>
             <div class="file-info">
-              <div class="file-name" onclick="openPreview('/storage/<%= file.file %>', '<%= file.file %>')" style="cursor: pointer;"><%= file.file %></div>
+              <div class="file-name" onclick="openPreview('<%= file.file %>', '<%= file.file %>')" style="cursor: pointer;"><%= file.file.split('/').pop() %></div>
               <div class="file-meta">Click name to preview</div>
             </div>
             <div class="file-actions">
-              <a href="/storage/<%= file.file %>" download class="action-btn btn-download">
+              <a href="<%= file.file %>" download="<%= file.file.split('/').pop() %>" class="action-btn btn-download">
                 <i class="fas fa-download"></i>
                 <span>Get</span>
               </a>
-              <a href="/file/email/<%= file.file %>" class="action-btn btn-email">
+              <a href="/file/email/<%= encodeURIComponent(file.file) %>" class="action-btn btn-email">
                 <i class="fas fa-envelope"></i>
               </a>
               <a href="/file/delete/<%= file._id %>" class="action-btn btn-delete">
