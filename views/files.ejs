@@ -4,222 +4,386 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/img/logo.PNG" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>SathiShare – Files</title>
+    <title>SathiShare – Shared Files: <%= userId %></title>
     <meta
       name="description"
-      content="SathiShare lets you share files easily — a simple and fast sharing platform built with Node.js."
+      content="SathiShare: Access and manage your shared files using ID <%= userId %>. Fast and secure file sharing for free."
     />
     <meta
       name="keywords"
-      content="file sharing, chat app, text sharing, SathiShare, Node.js, Nepal"
+      content="SathiShare, Sathi Share, shared files, file management, instant sharing, secure files, <%= userId %>"
     />
-    <meta property="og:title" content="SathiShare – Chat & Share Instantly" />
+    <meta property="og:title" content="SathiShare – Shared Files" />
     <meta
       property="og:description"
-      content="Fast and free file & text sharing app from Nepal."
+      content="SathiShare: Fast and secure file sharing."
     />
-    <meta property="og:url" content="https://sathishare.aashishrijal.com.np" />
-    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <link rel="stylesheet" href="/css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <style>
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes fadeInScale {
-        from {
-          opacity: 0;
-          transform: scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-      .fade-in-up {
-        animation: fadeInUp 0.6s ease-out forwards;
-      }
-      .fade-in-item {
-        animation: fadeInUp 0.5s ease-out forwards;
-      }
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        z-index: 50;
-        justify-content: center;
-        align-items: center;
-      }
-      .modal-content {
-        background-color: #1f2937;
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 90%;
-        max-height: 90vh;
-        overflow: auto;
-        position: relative;
-        animation: fadeInScale 0.3s ease-out;
-      }
-      .modal-content img {
-        max-width: 100%;
-        max-height: 80vh;
-        display: block;
-        margin: 0 auto;
-      }
-      .close-modal {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 24px;
-        color: #fff;
-        cursor: pointer;
-        transition: color 0.3s;
-      }
-      .close-modal:hover {
-        color: #ef4444;
-      }
-    </style>
     <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-ZF9E6J4DB5"
-    ></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZF9E6J4DB5"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+      function gtag() { dataLayer.push(arguments); }
       gtag("js", new Date());
-
       gtag("config", "G-ZF9E6J4DB5");
     </script>
+
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --bg-base:      #0f1117;
+        --bg-surface:   #161b27;
+        --bg-elevated:  #1e2333;
+        --accent:       #3b82f6;
+        --accent-glow:  rgba(59, 130, 246, 0.5);
+        --text-primary: #e2e8f0;
+        --text-muted:   #94a3b8;
+        --border:       rgba(255, 255, 255, 0.08);
+        --radius-lg:    20px;
+        --radius-md:    12px;
+      }
+
+      html, body {
+        height: 100%;
+        font-family: 'Inter', system-ui, sans-serif;
+        background: var(--bg-base);
+        color: var(--text-primary);
+        line-height: 1.5;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 24px;
+      }
+
+      /* ── Header ── */
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 48px;
+        animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .back-btn {
+        width: 44px; height: 44px;
+        border-radius: 50%;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        color: var(--accent);
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+      .back-btn:hover {
+        background: var(--accent);
+        color: white;
+        transform: translateX(-4px);
+        box-shadow: 0 0 20px var(--accent-glow);
+      }
+      .user-id-badge {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        padding: 6px 16px;
+        border-radius: 99px;
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      /* ── Hero ── */
+      .hero {
+        text-align: center;
+        margin-bottom: 64px;
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+      }
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .hero h1 {
+        font-size: 42px; font-weight: 800;
+        margin-bottom: 12px;
+        background: linear-gradient(to right, #fff, #94a3b8);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero p { color: var(--text-muted); font-size: 18px; }
+
+      /* ── File Grid ── */
+      .file-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 64px;
+      }
+
+      .file-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+      }
+      @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+      .file-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        border-color: rgba(59, 130, 246, 0.4);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      }
+      .file-card::before {
+        content: '';
+        position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+        background: var(--accent);
+        opacity: 0; transition: opacity 0.3s;
+      }
+      .file-card:hover::before { opacity: 1; }
+
+      .file-icon {
+        width: 56px; height: 56px;
+        background: rgba(255,255,255,0.03);
+        border-radius: var(--radius-md);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 24px;
+        color: var(--accent);
+        transition: transform 0.3s ease;
+      }
+      .file-card:hover .file-icon {
+        transform: rotate(-10deg) scale(1.1);
+        background: rgba(59, 130, 246, 0.1);
+      }
+
+      .file-info { flex: 1; }
+      .file-name {
+        font-weight: 600; font-size: 16px;
+        word-break: break-all;
+        margin-bottom: 4px;
+        display: -webkit-box;
+        line-clamp: 2;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .file-meta { font-size: 13px; color: var(--text-muted); }
+
+      .file-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 8px;
+      }
+      .action-btn {
+        flex: 1;
+        height: 40px;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        gap: 8px;
+      }
+      .btn-download { background: var(--accent); color: white; }
+      .btn-download:hover { background: #2563eb; transform: translateY(-2px); }
+      .btn-email { background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); }
+      .btn-email:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+      .btn-delete {
+        width: 40px; min-width: 40px;
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+      }
+      .btn-delete:hover { background: #ef4444; color: white; }
+
+      /* ── Empty State ── */
+      .empty-state {
+        text-align: center;
+        padding: 80px 0;
+        color: var(--text-muted);
+      }
+      .empty-icon { font-size: 64px; margin-bottom: 24px; opacity: 0.3; }
+
+      /* ── Action Bar ── */
+      .action-bar {
+        text-align: center;
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+        padding: 14px 32px;
+        border-radius: 99px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        display: inline-flex; align-items: center; gap: 10px;
+        transition: all 0.3s;
+        border: none;
+        box-shadow: 0 10px 30px var(--accent-glow);
+      }
+      .btn-primary:hover {
+        transform: translateY(-4px) scale(1.05);
+        background: #2563eb;
+        box-shadow: 0 15px 40px var(--accent-glow);
+      }
+
+      /* ── Modal ── */
+      .modal {
+        display: none;
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.85);
+        backdrop-filter: blur(8px);
+        z-index: 2000;
+        padding: 40px;
+        justify-content: center; align-items: center;
+      }
+      .modal-content {
+        max-width: 90%; max-height: 90%;
+        position: relative;
+        animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes modalIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+      .modal-content img {
+        display: block; width: auto; height: auto;
+        max-width: 100%; max-height: 80vh;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      }
+      .close-modal {
+        position: absolute; top: -50px; right: 0;
+        color: white; font-size: 32px; cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .close-modal:hover { opacity: 0.7; }
+
+      /* ── Footer ── */
+      footer {
+        padding: 48px 0;
+        text-align: center;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+
+      /* Loading spinner */
+      #loadingSpinner {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 3000;
+        justify-content: center; align-items: center;
+      }
+      .spinner {
+        width: 50px; height: 50px;
+        border: 4px solid rgba(255,255,255,0.1);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      .hidden { display: none !important; }
+    </style>
   </head>
-  <body class="bg-gray-900 text-gray-200 font-sans min-h-screen flex flex-col">
-    <div class="container mx-auto px-4 py-6 flex-1">
-      <div
-        class="loading-spinner hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 rounded-full w-12 h-12 border-4 border-t-blue-400 border-b-blue-400 animate-spin"
-        id="loadingSpinner"
-      ></div>
 
-      <!-- Header with Animation -->
-      <div
-        class="header flex justify-between items-center mb-8 fade-in-up delay-100"
-      >
-        <i
-          onclick="window.location.href='/'"
-          class="fas fa-arrow-left cursor-pointer text-blue-400 text-2xl hover:text-blue-300 transition duration-300"
-        ></i>
-        <h3 class="text-xl font-semibold">
-          Files: <span class="text-blue-400"><%= userId %></span>
-        </h3>
+  <body>
+    <div id="loadingSpinner">
+      <div class="spinner"></div>
+    </div>
+
+    <div class="container">
+      <header class="header">
+        <a href="/" class="back-btn">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="user-id-badge">
+          ID: <%= userId %>
+        </div>
         <div></div>
-        <!-- Placeholder to balance flex layout -->
-      </div>
+      </header>
 
-      <h1
-        class="text-3xl font-bold text-white text-center mb-8 fade-in-up delay-200"
-      >
-        Keep Sharing Guys 😁😎
-      </h1>
+      <section class="hero">
+        <h1>Your Shared Files</h1>
+        <p>Manage and share your files effortlessly.</p>
+      </section>
 
-      <!-- File List -->
-      <div class="mb-12">
+      <div class="file-grid">
         <% if (files.length > 0) { %>
-        <ul class="file-list space-y-4 max-w-2xl mx-auto">
-          <% files.forEach((file, index) => { %>
-          <li
-            class="fade-in-item delay-<%= index * 100 %>"
-            style="animation-delay: <%= index * 0.1 %>s"
-          >
-            <div
-              class="bg-gray-800 p-4 rounded-lg shadow-md flex justify-between items-center"
-            >
-              <span
-                class="text-lg cursor-pointer text-blue-400 hover:text-blue-300 transition duration-300"
-                onclick="openModal('/storage/<%= file.file %>', '<%= file.file %>')"
-                ><%= file.file %></span
-              >
-              <div class="space-x-4">
-                <a
-                  href="/storage/<%= file.file %>"
-                  class="copy-link text-green-400 hover:text-green-300 transition duration-300"
-                  download
-                  ><i class="fas fa-download"></i
-                ></a>
-                <a
-                  href="/file/email/<%= file.file %>"
-                  target="_blank"
-                  class="visit-link text-blue-400 hover:text-blue-300 transition duration-300"
-                  ><i class="fas fa-envelope"></i
-                ></a>
-                <a
-                  href="/file/delete/<%= file._id %>"
-                  class="visit-link text-red-400 hover:text-red-300 transition duration-300 rounded-full w-8 h-8 flex items-center justify-center"
-                  style="background-color: red; color: white"
-                  ><i class="fas fa-times"></i
-                ></a>
-              </div>
+          <% files.forEach((file, index) => {
+               const ext = file.file.split('.').pop().toLowerCase();
+               let iconClass = 'fa-file';
+               if (['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(ext)) iconClass = 'fa-file-image';
+               else if (['mp4', 'webm', 'mov'].includes(ext)) iconClass = 'fa-file-video';
+               else if (['pdf'].includes(ext)) iconClass = 'fa-file-pdf';
+               else if (['zip', 'rar', '7z'].includes(ext)) iconClass = 'fa-file-archive';
+               else if (['js', 'html', 'css', 'py', 'json'].includes(ext)) iconClass = 'fa-file-code';
+          %>
+          <div class="file-card" style="animation-delay: <%= index * 0.05 %>s">
+            <div class="file-icon">
+              <i class="fas <%= iconClass %>"></i>
             </div>
-          </li>
+            <div class="file-info">
+              <div class="file-name" onclick="openPreview('/storage/<%= file.file %>', '<%= file.file %>')" style="cursor: pointer;"><%= file.file %></div>
+              <div class="file-meta">Click name to preview</div>
+            </div>
+            <div class="file-actions">
+              <a href="/storage/<%= file.file %>" download class="action-btn btn-download">
+                <i class="fas fa-download"></i>
+                <span>Get</span>
+              </a>
+              <a href="/file/email/<%= file.file %>" class="action-btn btn-email">
+                <i class="fas fa-envelope"></i>
+              </a>
+              <a href="/file/delete/<%= file._id %>" class="action-btn btn-delete">
+                <i class="fas fa-trash-alt"></i>
+              </a>
+            </div>
+          </div>
           <% }); %>
-        </ul>
         <% } else { %>
-        <p class="text-center text-gray-400">
-          No files found for this user ID.
-        </p>
+          <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <h3>No files found</h3>
+            <p>Upload something to get started!</p>
+          </div>
         <% } %>
       </div>
 
-      <!-- Share Another Button -->
-      <div class="text-center mb-12">
-        <ul class="inline-flex space-x-4">
-          <li class="new">
-            <p
-              onclick="document.getElementById('fileInput').click()"
-              class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
-            >
-              Share Another
-            </p>
-          </li>
-        </ul>
+      <div class="action-bar">
+        <button class="btn-primary" onclick="document.getElementById('fileInput').click()">
+          <i class="fas fa-plus"></i>
+          Share Another
+        </button>
       </div>
 
       <!-- Hidden Form for File Upload -->
-      <form
-        id="fileForm"
-        action="/file"
-        method="post"
-        enctype="multipart/form-data"
-        class="hidden"
-      >
-        <input
-          type="file"
-          id="fileInput"
-          name="file"
-          class="hidden-input"
-          onchange="submitForm()"
-          multiple
-        />
+      <form id="fileForm" action="/file" method="post" enctype="multipart/form-data" class="hidden">
+        <input type="file" id="fileInput" name="file" onchange="submitForm()" multiple />
       </form>
 
       <!-- Modal -->
-      <div id="fileModal" class="modal" onclick="closeModal(event)">
+      <div id="fileModal" class="modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
           <span class="close-modal" onclick="closeModal()">&times;</span>
           <img id="modalImage" src="" alt="File Preview" />
@@ -227,50 +391,46 @@
       </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-auto">
+    <footer>
       <p>© 2025 SathiShare. All rights reserved.</p>
     </footer>
 
-    <script src="/script/loader.js"></script>
     <%- include('component/messageBox') %>
-    <script>
-      const msgBox = document.querySelector(".msg");
-      if (msgBox) {
-        setTimeout(() => {
-          msgBox.remove();
-        }, 3000);
-      }
 
+    <script>
       function submitForm() {
-        document.getElementById("loadingSpinner").classList.remove("hidden");
+        document.getElementById("loadingSpinner").style.display = "flex";
         document.getElementById("fileForm").submit();
       }
 
-      document.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          document.getElementById("loadingSpinner").classList.remove("hidden");
-        });
-      });
-
-      function openModal(imageUrl, fileName) {
-        const extension = fileName.split(".").pop().toLowerCase();
-        const imageExtensions = ["png", "jpg", "jpeg", "gif"];
-        if (imageExtensions.includes(extension)) {
+      function openPreview(url, fileName) {
+        const ext = fileName.split('.').pop().toLowerCase();
+        const imageExtensions = ["png", "jpg", "jpeg", "gif", "svg", "webp"];
+        if (imageExtensions.includes(ext)) {
           const modal = document.getElementById("fileModal");
           const modalImage = document.getElementById("modalImage");
-          modalImage.src = imageUrl;
+          modalImage.src = url;
           modal.style.display = "flex";
+          document.body.style.overflow = "hidden";
         } else {
-          // For non-image files, trigger download (handled by the href)
-          window.location.href = imageUrl;
+          // Fallback to download for non-previable types
+          window.location.href = url;
         }
       }
 
-      function closeModal(event) {
-        const modal = document.getElementById("fileModal");
-        modal.style.display = "none";
+      function closeModal() {
+        document.getElementById("fileModal").style.display = "none";
+        document.body.style.overflow = "auto";
       }
+
+      // Show spinner for all link clicks
+      document.querySelectorAll("a").forEach(a => {
+        if (!a.hasAttribute('download') && a.getAttribute('href') !== '#') {
+          a.addEventListener("click", () => {
+            document.getElementById("loadingSpinner").style.display = "flex";
+          });
+        }
+      });
     </script>
   </body>
 </html>

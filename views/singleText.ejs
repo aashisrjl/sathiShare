@@ -4,162 +4,279 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/img/logo.PNG" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>SathiShare – Code</title>
+    <title>SathiShare – <%= text.title %> (Snippet)</title>
     <meta
       name="description"
-      content="SathiShare lets you share code snippets easily — a simple and fast sharing platform built with Node.js."
+      content="SathiShare: View shared code snippet '<%= text.title %>'. Instant, secure, and easy code sharing."
     />
     <meta
       name="keywords"
-      content="file sharing, chat app, text sharing, SathiShare, Node.js, Nepal"
+      content="SathiShare, Sathi Share, code snippet, <%= text.title %>, share code"
     />
-    <meta property="og:title" content="SathiShare – Chat & Share Instantly" />
+    <meta property="og:title" content="SathiShare – <%= text.title %>" />
     <meta
       property="og:description"
-      content="Fast and free file & text sharing app from Nepal."
+      content="SathiShare: View this shared code snippet instantly."
     />
-    <meta property="og:url" content="https://sathishare.aashishrijal.com.np" />
-    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <link rel="stylesheet" href="/css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <style>
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes fadeInScale {
-        from {
-          opacity: 0;
-          transform: scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-      .fade-in-up {
-        animation: fadeInUp 0.6s ease-out forwards;
-      }
-      .fade-in-scale {
-        animation: fadeInScale 0.6s ease-out forwards;
-      }
-    </style>
     <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-ZF9E6J4DB5"
-    ></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZF9E6J4DB5"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+      function gtag() { dataLayer.push(arguments); }
       gtag("js", new Date());
-
       gtag("config", "G-ZF9E6J4DB5");
     </script>
+
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --bg-base:      #0d1117;
+        --bg-surface:   #161b22;
+        --bg-elevated:  #21262d;
+        --accent:       #58a6ff;
+        --accent-glow:  rgba(88, 166, 255, 0.3);
+        --text-primary: #c9d1d9;
+        --text-muted:   #8b949e;
+        --border:       rgba(240, 246, 252, 0.1);
+        --radius:       8px;
+      }
+
+      html, body {
+        height: 100%;
+        font-family: 'Inter', system-ui, sans-serif;
+        background: var(--bg-base);
+        color: var(--text-primary);
+        line-height: 1.5;
+        overflow: hidden;
+      }
+
+      #page-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+
+      /* ── Header ── */
+      .editor-header {
+        height: 60px;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        justify-content: space-between;
+        flex-shrink: 0;
+      }
+      .header-left { display: flex; align-items: center; gap: 16px; }
+      .back-btn {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 18px;
+        transition: color 0.2s;
+      }
+      .back-btn:hover { color: var(--accent); }
+      .editor-title {
+        font-weight: 600; font-size: 14px;
+        color: var(--text-primary);
+        display: flex; align-items: center; gap: 8px;
+      }
+      .editor-title i { color: #d79921; }
+
+      .header-right { display: flex; gap: 8px; }
+
+      /* ── Editor Body ── */
+      .editor-body {
+        flex: 1;
+        background: var(--bg-base);
+        position: relative;
+        overflow: hidden;
+      }
+      #viewer {
+        width: 100%; height: 100%;
+        padding: 24px;
+        background: transparent;
+        color: #e6edf3;
+        font-family: 'Fira Code', monospace;
+        font-size: 14px;
+        border: none;
+        outline: none;
+        resize: none;
+        tab-size: 4;
+        line-height: 1.6;
+        white-space: pre;
+        overflow: auto;
+      }
+
+      /* ── Toolbar / Footer ── */
+      .editor-footer {
+        height: 64px;
+        background: var(--bg-surface);
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        justify-content: flex-end;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+
+      .btn {
+        height: 38px;
+        padding: 0 20px;
+        border-radius: 6px;
+        font-size: 13px; font-weight: 600;
+        cursor: pointer;
+        display: flex; align-items: center; gap: 8px;
+        transition: all 0.2s;
+        border: 1px solid var(--border);
+        background: var(--bg-elevated);
+        color: var(--text-primary);
+        text-decoration: none;
+      }
+      .btn:hover { background: #30363d; border-color: #8b949e; }
+      .btn-primary { background: #238636; border-color: rgba(240,246,252,0.1); color: white; }
+      .btn-primary:hover { background: #2ea043; }
+      .btn-accent { background: var(--bg-elevated); border-color: var(--accent); color: var(--accent); }
+      .btn-accent:hover { background: rgba(88,166,255,0.1); }
+
+      /* Loading spinner */
+      #loadingSpinner {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 3000;
+        justify-content: center; align-items: center;
+      }
+      .spinner {
+        width: 40px; height: 40px;
+        border: 3px solid rgba(255,255,255,0.1);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* Toast notification */
+      .toast {
+        position: fixed; top: 80px; left: 50%;
+        transform: translateX(-50%) translateY(-100px);
+        background: #10b981; color: white;
+        padding: 10px 20px; border-radius: 8px;
+        font-weight: 600; font-size: 13px;
+        display: flex; align-items: center; gap: 10px;
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 4000;
+      }
+      .toast.show { transform: translateX(-50%) translateY(0); }
+
+      .hidden { display: none !important; }
+    </style>
   </head>
-  <body class="bg-gray-900 text-gray-200 font-sans min-h-screen flex flex-col">
-    <div class="container mx-auto px-4 py-6 flex-1">
-      <div
-        class="loading-spinner hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 rounded-full w-12 h-12 border-4 border-t-blue-400 border-b-blue-400 animate-spin"
-        id="loadingSpinner"
-      ></div>
 
-      <!-- Header with Animation -->
-      <div
-        class="header flex justify-between items-center mb-8 fade-in-up delay-100"
-      >
-        <input
-          type="text"
-          name="title"
-          id="title"
-          value="<%= text.title %>"
-          readonly
-          class="bg-gray-800 text-lg font-semibold p-2 rounded-lg w-1/2 outline-none text-gray-200"
-        />
-        <a
-          href="/"
-          class="bg-red-600 rounded-md p-2 hover:text-blue-300 transition duration-300 flex items-center"
-          style="text-decoration: none"
-        >
-          <span>Cancel</span> <i class="fas fa-times ml-2"></i>
+  <body>
+    <div id="loadingSpinner">
+      <div class="spinner"></div>
+    </div>
+
+    <div id="toast" class="toast">
+      <i class="fas fa-check-circle"></i>
+      <span>Snippet copied to clipboard!</span>
+    </div>
+
+    <div id="page-wrapper">
+      <header class="editor-header">
+        <div class="header-left">
+          <a href="/text/<%= text.userId %>" class="back-btn">
+            <i class="fas fa-chevron-left"></i>
+          </a>
+          <div class="editor-title">
+            <i class="fas fa-file-code"></i>
+            <span><%= text.title %></span>
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="btn btn-accent" id="copyBtn">
+            <i class="fas fa-copy"></i>
+            <span>Copy Code</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="editor-body">
+        <textarea id="viewer" readonly><%= text.text %></textarea>
+      </main>
+
+      <footer class="editor-footer">
+        <a href="/" class="btn">
+          <i class="fas fa-home"></i>
+          Home
         </a>
-      </div>
-
-      <!-- Textarea with Animation -->
-      <div class="textarea mb-12 fade-in-scale delay-200">
-        <textarea
-          name="text"
-          cols="5"
-          rows="25"
-          readonly
-          class="w-full bg-gray-800 text-gray-200 p-4 rounded-lg shadow-md outline-none resize-none font-mono text-sm"
-        >
-<%= text.text %></textarea
-        >
-      </div>
-
-      <!-- Footer with Buttons -->
-      <footer class="flex justify-end space-x-4 mb-12 fade-in-up delay-300">
-        <button
-          onclick="copyToClipboard('<%= text.text %>')"
-          class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105 transition duration-300 ease-in-out"
-        >
-          Copy
-        </button>
-        <button
-          type="submit"
-          class="bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700 hover:scale-105 transition duration-300 ease-in-out"
-          onclick="location.href='/text/post'"
-        >
-          New
-        </button>
+        <a href="/text/post" class="btn btn-primary">
+          <i class="fas fa-plus"></i>
+          New Snippet
+        </a>
       </footer>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-auto">
-      <p>© 2025 SathiShare. All rights reserved.</p>
-    </footer>
-
-    <script src="/script/loader.js"></script>
     <%- include('component/messageBox') %>
-    <script>
-      const msgBox = document.querySelector(".msg");
-      if (msgBox) {
-        setTimeout(() => {
-          msgBox.remove();
-        }, 3000);
-      }
 
-      document.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          document.getElementById("loadingSpinner").classList.remove("hidden");
-        });
+    <script>
+      const copyBtn = document.getElementById('copyBtn');
+      const viewer = document.getElementById('viewer');
+      const toast = document.getElementById('toast');
+
+      copyBtn.addEventListener('click', () => {
+        const text = viewer.value;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            handleCopySuccess();
+          }).catch(err => {
+            console.error('Failed to copy code:', err);
+            fallbackCopy(text);
+          });
+        } else {
+          fallbackCopy(text);
+        }
       });
 
-      function copyToClipboard(text) {
-        navigator.clipboard
-          .writeText(text)
-          .then(() => {
-            console.log("Link copied to clipboard!");
-          })
-          .catch((err) => {
-            console.error("Failed to copy link:", err);
-          });
+      function handleCopySuccess() {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+        
+        const originalContent = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+        copyBtn.style.color = '#10b981';
+        copyBtn.style.borderColor = '#10b981';
+        
+        setTimeout(() => {
+          copyBtn.innerHTML = originalContent;
+          copyBtn.style.color = '';
+          copyBtn.style.borderColor = '';
+        }, 2000);
       }
+
+      function fallbackCopy(text) {
+        viewer.select();
+        try {
+          const successful = document.execCommand('copy');
+          if (successful) handleCopySuccess();
+        } catch (err) {
+          console.error('Fallback copy failed:', err);
+        }
+        window.getSelection().removeAllRanges();
+      }
+
+      // Show spinner for navigation
+      document.querySelectorAll("a").forEach(a => {
+        a.addEventListener("click", () => {
+          document.getElementById("loadingSpinner").style.display = "flex";
+        });
+      });
     </script>
   </body>
 </html>

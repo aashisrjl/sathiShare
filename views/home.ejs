@@ -4,19 +4,19 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/img/logo.PNG" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SathiShare – Chat, Share Files & Text Instantly</title>
+    <title>SathiShare – Fast, Secure & Instant File and Code Sharing</title>
     <meta
       name="description"
-      content="SathiShare lets you chat, share text, and files easily — a simple and fast sharing platform built with Node.js."
+      content="SathiShare is the fastest way to share files, code snippets, and chat with friends instantly. A simple, secure, and private sharing platform built for speed."
     />
     <meta
       name="keywords"
-      content="Sathi Share,file sharing, chat app, text sharing, SathiShare, Node.js, Nepal"
+      content="SathiShare, Sathi Share, file sharing, code sharing, instant chat, private sharing, Node.js app, Nepal sharing platform, fast file transfer"
     />
     <meta property="og:title" content="SathiShare – Chat & Share Instantly" />
     <meta
       property="og:description"
-      content="Fast and free file & text sharing app from Nepal."
+      content="SathiShare: Fast, free, and secure file & text sharing app."
     />
     <meta property="og:url" content="https://sathishare.aashishrijal.com.np" />
     <meta property="og:type" content="website" />
@@ -58,6 +58,81 @@
       .bounce-in {
         animation: bounceIn 1.5s ease-in-out infinite;
       }
+
+      /* Premium Floating Menu Styles */
+      .floating-menu {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        font-family: 'Inter', sans-serif;
+      }
+      .menu-btn {
+        background: rgba(59, 130, 246, 0.2);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 10px 20px;
+        border-radius: 99px;
+        color: white;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      .menu-btn:hover {
+        background: rgba(59, 130, 246, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      .menu-dropdown {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        width: 180px;
+        background: rgba(31, 41, 55, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 8px;
+        display: none;
+        flex-direction: column;
+        gap: 4px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        transform: translateY(10px);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      .menu-dropdown.show {
+        display: flex;
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .menu-item {
+        padding: 12px 16px;
+        border-radius: 10px;
+        color: #d1d5db;
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: all 0.2s ease;
+      }
+      .menu-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+      .menu-item i {
+        width: 16px;
+        color: #60a5fa;
+      }
+
     </style>
     <!-- Google tag (gtag.js) -->
     <script
@@ -80,19 +155,24 @@
         class="loading-spinner hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 rounded-full w-12 h-12 border-4 border-t-blue-400 border-b-blue-400 animate-spin"
         id="loadingSpinner"
       ></div>
-      <!-- Bottom-right dropdown -->
-<div class="fixed transform translate-x-1/2 z-50 bg-slate-500">
-  <select id="myshare"
-    class="px-5 py-3 rounded-full ml-2 bg-blue-400 text-black border border-gray-300
-           shadow-lg hover:!border-green-500 focus:!border-green-600
-           focus:ring-2 focus:!ring-green-300 transition-all duration-200
-           cursor-pointer font-medium">
-
-      <option class="text-gray-500" value="" disabled selected> My</option>
-      <option class="text-black" value="texts">Texts</option>
-      <option class="text-black" value="files">Files</option>
-  </select>
-</div>
+      <!-- Premium Floating Menu -->
+      <div class="floating-menu fade-in-up">
+        <button class="menu-btn" id="menuBtn">
+          <i class="fas fa-folder-open"></i>
+          <span>My Shares</span>
+          <i class="fas fa-chevron-down text-xs transition-transform duration-300" id="menuChevron"></i>
+        </button>
+        <div class="menu-dropdown" id="menuDropdown">
+          <a href="/mytexts" class="menu-item">
+            <i class="fas fa-code"></i>
+            <span>My Texts</span>
+          </a>
+          <a href="/myfiles" class="menu-item">
+            <i class="fas fa-file-alt"></i>
+            <span>My Files</span>
+          </a>
+        </div>
+      </div>
 
       <!-- Centered Logo with Animation -->
       <div class="text-center mb-10 mt-12">
@@ -212,19 +292,25 @@
     <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-auto">
       <p>© 2025 SathiShare. All rights reserved.</p>
     </footer>
-<script>
-  document.getElementById("myshare").addEventListener("change", function () {
-    const value = this.value;
+    <script>
+      const menuBtn = document.getElementById('menuBtn');
+      const menuDropdown = document.getElementById('menuDropdown');
+      const menuChevron = document.getElementById('menuChevron');
 
-    if (value === "texts") {
-      window.location.href = "/mytexts";   // route for texts
-    }
+      menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isShowing = menuDropdown.classList.toggle('show');
+        menuChevron.style.transform = isShowing ? 'rotate(180deg)' : 'rotate(0deg)';
+      });
 
-    if (value === "files") {
-      window.location.href = "/myfiles";   // route for files
-    }
-  });
-</script>
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+          menuDropdown.classList.remove('show');
+          menuChevron.style.transform = 'rotate(0deg)';
+        }
+      });
+    </script>
 
     <script>
       function submitForm() {

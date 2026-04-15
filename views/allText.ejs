@@ -4,177 +4,430 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/img/logo.PNG" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>SathiShare – Codes</title>
+    <title>SathiShare – Shared Code Snippets</title>
     <meta
       name="description"
-      content="SathiShare lets you share code snippets easily — a simple and fast sharing platform built with Node.js."
+      content="SathiShare: Browse and manage your shared code snippets. Secure, instant, and private code sharing platform."
     />
     <meta
       name="keywords"
-      content="file sharing, chat app, text sharing, SathiShare, Node.js, Nepal"
+      content="SathiShare, Sathi Share, code sharing, snippets, programming, instant share, private code"
     />
-    <meta property="og:title" content="SathiShare – Chat & Share Instantly" />
+    <meta property="og:title" content="SathiShare – Code Snippets" />
     <meta
       property="og:description"
-      content="Fast and free file & text sharing app from Nepal."
+      content="SathiShare: Fast and secure code sharing."
     />
-    <meta property="og:url" content="https://sathishare.aashishrijal.com.np" />
-    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <!-- <link rel="stylesheet" href="/css/allText.css"> -->
-    <link rel="stylesheet" href="/css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <style>
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .fade-in-up {
-        animation: fadeInUp 0.6s ease-out forwards;
-      }
-      .fade-in-item {
-        animation: fadeInUp 0.5s ease-out forwards;
-      }
-    </style>
     <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-ZF9E6J4DB5"
-    ></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZF9E6J4DB5"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+      function gtag() { dataLayer.push(arguments); }
       gtag("js", new Date());
-
       gtag("config", "G-ZF9E6J4DB5");
     </script>
+
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --bg-base:      #0f1117;
+        --bg-surface:   #161b27;
+        --bg-elevated:  #1e2333;
+        --accent:       #6366f1;
+        --accent-glow:  rgba(99, 102, 241, 0.5);
+        --text-primary: #e2e8f0;
+        --text-muted:   #94a3b8;
+        --border:       rgba(255, 255, 255, 0.08);
+        --radius-lg:    20px;
+        --radius-md:    12px;
+      }
+
+      html, body {
+        height: 100%;
+        font-family: 'Inter', system-ui, sans-serif;
+        background: var(--bg-base);
+        color: var(--text-primary);
+        line-height: 1.5;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 24px;
+      }
+
+      /* ── Header ── */
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 48px;
+        animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .back-btn {
+        width: 44px; height: 44px;
+        border-radius: 50%;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        color: var(--accent);
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+      .back-btn:hover {
+        background: var(--accent);
+        color: white;
+        transform: translateX(-4px);
+        box-shadow: 0 0 20px var(--accent-glow);
+      }
+      .user-id-badge {
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        padding: 6px 16px;
+        border-radius: 99px;
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      /* ── Hero ── */
+      .hero {
+        text-align: center;
+        margin-bottom: 64px;
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+      }
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .hero h1 {
+        font-size: 42px; font-weight: 800;
+        margin-bottom: 12px;
+        background: linear-gradient(to right, #fff, #94a3b8);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero p { color: var(--text-muted); font-size: 18px; }
+
+      /* ── Code Grid ── */
+      .code-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 28px;
+        margin-bottom: 64px;
+      }
+
+      .code-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+      }
+      @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+      .code-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        border-color: rgba(99, 102, 241, 0.4);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      }
+      .code-card::before {
+        content: '';
+        position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+        background: var(--accent);
+        opacity: 0; transition: opacity 0.3s;
+      }
+      .code-card:hover::before { opacity: 1; }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .code-title {
+        font-weight: 700; font-size: 17px;
+        color: white;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+        margin-right: 12px;
+      }
+
+      .code-preview {
+        background: #0d1117;
+        border-radius: 12px;
+        padding: 16px;
+        font-family: 'Fira Code', monospace;
+        font-size: 12px;
+        color: #e6edf3;
+        height: 120px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid rgba(255,255,255,0.05);
+      }
+      .code-preview::after {
+        content: '';
+        position: absolute; bottom: 0; left: 0; width: 100%; height: 40px;
+        background: linear-gradient(to top, #0d1117, transparent);
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 10px;
+      }
+      .action-btn {
+        flex: 1;
+        height: 42px;
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        gap: 8px;
+        border: none;
+      }
+      .btn-view { background: var(--accent); color: white; }
+      .btn-view:hover { background: #4f46e5; transform: translateY(-2px); box-shadow: 0 4px 15px var(--accent-glow); }
+
+      .btn-copy { background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); }
+      .btn-copy:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+
+      .btn-delete {
+        width: 42px; min-width: 42px;
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+      }
+      .btn-delete:hover { background: #ef4444; color: white; }
+
+      /* ── Empty State ── */
+      .empty-state {
+        text-align: center;
+        padding: 80px 0;
+        color: var(--text-muted);
+      }
+      .empty-icon { font-size: 64px; margin-bottom: 24px; opacity: 0.3; }
+
+      /* ── Action Bar ── */
+      .action-bar {
+        text-align: center;
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+        padding: 14px 32px;
+        border-radius: 99px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        display: inline-flex; align-items: center; gap: 10px;
+        transition: all 0.3s;
+        border: none;
+        box-shadow: 0 10px 30px var(--accent-glow);
+        text-decoration: none;
+      }
+      .btn-primary:hover {
+        transform: translateY(-4px) scale(1.05);
+        background: #4f46e5;
+        box-shadow: 0 15px 40px var(--accent-glow);
+      }
+
+      /* ── Footer ── */
+      footer {
+        padding: 48px 0;
+        text-align: center;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+
+      /* Loading spinner */
+      #loadingSpinner {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 3000;
+        justify-content: center; align-items: center;
+      }
+      .spinner {
+        width: 50px; height: 50px;
+        border: 4px solid rgba(255,255,255,0.1);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      .hidden { display: none !important; }
+
+      /* Toast notification */
+      .toast {
+        position: fixed; bottom: 30px; left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: #10b981; color: white;
+        padding: 12px 24px; border-radius: 12px;
+        font-weight: 600; font-size: 14px;
+        display: flex; align-items: center; gap: 10px;
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 4000;
+      }
+      .toast.show { transform: translateX(-50%) translateY(0); }
+    </style>
   </head>
-  <body class="bg-gray-900 text-gray-200 font-sans min-h-screen flex flex-col">
-    <div class="container mx-auto px-4 py-6 flex-1">
-      <div
-        class="loading-spinner hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 rounded-full w-12 h-12 border-4 border-t-blue-400 border-b-blue-400 animate-spin"
-        id="loadingSpinner"
-      ></div>
 
-      <!-- Centered Header with Animation -->
-      <div class="header text-center mb-10 fade-in-up delay-100">
-        <i
-          onclick="window.location.href='/'"
-          class="fas fa-arrow-left cursor-pointer text-blue-400 text-2xl hover:text-blue-300 transition duration-300"
-          style="float: left"
-        ></i>
-        <h3 class="text-xl font-semibold inline-block">
-          code: <span class="text-blue-400"><%- texts[0].userId %></span>
-        </h3>
-        <h1 class="text-3xl font-bold text-white mt-4">
-          Keep Sharing Guys 😁😎
-        </h1>
-      </div>
+  <body>
+    <div id="loadingSpinner">
+      <div class="spinner"></div>
+    </div>
 
-      <!-- Main Content -->
-      <div class="mb-12">
+    <div id="toast" class="toast">
+      <i class="fas fa-check-circle"></i>
+      <span>Copied to clipboard!</span>
+    </div>
+
+    <div class="container">
+      <header class="header">
+        <a href="/" class="back-btn">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="user-id-badge">
+          code: <%- texts[0].userId %>
+        </div>
+        <div></div>
+      </header>
+
+      <section class="hero">
+        <h1>Shared Snippets</h1>
+        <p>Your instant code cloud. Private and secure.</p>
+      </section>
+
+      <div class="code-grid">
         <% if (texts.length > 0) { %>
-        <p class="text-center text-gray-400 mb-6">
-          To Open each <b>code</b>, click on the
-          <span class="text-blue-400">View</span> button
-        </p>
-        <ul class="file-list space-y-4 max-w-2xl mx-auto">
           <% texts.forEach((text, index) => { %>
-          <li
-            class="fade-in-item delay-<%= index * 100 %>"
-            style="animation-delay: <%= index * 0.1 %>s"
-          >
-            <div
-              class="bg-gray-800 p-4 rounded-lg shadow-md flex justify-between items-center"
-            >
-              <span class="text-lg"><%= text.title %></span>
-              <div class="space-x-4">
-                <a
-                  href="#"
-                  class="copy-link text-blue-400 hover:text-blue-300 transition duration-300"
-                  onclick="copyToClipboard('<%= text.text %>')"
-                  >Copy</a
-                >
-                <a
-                  href="/text/single/<%= text._id %>"
-                  class="visit-link text-green-400 hover:text-green-300 transition duration-300"
-                  >View</a
-                >
-                <a
-                  href="/text/delete/<%= text._id %>"
-                  class="visit-link text-red-400 hover:text-red-300 transition duration-300"
-                  style="border-radius: 50%; padding: 4px 8px"
-                  ><i class="fas fa-times"></i
-                ></a>
-              </div>
+          <div class="code-card" style="animation-delay: <%= index * 0.05 %>s">
+            <div class="card-header">
+              <span class="code-title"><%= text.title %></span>
+              <div class="user-id-badge" style="font-size: 10px; padding: 2px 8px;">SNIPPET</div>
             </div>
-          </li>
+            <div class="code-preview">
+              <pre><code><%= text.text %></code></pre>
+            </div>
+            <div class="card-actions">
+              <a href="/text/single/<%= text._id %>" class="action-btn btn-view">
+                <i class="fas fa-eye"></i>
+                <span>Open</span>
+              </a>
+              <button class="action-btn btn-copy" data-code="<%= text.text %>">
+                <i class="fas fa-copy"></i>
+                <span>Copy</span>
+              </button>
+              <a href="/text/delete/<%= text._id %>" class="action-btn btn-delete">
+                <i class="fas fa-trash-alt"></i>
+              </a>
+            </div>
+          </div>
           <% }); %>
-        </ul>
         <% } else { %>
-        <p class="text-center text-gray-400">
-          No files found for this user ID.
-        </p>
+          <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-code"></i></div>
+            <h3>No snippets found</h3>
+            <p>Share some code to see it here!</p>
+          </div>
         <% } %>
       </div>
 
-      <!-- Share Another Button -->
-      <div class="text-center mb-12">
-        <ul class="inline-flex space-x-4">
-          <li class="new">
-            <a
-              href="/text/post"
-              class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105 transition duration-300 ease-in-out"
-              >Share Another</a
-            >
-          </li>
-        </ul>
+      <div class="action-bar">
+        <a href="/text/post" class="btn-primary">
+          <i class="fas fa-plus"></i>
+          Share New Snippet
+        </a>
       </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-auto">
+    <footer>
       <p>© 2025 SathiShare. All rights reserved.</p>
     </footer>
 
-    <script src="/script/loader.js"></script>
     <%- include('component/messageBox') %>
-    <script>
-      const msgBox = document.querySelector(".msg");
-      if (msgBox) {
-        setTimeout(() => {
-          msgBox.remove();
-        }, 3000);
-      }
 
-      document.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          document.getElementById("loadingSpinner").classList.remove("hidden");
+    <script>
+      // Robust Copy Functionality
+      document.querySelectorAll('.btn-copy').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const code = btn.getAttribute('data-code');
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(code).then(() => {
+              showToast();
+              const originalContent = btn.innerHTML;
+              btn.innerHTML = '<i class="fas fa-check"></i> <span>Copied</span>';
+              btn.style.borderColor = '#10b981';
+              btn.style.color = '#10b981';
+              setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.style.borderColor = '';
+                btn.style.color = '';
+              }, 2000);
+            }).catch(err => {
+              console.error('Failed to copy code:', err);
+              fallbackCopy(code);
+            });
+          } else {
+            fallbackCopy(code);
+          }
         });
       });
 
-      function copyToClipboard(text) {
-        navigator.clipboard
-          .writeText(text)
-          .then(() => {
-            console.log("Link copied to clipboard!");
-          })
-          .catch((err) => {
-            console.error("Failed to copy link:", err);
-          });
+      function fallbackCopy(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          showToast();
+        } catch (err) {
+          console.error('Fallback copy failed:', err);
+        }
+        document.body.removeChild(textArea);
       }
+
+      function showToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+      }
+
+      // Show spinner for all link clicks
+      document.querySelectorAll("a").forEach(a => {
+        if (a.getAttribute('href') !== '#') {
+          a.addEventListener("click", () => {
+            document.getElementById("loadingSpinner").style.display = "flex";
+          });
+        }
+      });
     </script>
   </body>
 </html>

@@ -4,150 +4,239 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/img/logo.PNG" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>SathiShare – Code</title>
+    <title>SathiShare – Share New Code Snippet</title>
     <meta
       name="description"
-      content="SathiShare lets you share code snippets easily — a simple and fast sharing platform built with Node.js."
+      content="SathiShare: Share code snippets instantly and securely. The best way to share code with friends and colleagues."
     />
     <meta
       name="keywords"
-      content="file sharing, chat app, text sharing, SathiShare, Node.js, Nepal"
+      content="SathiShare, Sathi Share, share code, code snippet, instant share, secure code"
     />
-    <meta property="og:title" content="SathiShare – Chat & Share Instantly" />
+    <meta property="og:title" content="SathiShare – Share New Snippet" />
     <meta
       property="og:description"
-      content="Fast and free file & text sharing app from Nepal."
+      content="SathiShare: Share your code snippets in seconds."
     />
-    <meta property="og:url" content="https://sathishare.aashishrijal.com.np" />
-    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <link rel="stylesheet" href="/css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <style>
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes fadeInScale {
-        from {
-          opacity: 0;
-          transform: scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-      .fade-in-up {
-        animation: fadeInUp 0.6s ease-out forwards;
-      }
-      .fade-in-scale {
-        animation: fadeInScale 0.6s ease-out forwards;
-      }
-    </style>
     <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-ZF9E6J4DB5"
-    ></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZF9E6J4DB5"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+      function gtag() { dataLayer.push(arguments); }
       gtag("js", new Date());
-
       gtag("config", "G-ZF9E6J4DB5");
     </script>
-  </head>
-  <body class="bg-gray-900 text-gray-200 font-sans min-h-screen flex flex-col">
-    <div class="container mx-auto px-4 py-6 flex-1">
-      <div
-        class="loading-spinner hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 rounded-full w-12 h-12 border-4 border-t-blue-400 border-b-blue-400 animate-spin"
-        id="loadingSpinner"
-      ></div>
 
-      <!-- Form with Animation -->
-      <form action="/text/post/" method="post" class="max-w-2xl mx-auto">
-        <!-- Header with Animation -->
-        <div
-          class="header flex justify-between items-center mb-8 fade-in-up delay-100"
-        >
-          <input
-            type="text"
-            name="title"
-            id="title"
-            placeholder="Enter a title"
-            required
-            class="bg-gray-800 text-lg font-semibold p-2 rounded-lg w-2/3 outline-none text-gray-200"
-          />
-          <a
-            href="/"
-            class="text-blue-400 hover:text-blue-300 bg-red-600 p-2 rounded-md transition duration-300 flex items-center"
-            style="text-decoration: none"
-          >
-            <span>Cancel</span> <i class="fas fa-times ml-2"></i>
-          </a>
-        </div>
-
-        <!-- Textarea with Animation -->
-        <div class="textarea mb-12 fade-in-scale delay-200">
-          <textarea
-            name="text"
-            cols="5"
-            rows="25"
-            placeholder="Enter or paste your text/code here .... "
-            required
-            class="w-full bg-gray-800 text-gray-200 p-4 rounded-lg shadow-md outline-none resize-none font-mono text-sm"
-          ></textarea>
-        </div>
-
-        <!-- Footer with Buttons -->
-        <footer class="flex justify-end space-x-4 mb-12 fade-in-up delay-300">
-          <button
-            type="submit"
-            class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 hover:scale-105 transition duration-300 ease-in-out"
-          >
-            Share
-          </button>
-          <a
-            href="/text/post/"
-            class="bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700 hover:scale-105 transition duration-300 ease-in-out text-center inline-block"
-            style="text-decoration: none"
-            >New</a
-          >
-        </footer>
-      </form>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-auto">
-      <p>© 2025 SathiShare. All rights reserved.</p>
-    </footer>
-
-    <script src="/script/loader.js"></script>
-    <%- include('component/messageBox') %>
-    <script>
-      const msgBox = document.querySelector(".msg");
-      if (msgBox) {
-        setTimeout(() => {
-          msgBox.remove();
-        }, 3000);
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --bg-base:      #0d1117;
+        --bg-surface:   #161b22;
+        --bg-elevated:  #21262d;
+        --accent:       #238636;
+        --accent-glow:  rgba(35, 134, 54, 0.3);
+        --text-primary: #c9d1d9;
+        --text-muted:   #8b949e;
+        --border:       rgba(240, 246, 252, 0.1);
+        --radius:       8px;
       }
 
-      document.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          document.getElementById("loadingSpinner").classList.remove("hidden");
+      html, body {
+        height: 100%;
+        font-family: 'Inter', system-ui, sans-serif;
+        background: var(--bg-base);
+        color: var(--text-primary);
+        line-height: 1.5;
+        overflow: hidden;
+      }
+
+      #page-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+
+      /* ── Header ── */
+      .editor-header {
+        height: 60px;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        justify-content: space-between;
+        flex-shrink: 0;
+      }
+      .header-left { display: flex; align-items: center; gap: 16px; flex: 1; }
+      .back-btn {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 18px;
+        transition: color 0.2s;
+      }
+      .back-btn:hover { color: #f85149; }
+      
+      .title-input {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: white;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        width: 300px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .title-input:focus { border-color: #58a6ff; box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1); }
+
+      /* ── Editor Body ── */
+      .editor-body {
+        flex: 1;
+        background: var(--bg-base);
+        position: relative;
+        overflow: hidden;
+      }
+      #editor {
+        width: 100%; height: 100%;
+        padding: 24px;
+        background: transparent;
+        color: #e6edf3;
+        font-family: 'Fira Code', monospace;
+        font-size: 14px;
+        border: none;
+        outline: none;
+        resize: none;
+        tab-size: 4;
+        line-height: 1.6;
+        white-space: pre;
+        overflow: auto;
+      }
+
+      /* ── Footer / Toolbar ── */
+      .editor-footer {
+        height: 64px;
+        background: var(--bg-surface);
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        justify-content: flex-end;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+
+      .btn {
+        height: 38px;
+        padding: 0 20px;
+        border-radius: 6px;
+        font-size: 13px; font-weight: 600;
+        cursor: pointer;
+        display: flex; align-items: center; gap: 8px;
+        transition: all 0.2s;
+        border: 1px solid var(--border);
+        background: var(--bg-elevated);
+        color: var(--text-primary);
+        text-decoration: none;
+      }
+      .btn:hover { background: #30363d; border-color: #8b949e; }
+      .btn-primary { background: #238636; border-color: rgba(240,246,252,0.1); color: white; border: none; }
+      .btn-primary:hover { background: #2ea043; transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-glow); }
+
+      /* Loading spinner */
+      #loadingSpinner {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 3000;
+        justify-content: center; align-items: center;
+      }
+      .spinner {
+        width: 40px; height: 40px;
+        border: 3px solid rgba(255,255,255,0.1);
+        border-top-color: #238636;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      .hidden { display: none !important; }
+    </style>
+  </head>
+
+  <body>
+    <div id="loadingSpinner">
+      <div class="spinner"></div>
+    </div>
+
+    <form id="page-wrapper" action="/text/post/" method="post">
+      <header class="editor-header">
+        <div class="header-left">
+          <a href="/" class="back-btn" title="Cancel">
+            <i class="fas fa-times-circle"></i>
+          </a>
+          <input 
+            type="text" 
+            name="title" 
+            placeholder="Snippet Title (e.g. index.js)" 
+            required 
+            class="title-input"
+            autocomplete="off"
+          />
+        </div>
+      </header>
+
+      <main class="editor-body">
+        <textarea 
+          id="editor" 
+          name="text" 
+          placeholder="// Paste your code or text here..." 
+          required
+        ></textarea>
+      </main>
+
+      <footer class="editor-footer">
+        <a href="/" class="btn">
+          <i class="fas fa-home"></i>
+          Back Home
+        </a>
+        <button type="submit" class="btn btn-primary" id="shareBtn">
+          <i class="fas fa-paper-plane"></i>
+          Share Snippet
+        </button>
+      </footer>
+    </form>
+
+    <%- include('component/messageBox') %>
+
+    <script>
+      const form = document.querySelector('form');
+      const spinner = document.getElementById('loadingSpinner');
+
+      form.addEventListener('submit', () => {
+        spinner.style.display = 'flex';
+      });
+
+      // Handle Tab key in textarea
+      const editor = document.getElementById('editor');
+      editor.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const start = editor.selectionStart;
+          const end = editor.selectionEnd;
+          editor.value = editor.value.substring(0, start) + "\t" + editor.value.substring(end);
+          editor.selectionStart = editor.selectionEnd = start + 1;
+        }
+      });
+
+      // Show spinner for navigation
+      document.querySelectorAll("a").forEach(a => {
+        a.addEventListener("click", () => {
+          spinner.style.display = "flex";
         });
       });
     </script>

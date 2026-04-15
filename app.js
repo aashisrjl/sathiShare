@@ -111,7 +111,9 @@ io.on('connection', (socket) => {
 
   socket.on('message', async (msg) => {
     msg.ipAddress = clientIp;
-    msg.socketId = socket.id; 
+    msg.socketId = socket.id;
+    // Trim only leading/trailing whitespace; preserve internal newlines
+    if (msg.message) msg.message = msg.message.replace(/^\s+|\s+$/g, '');
 
     console.log(msg); 
     await Chat.create({
