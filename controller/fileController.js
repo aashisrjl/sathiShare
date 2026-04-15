@@ -194,23 +194,22 @@ exports.sendmail = async(req,res)=>{
     </div>
     `;
 
-    sendEmail({
-        email,
-        subject: "📁 File received from SathiShare",
-        text: `You have received a file from SathiShare: ${file}. Download it here: ${fileUrl}`,
-        html: htmlTemplate
-    })
-    if(sendEmail){
+    try {
+        await sendEmail({
+            email,
+            subject: "📁 File received from SathiShare",
+            text: `You have received a file from SathiShare: ${file}. Download it here: ${fileUrl}`,
+            html: htmlTemplate
+        });
+        
         console.log("Email sent successfully");
-        req.flash("success","Mail send Successfully");
-        res.redirect("/")
-    }else{
-        console.log("Error sending email");
+        req.flash("success", "Mail sent successfully!");
+        return res.redirect("/");
+    } catch (error) {
+        console.error("Error sending email:", error);
+        req.flash("error", "Mail could not be sent. Please try again.");
+        return res.redirect("/file/email/" + encodeURIComponent(file));
     }
-    req.flash("error","Mail cannot be sent");
-    res.redirect("/file/email/"+file)
-
-
 }
 // //search by userId
 // exports.handleSearch = async(req,res)=>{
