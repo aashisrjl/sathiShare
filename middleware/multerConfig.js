@@ -12,13 +12,22 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: 'sathishare',
-    resource_type: 'auto', // Support all file types including archives
-    public_id: (req, file) => {
-      const originalName = file.originalname.split('.')[0];
-      return `${originalName}-${Date.now()}`;
-    },
+  params: async (req, file) => {
+    const extension = path.extname(file.originalname).toLowerCase();
+    const originalName = file.originalname.split('.')[0];
+    const timestamp = Date.now();
+    
+    // Define document extensions that should be handled as 'raw'
+    const docExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.zip', '.rar'];
+    const isRaw = docExtensions.includes(extension);
+
+    return {
+      folder: 'sathishare',
+      resource_type: isRaw ? 'raw' : 'auto',
+      public_id: isRaw 
+        ? `${originalName}-${timestamp}${extension}` 
+        : `${originalName}-${timestamp}`,
+    };
   },
 });
 
