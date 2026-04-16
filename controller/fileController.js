@@ -84,10 +84,9 @@ exports.postFiles = async (req, res) => {
                 fileUrl = f.path;
                 publicId = f.filename;
             } else {
-                // Local disk: f.filename is the saved filename in /storage/
-                const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
-                fileUrl = `${baseUrl}/storage/${f.filename}`;
-                publicId = f.filename;  // just the filename for local deletion
+                // Local disk: use a relative URL so it works on any domain
+                fileUrl = `/storage/${f.filename}`;
+                publicId = f.filename;
             }
 
             const savedFile = await File.create({
