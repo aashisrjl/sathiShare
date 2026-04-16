@@ -24,6 +24,8 @@ const storage = new CloudinaryStorage({
     return {
       folder: 'sathishare',
       resource_type: isRaw ? 'raw' : 'auto',
+      type: 'upload',
+      access_mode: 'public',
       public_id: isRaw 
         ? `${originalName}-${timestamp}${extension}` 
         : `${originalName}-${timestamp}`,
