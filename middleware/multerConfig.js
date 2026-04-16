@@ -17,8 +17,7 @@ const storage = new CloudinaryStorage({
     resource_type: 'auto', // Support all file types including archives
     public_id: (req, file) => {
       const originalName = file.originalname.split('.')[0];
-      const extension = path.extname(file.originalname);
-      return `${originalName}-${Date.now()}${extension}`;
+      return `${originalName}-${Date.now()}`;
     },
   },
 });
