@@ -343,7 +343,8 @@
       <div class="file-grid">
         <% if (files.length > 0) { %>
           <% files.forEach((file, index) => {
-               const ext = file.file.split('.').pop().toLowerCase();
+               const fileName = file.file.split('/').pop();
+               const ext = fileName.includes('.') ? fileName.split('.').pop().toLowerCase() : '';
                let iconClass = 'fa-file';
                if (['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(ext)) iconClass = 'fa-file-image';
                else if (['mp4', 'webm', 'mov'].includes(ext)) iconClass = 'fa-file-video';
@@ -415,8 +416,9 @@
         document.getElementById("fileForm").submit();
       }
 
-      function openPreview(url, fileName) {
-        const ext = fileName.split('.').pop().toLowerCase();
+      function openPreview(url, fullName) {
+        const fileName = fullName.split('/').pop();
+        const ext = fileName.includes('.') ? fileName.split('.').pop().toLowerCase() : '';
         const imageExtensions = ["png", "jpg", "jpeg", "gif", "svg", "webp"];
         if (imageExtensions.includes(ext)) {
           const modal = document.getElementById("fileModal");

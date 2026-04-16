@@ -152,7 +152,9 @@
             >
               <span
                 class="text-lg cursor-pointer text-blue-400 hover:text-blue-300 transition duration-300"
-                onclick="openModal('/storage/<%= file.file %>', '<%= file.file %>')"
+                const fileNamePart = file.file.split('/').pop();
+                const extension = fileNamePart.includes('.') ? fileNamePart.split('.').pop().toLowerCase() : '';
+                openModal('/storage/' + file.file, file.file)
                 ><%= file.file %></span
               >
               <div class="space-x-4">
@@ -253,8 +255,9 @@
         });
       });
 
-      function openModal(imageUrl, fileName) {
-        const extension = fileName.split(".").pop().toLowerCase();
+      function openModal(imageUrl, fullName) {
+        const fileName = fullName.split('/').pop();
+        const extension = fileName.includes('.') ? fileName.split('.').pop().toLowerCase() : '';
         const imageExtensions = ["png", "jpg", "jpeg", "gif"];
         if (imageExtensions.includes(extension)) {
           const modal = document.getElementById("fileModal");
