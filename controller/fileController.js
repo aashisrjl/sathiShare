@@ -13,6 +13,7 @@ function generateUserId() {
 }
 
 const { cloudinary } = require('../middleware/multerConfig');
+const { cloudinaryExtensions } = require('../middleware/multerConfig');
 
 const scheduleDeletion = (userId) => {
     userJobs[userId] = schedule.scheduleJob(
@@ -24,12 +25,20 @@ const scheduleDeletion = (userId) => {
                 if (files.length) {
                     for (const file of files) {
                         try {
-                            if (file.publicId) {
+                            if (file.publicId && file.publicId.startsWith('sathishare/')) {
+                                // Cloudinary file
                                 await cloudinary.uploader.destroy(file.publicId, { resource_type: 'auto' });
                                 console.log("Cloudinary file deleted:", file.publicId);
+                            } else if (file.publicId) {
+                                // Local file
+                                const localPath = path.join(__dirname, '..', 'storage', file.publicId);
+                                if (fs.existsSync(localPath)) {
+                                    fs.unlinkSync(localPath);
+                                    console.log("Local file deleted:", localPath);
+                                }
                             }
                         } catch (err) {
-                            console.error("Error deleting from Cloudinary:", err);
+                            console.error("Error deleting file:", err);
                         }
                     }
                     await File.deleteMany({ userId });
@@ -46,22 +55,16 @@ exports.postFiles = async (req, res) => {
     try {
         const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.ip;
 
-        // Check if files are uploaded
         if (!req.files || req.files.length === 0) {
-            return res.status(400).json({
-                message: "Please upload at least one file"
-            });
+            return res.status(400).json({ message: "Please upload at least one file" });
         }
 
-        // Try to find an existing userId based on the IP address
         let existingFile = await File.findOne({ ipAddress });
         let userId;
 
         if (!existingFile) {
-            // Generate a unique userId if no previous record is found for the IP
             userId = generateUserId();
         } else {
-            // Use the existing userId
             userId = existingFile.userId;
         }
 
@@ -69,30 +72,41 @@ exports.postFiles = async (req, res) => {
         const savedFiles = [];
 
         for (let i = 0; i < files.length; i++) {
-            // multer-storage-cloudinary provides path (URL) and filename (Public ID)
-            const fileUrl = files[i].path;
-            const publicId = files[i].filename;
+            const f = files[i];
+            const ext = path.extname(f.originalname).toLowerCase();
+            const isCloudinary = cloudinaryExtensions.includes(ext);
+
+            let fileUrl;
+            let publicId;
+
+            if (isCloudinary) {
+                // multer-storage-cloudinary sets .path = Cloudinary URL, .filename = public_id
+                fileUrl = f.path;
+                publicId = f.filename;
+            } else {
+                // Local disk: f.filename is the saved filename in /storage/
+                const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+                fileUrl = `${baseUrl}/storage/${f.filename}`;
+                publicId = f.filename;  // just the filename for local deletion
+            }
 
             const savedFile = await File.create({
-                userId: userId,
-                ipAddress: ipAddress,
+                userId,
+                ipAddress,
                 file: fileUrl,
-                publicId: publicId
+                publicId,
             });
             scheduleDeletion(userId);
-
             savedFiles.push(savedFile);
         }
 
-        req.flash("success","file uploaded")
+        req.flash("success", "file uploaded");
         res.redirect(`/file/${userId}`);
 
     } catch (error) {
         console.error(error);
         fs.appendFileSync('/tmp/sathishare_error.log', `Error in postFiles: ${error.stack}\n`);
-        res.status(500).json({
-            message: "Internal server error"
-        });
+        res.status(500).json({ message: "Internal server error" });
     }
 };
 
@@ -147,9 +161,18 @@ exports.deleteFile = async (req, res) => {
         if (ipAddress === file.ipAddress) {
             if (file.publicId) {
                 try {
-                    await cloudinary.uploader.destroy(file.publicId, { resource_type: 'auto' });
+                    if (file.publicId.startsWith('sathishare/')) {
+                        // Cloudinary file
+                        await cloudinary.uploader.destroy(file.publicId, { resource_type: 'auto' });
+                    } else {
+                        // Local file
+                        const localPath = path.join(__dirname, '..', 'storage', file.publicId);
+                        if (fs.existsSync(localPath)) {
+                            fs.unlinkSync(localPath);
+                        }
+                    }
                 } catch (err) {
-                    console.error("Cloudinary manual delete error:", err);
+                    console.error("Delete error:", err);
                 }
             }
             await File.findByIdAndDelete(id);
