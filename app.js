@@ -29,6 +29,26 @@ app.use(session({
   saveUninitialized: false
 }))
 app.use(flash());
+
+app.get('/robots.txt', (req, res) => {
+  res.set({
+    'Content-Type': 'text/plain; charset=utf-8',
+    'Cache-Control': 'no-store, no-cache, must-revalidate',
+  });
+  res.send(
+    'User-agent: *\n' +
+    'Disallow:\n\n' +
+    'User-agent: Googlebot\n' +
+    'Disallow:\n\n' +
+    'Sitemap: https://sathishare.aashishrijal.com.np/sitemap.xml\n'
+  );
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.sendFile(path.join(__dirname, 'public/sitemap.xml'));
+});
+
 app.get('/',(req,res)=>{
   const [error] = req.flash('error');
   const [success] = req.flash('success');
