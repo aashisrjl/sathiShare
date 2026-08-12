@@ -178,15 +178,15 @@ cron.schedule("* * * * *", async () => {
   }
 });
 
-// const fetch = require("node-fetch");
-
-// // Every 10 minutes
-// setInterval(async () => {
-//   try {
-//     const res = await fetch("https://sathishare.aashishrijal.com.np");
-//     console.log("Pinged server:", res.status);
-//   } catch (err) {
-//     console.error("Error pinging server:", err);
-//   }
-// }, 15 * 60 * 1000); // 15 minutes
+if (process.env.NODE_ENV === 'production') {
+  const keepAliveUrl = process.env.RENDER_EXTERNAL_URL || 'https://sathishare.aashishrijal.com.np';
+  setInterval(async () => {
+    try {
+      const res = await fetch(keepAliveUrl);
+      console.log('Keep-alive ping:', res.status);
+    } catch (err) {
+      console.error('Keep-alive ping failed:', err.message);
+    }
+  }, 14 * 60 * 1000);
+}
 
